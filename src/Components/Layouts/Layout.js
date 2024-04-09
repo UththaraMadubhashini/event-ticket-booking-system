@@ -1,4 +1,5 @@
 import React from 'react'
+import { Outlet } from "react-router";
 import Home from '../../Pages/Home'
 import AllEvents from '../../Pages/AllEvents'
 import ContactUs from '../../Pages/ContactUs'
@@ -12,6 +13,7 @@ const Layout = () => {
 <Home/>
 <AllEvents/>
 <ContactUs/>
+<Outlet/>
 <SignIn_LogOut/>
 </>
   )

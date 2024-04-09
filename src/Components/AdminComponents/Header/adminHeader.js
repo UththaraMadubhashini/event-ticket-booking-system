@@ -4,9 +4,10 @@ const AdminHeader = () => {
   return (
     <div className="bg-yellow-200 text-center py-3 shadow-xl">
       {" "}
-      Admin Header
+      AdminHeader
     </div>
-  );
-};
+  )
+}
 
 export default AdminHeader;
+
