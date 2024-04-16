@@ -6,11 +6,11 @@ const SideBar = () => {
       <a href="/admin/dashboard">
         <button className="bg-blue-500 rounded-3xl py-3 w-44">Dashboard</button>
       </a>
-      <a href="/admin/manage_events">
+      <a href="/admin/manageevents">
         <button className="bg-blue-500 rounded-3xl w-44 py-3">Manage Events</button>
       </a>
 
-      <a href="/admin/manage_tickets">
+      <a href="/admin/managetickets">
         <button className="bg-blue-500 rounded-3xl w-44 py-3">Manage Tickets</button>
       </a>
     </div>
