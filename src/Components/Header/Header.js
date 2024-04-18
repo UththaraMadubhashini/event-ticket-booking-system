@@ -12,8 +12,6 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from "react-router-dom";
-
-// Import your logo image
 import logo from '../../Assets/Images/Logo.jpeg';
 
 const pages = ['Home', 'Events', 'ContactUs', 'SignIn', 'LogOut'];
@@ -32,8 +30,8 @@ function Header() {
   };
 
   const handlePageClick = (page) => {
-    setSelectedPage(page); // Update the selected page when a navbar button is clicked
-    handleCloseNavMenu(); // Close the navbar menu
+    setSelectedPage(page); 
+    handleCloseNavMenu(); 
   };
 
   return (
@@ -55,7 +53,7 @@ function Header() {
                 key={page}
                 component={Link}
                 to={`/${page.toLowerCase().replace(' ', '')}`}
-                onClick={() => handlePageClick(page)} // Update selected page on click
+                onClick={() => handlePageClick(page)} 
                 sx={{
                   mx: 4, // Add margin to separate buttons
                   color: 'white',
@@ -74,7 +72,6 @@ function Header() {
               </IconButton>
             </Tooltip>
           </Box>
-          {/* Hide MenuIcon on medium screens */}
           <Box sx={{ display: { xs: 'none', md: 'block' } }}>
             <IconButton edge="end" color="inherit" aria-label="menu" onClick={handleOpenNavMenu}>
               <MenuIcon />
