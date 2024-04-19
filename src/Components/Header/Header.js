@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link } from "react-router-dom";
 import logo from '../../Assets/Images/Logo.jpeg';
 
-const pages = ['Home', 'Events', 'ContactUs', 'SignIn', 'LogOut'];
+const pages = ['Home', 'Events', 'ContactUs', 'SignUp', 'Login'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Header() {

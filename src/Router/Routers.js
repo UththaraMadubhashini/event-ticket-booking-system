@@ -14,8 +14,8 @@ import Home from "../Pages/Home";
 import Layout from "../Components/Layouts/Layout";
 import AdminLayOut from "../Components/Layouts/AdminLayOut";
 import Events from "../Pages/Events";
-import SignIn from "../Pages/SignIn";
-import LogOut from "../Pages/LogOut";
+import SignUp from "../Pages/SignUp";
+import Login from "../Pages/Login";
 
 const Routers = () => {
   return (
@@ -30,8 +30,8 @@ const Routers = () => {
         <Route path="/musicalevents" element={<MusicalEvents/>} />
         <Route path="/stagedrama" element={<StageDrama/>} />
         <Route path="/ticketbooking" element={<TicketsBooking/>} /> 
-        <Route path="/signin" element={<SignIn/>} /> 
-        <Route path="/logout" element={<LogOut/>} />
+        <Route path="/signup" element={<SignUp/>} /> 
+        <Route path="/login" element={<Login/>} />
 
       </Route>
 
