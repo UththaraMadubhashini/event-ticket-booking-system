@@ -1,5 +1,4 @@
-import "./App.css";
-import "./index.css";
+import React from 'react';
 import Routers from "./Router/Routers";
 
 function App() {

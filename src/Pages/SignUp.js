@@ -3,8 +3,6 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Chip from '@mui/material/Chip';
 import FaceIcon from '@mui/icons-material/Face';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -22,70 +20,64 @@ const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email);
 
 export default function SignUp() {
-  const [checked, setChecked] = React.useState(true);
   const [showPassword, setShowPassword] = React.useState(false);
 
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
-
-  //Inputs
-  const[UsernameInput, setUsernameInput]=useState();
-  const[emailInput, setEmailInput]=useState();
-  const[passwordInput, setPasswordInput]=useState();
+  // Inputs
+  const [UsernameInput, setUsernameInput] = useState();
+  const [emailInput, setEmailInput] = useState();
+  const [passwordInput, setPasswordInput] = useState();
   const [contactNumberInput, setContactNumberInput] = useState('');
 
-  //Input errors
-  const[UsernameError, setUsernameError]=useState(false);
-  const[emailError, setEmailError]=useState(false);
-  const[passwordError, setPasswordError]=useState(false);
+  // Input errors
+  const [UsernameError, setUsernameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const [contactNumberError, setContactNumberError] = useState(false);
 
-  //Form validity
+  // Form validity
   const [formValid, setFormvalid] = useState();
+  const [success, setSuccess] = useState();
 
-  //validation for onBlur Username
+  // Validation for onBlur Username
   const handleUsername = () => {
-    if(!UsernameInput || 
-      UsernameInput.length < 5 || 
-      UsernameInput.length > 20
-    ){
+    if (!UsernameInput || 
+        UsernameInput.length < 5 || 
+        UsernameInput.length > 20
+    ) {
       setUsernameError(true);
       return;
     }
 
-    setUsernameError(false)
+    setUsernameError(false);
   };
 
-  //validation for onBlur Email
-
+  // Validation for onBlur Email
   const handleEmail = () => {
-    if(!isEmail(emailInput)){
+    if (!isEmail(emailInput)) {
       setEmailError(true);
       return;
     }
     setEmailError(false);
+  };
 
-  }
-
-  //validation for onBlur password
-  const hanndlePassword = () =>{
-    if(
-      !passwordInput ||
-      passwordInput.length < 5 ||
-      passwordInput.length > 20
-    ){
+  // Validation for onBlur password
+  const handlePassword = () => {
+    if (!passwordInput ||
+        passwordInput.length < 5 ||
+        passwordInput.length > 20
+    ) {
       setPasswordError(true);
       return;
     }
     setPasswordError(false);
-  } 
+  };
 
-  //validation for onBlur Contact number
+  // Validation for onBlur Contact number
   const handleContactNumber = () => {
     if (!contactNumberInput || 
-      contactNumberInput.length !== 10 || 
-      isNaN(contactNumberInput)) {
+        contactNumberInput.length !== 10 || 
+        isNaN(contactNumberInput)
+    ) {
       setContactNumberError(true);
       return;
     }
@@ -94,6 +86,7 @@ export default function SignUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSuccess(null);
   
     if (UsernameError || !UsernameInput) {
       setFormvalid(
@@ -124,13 +117,13 @@ export default function SignUp() {
     }
 
     setFormvalid(null);
+    setSuccess("Form Submitted Successfully");
   
     console.log(UsernameInput);
     console.log(emailInput);
     console.log(passwordInput);
     console.log(contactNumberInput);
   };
-
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -156,18 +149,7 @@ export default function SignUp() {
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          {checked ? (
-            <Chip icon={<FaceIcon />} label="Sign Up" color="primary" variant="outlined" />
-          ) : (
-            <Chip icon={<LockOutlinedIcon />} label="Login" color="primary" variant="outlined" />
-          )}
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '0px' }}>
-          <Switch
-            checked={checked}
-            onChange={handleChange}
-            inputProps={{ 'aria-label': 'controlled' }}
-          />
+          <Chip icon={<FaceIcon />} label="Sign Up" color="primary" variant="outlined" />
         </Box>
         <TextField
           id="standard-basic"
@@ -214,7 +196,7 @@ export default function SignUp() {
               setPasswordInput(event.target.value);
               setPasswordError(false);
             }}
-            onBlur={hanndlePassword}
+            onBlur={handlePassword}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -257,15 +239,23 @@ export default function SignUp() {
           sx={{ marginBottom: '10px' }}
         />
         <p>
-        <Button onClick={handleSubmit} fullWidth variant="contained" startIcon={<LoginOutlinedIcon />}>
-        Sign Up
-      </Button>
+          <Button onClick={handleSubmit} fullWidth variant="contained" startIcon={<LoginOutlinedIcon />}>
+            SIGN UP
+          </Button>
         </p>
         <p>
           {formValid && 
-          <Alert severity="error">
-          {formValid}
-          </Alert>
+            <Alert severity="error">
+              {formValid}
+            </Alert>
+          }
+        </p>
+
+        <p>
+          {success && 
+            <Alert severity="success">
+              {success}
+            </Alert>
           }
         </p>
       </Paper>
