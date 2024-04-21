@@ -25,7 +25,7 @@ export default function Login() {
   // Inputs
   const [UsernameInput, setUsernameInput] = useState();
   const [passwordInput, setPasswordInput] = useState();
-  const [rememberMe, setRememberMe] = useState(false); // Fixed here
+  const [rememberMe, setRememberMe] = useState(false);
 
   // Input errors
   const [UsernameError, setUsernameError] = useState(false);
