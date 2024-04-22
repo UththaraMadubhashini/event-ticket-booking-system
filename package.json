@@ -27,7 +27,8 @@
     "reactstrap": "^9.2.2",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.8",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
