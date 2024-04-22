@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -6,10 +7,50 @@ import Typography from '@mui/material/Typography';
 import { Menu, MenuItem } from '@mui/material';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import { Link } from "react-router-dom";
+import SearchIcon from '@mui/icons-material/Search';
+import InputBase from '@mui/material/InputBase';
+import { styled, alpha } from '@mui/material/styles';
 import logo from '../../Assets/Images/Logo.jpeg';
 
 const pages = ['Home', 'Events', 'ContactUs', 'SignUp', 'Login'];
+
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: '20px',
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: '50px',
+  width: 'auto',
+  [theme.breakpoints.up('sm')]: {
+    width: '30ch',
+  },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
+    },
+  },
+}));
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -55,6 +96,7 @@ function Header() {
                       open={Boolean(anchorElNav)}
                       onClose={handleCloseNavMenu}
                     >
+                      <MenuItem onClick={() => handlePageClick('All Events')}>All Events</MenuItem>
                       <MenuItem onClick={() => handlePageClick('Musical')}>Musical</MenuItem>
                       <MenuItem onClick={() => handlePageClick('Dancing')}>Dancing</MenuItem>
                       <MenuItem onClick={() => handlePageClick('Stage Drama')}>Stage Drama</MenuItem>
@@ -80,6 +122,15 @@ function Header() {
               </React.Fragment>
             ))}
           </Box>
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </Search>
         </Toolbar>
       </Container>
     </AppBar>
