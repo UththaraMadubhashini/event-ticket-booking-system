@@ -65,11 +65,12 @@ const ImageSlider = () => {
         <div key={index}>
           <img 
             src={image} 
-            alt={`Image ${index + 1}`} 
+            alt={`Slide ${index + 1}`} 
             style={{ width: '100%', height: '500px' }}
           />
         </div>
       ))}
+
     </Slider>
   );
 };

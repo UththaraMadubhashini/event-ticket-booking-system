@@ -16,6 +16,7 @@ import AdminLayOut from "../Components/Layouts/AdminLayOut";
 import Events from "../Pages/Events";
 import SignUp from "../Pages/SignUp";
 import Login from "../Pages/Login";
+import EventCards from "../Components/EventCards/EventCards";
 
 const Routers = () => {
   return (
@@ -32,6 +33,7 @@ const Routers = () => {
         <Route path="/ticketbooking" element={<TicketsBooking/>} /> 
         <Route path="/signup" element={<SignUp/>} /> 
         <Route path="/login" element={<Login/>} />
+        <Route path="/card" element={<EventCards/>} />
 
       </Route>
 
