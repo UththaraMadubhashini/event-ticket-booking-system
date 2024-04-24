@@ -96,11 +96,11 @@ function Header() {
                       open={Boolean(anchorElNav)}
                       onClose={handleCloseNavMenu}
                     >
-                      <MenuItem onClick={() => handlePageClick('All Events')}>All Events</MenuItem>
-                      <MenuItem onClick={() => handlePageClick('Musical')}>Musical</MenuItem>
-                      <MenuItem onClick={() => handlePageClick('Dancing')}>Dancing</MenuItem>
-                      <MenuItem onClick={() => handlePageClick('Stage Drama')}>Stage Drama</MenuItem>
-                      <MenuItem onClick={() => handlePageClick('Food Festival')}>Food Festival</MenuItem>
+                      <MenuItem component={Link} to="/all-events" onClick={() => handlePageClick('All Events')}>All Events</MenuItem>
+                      <MenuItem component={Link} to="/musical" onClick={() => handlePageClick('Musical')}>Musical</MenuItem>
+                      <MenuItem component={Link} to="/dancing" onClick={() => handlePageClick('Dancing')}>Dancing</MenuItem>
+                      <MenuItem component={Link} to="/stage-drama" onClick={() => handlePageClick('Stage Drama')}>Stage Drama</MenuItem>
+                      <MenuItem component={Link} to="/food-festival" onClick={() => handlePageClick('Food Festival')}>Food Festival</MenuItem>
                     </Menu>
                   </React.Fragment>
                 ) : (
