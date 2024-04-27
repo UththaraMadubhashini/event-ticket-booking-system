@@ -10,6 +10,8 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import RoomIcon from '@mui/icons-material/Room';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import { Link } from 'react-router-dom';
+
 
 const EventCard = ({ title, image, date, time, location, priceRange, ticketImage, priceTagImage, availability }) => {
   return (
@@ -38,22 +40,29 @@ const EventCard = ({ title, image, date, time, location, priceRange, ticketImage
           </Grid>
         </Grid>
         <Grid item>
-            <Chip icon={<img src={require('../../Assets/Images/availabilityIcon.png')} alt="Availability" 
-            style={{ width: '20px', height: '20px', marginRight: '0px'}} />} label={`Availablility: ${availability}`} 
+          <Chip
+            icon={<img src={require('../../Assets/Images/availabilityIcon.png')} alt="Availability" 
+            style={{ width: '20px', height: '20px', marginRight: '0px'}} />}
+            label={`Availability: ${availability}`} 
             sx={{ marginTop: '15px' }}
-            />
-          </Grid>
+          />
+        </Grid>
         <Grid container alignItems="center" marginTop={2}>
           <Grid item>
-            <Chip icon={<img src={priceTagImage} alt="Price Tag" 
-            style={{ width: '25px', height: '20px', marginRight: '5px'}} />} label={priceRange} />
+            <Chip
+              icon={<img src={priceTagImage} alt="Price Tag" 
+              style={{ width: '25px', height: '20px', marginRight: '5px'}} />}
+              label={priceRange}
+            />
           </Grid>
         </Grid>
       </CardContent>
       <Stack direction="row" spacing={2} justifyContent="center">
         <Button variant="contained" 
-        startIcon={<img src={ticketImage} alt="Ticket Icon" 
-        style={{ width: '25px', height: '20px', marginRight: '5px'}} />}>
+          component={Link} to="/buy-tickets"
+          startIcon={<img src={ticketImage} alt="Ticket Icon" 
+          style={{ width: '25px', height: '20px', marginRight: '5px'}} />}
+        >
           Buy Tickets
         </Button>
       </Stack>

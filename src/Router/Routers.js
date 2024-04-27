@@ -26,16 +26,16 @@ const Routers = () => {
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<Home/>} />
         <Route path="/contactus" element={<ContactUs/>} />
-        <Route path="/ticketbooking" element={<TicketsBooking/>} /> 
+        <Route path="/ticket-booking" element={<TicketsBooking/>} /> 
         <Route path="/signup" element={<SignUp/>} /> 
         <Route path="/login" element={<Login/>} />
         <Route path="/card" element={<EventCards/>} />
-        <Route path="/allevents" element={<AllEvents/>} />
+        <Route path="/all-events" element={<AllEvents/>} />
         <Route path="/musical" element={<MusicalEvents/>} />
         <Route path="/dancing" element={<DancingEvents/>} />
-        <Route path="/stagedrama" element={<StageDrama/>} />
-        <Route path="/foodfestival" element={<FoodFestival/>} />
-        <Route path="/buytickets" element={<BuyTickets/>} />
+        <Route path="/stage-drama" element={<StageDrama/>} />
+        <Route path="/food-festival" element={<FoodFestival/>} />
+        <Route path="/buytickets" component={BuyTickets} />
 
 
         

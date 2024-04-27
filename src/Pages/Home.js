@@ -261,6 +261,11 @@ const Home = () => {
   <Grid container spacing={3} justifyContent="center">
       {eventsData.map((event, index) => (
         <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+          <Link
+          key={index}
+          to={{ pathname: '/buy-tickets', state: { event } }}
+          style={{ textDecoration: 'none', color: 'inherit' }} // Optional styling
+        >
           <EventCard
             title={event.title}
             image={event.image}
@@ -270,7 +275,9 @@ const Home = () => {
             priceRange={event.priceRange}
             ticketImage={event.ticketImage}
             priceTagImage={event.priceTagImage}
+            availability={event.availability}
           />
+          </Link>
         </Grid>
       ))}
     </Grid>
