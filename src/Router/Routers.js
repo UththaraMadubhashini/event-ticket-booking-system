@@ -18,6 +18,8 @@ import Login from "../Pages/Login";
 import EventCards from "../Components/EventCards/EventCards";
 import AllEvents from "../Pages/AllEvents";
 import BuyTickets from "../Pages/BuyTickets";
+import HanthanetaPayana from "../Pages/HanthanetaPayana";
+import BassEnigma from "../Pages/BassEnigma";
 
 const Routers = () => {
   return (
@@ -35,7 +37,9 @@ const Routers = () => {
         <Route path="/dancing" element={<DancingEvents/>} />
         <Route path="/stage-drama" element={<StageDrama/>} />
         <Route path="/food-festival" element={<FoodFestival/>} />
-        <Route path="/buytickets" component={BuyTickets} />
+        <Route path="/buy-tickets/:eventTitle" element={<BuyTickets />} />
+        <Route path="/hanthanete-payana" element={<HanthanetaPayana/>} />
+        <Route path="/bass-enigma" element={<BassEnigma/>} />
 
 
         

@@ -58,13 +58,15 @@ const EventCard = ({ title, image, date, time, location, priceRange, ticketImage
         </Grid>
       </CardContent>
       <Stack direction="row" spacing={2} justifyContent="center">
-        <Button variant="contained" 
-          component={Link} to="/buy-tickets"
-          startIcon={<img src={ticketImage} alt="Ticket Icon" 
-          style={{ width: '25px', height: '20px', marginRight: '5px'}} />}
-        >
-          Buy Tickets
-        </Button>
+      <Button
+  variant="contained"
+  component={Link}
+  to={`/buy-tickets/${title.replace(/\s+/g, '-').toLowerCase()}`} // Dynamic path generation
+  startIcon={<img src={ticketImage} alt="Ticket Icon" style={{ width: '25px', height: '20px', marginRight: '5px' }} />}
+>
+  Buy Tickets
+</Button>
+
       </Stack>
     </Card>
   );
