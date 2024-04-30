@@ -6,7 +6,7 @@ import DancingEvents from "../Pages/DancingEvents";
 import FoodFestival from "../Pages/FoodFestival";
 import MusicalEvents from "../Pages/MusicalEvents";
 import StageDrama from "../Pages/StageDrama";
-import TicketsBooking from "../Pages/TicketsBooking";
+import SeatSelection from "../Pages/SeatSelection";
 import ManageEvents from "../Pages/Admin/ManageEvents";
 import ManageTickets from "../Pages/Admin/ManageTickets";
 import Dashboard from "../Pages/Admin/DashBoard";
@@ -28,7 +28,7 @@ const Routers = () => {
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<Home/>} />
         <Route path="/contactus" element={<ContactUs/>} />
-        <Route path="/ticket-booking" element={<TicketsBooking/>} /> 
+        <Route path="/seat-selection" element={<SeatSelection/>} /> 
         <Route path="/signup" element={<SignUp/>} /> 
         <Route path="/login" element={<Login/>} />
         <Route path="/card" element={<EventCards/>} />
