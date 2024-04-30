@@ -12,7 +12,7 @@ import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
 import logo from '../../Assets/Images/Logo.png';
 
-const pages = ['Home', 'Events', 'ContactUs', 'SignUp', 'Login'];
+const pages = ['Home', 'Events', 'About', 'SignUp', 'Login'];
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',

@@ -22,73 +22,71 @@ const socialMediaLinks = {
 const Footer = () => {
   return (
     <Box
-      sx={{
-        bgcolor: "background.paper",
-        color: "text.secondary",
-        py: 3,
-        borderTop: "1px solid",
-        borderColor: "divider",
-        mt: 5, // Adding top margin
-      }}
+    sx={{
+      bgcolor: "#FDE2F3", 
+      color: "text.secondary",
+      py: 3,
+      borderTop: "1px solid",
+      borderColor: "divider",
+      mt: 5, 
+    }}
     >
       <Container maxWidth={false}>
         <Grid container spacing={2} justifyContent="space-between">
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={3} sx={{ textAlign: 'center' }}>
             <div>
-              <Link to="/home">
-              <img className="img" width="40%" src={Logo} alt="Logo"/>
-              </Link>
+              <img className="img" width="40%" src={Logo} alt="Logo" style={{ marginLeft: 'auto' }}/>
             </div>
             
           </Grid>
           <Grid item xs={5} sm={3} md={2}>
-            <Typography variant="subtitle1" color="text.primary" gutterBottom>
+            <Typography variant="subtitle1" color="text.primary" gutterBottom sx={{ mt: "10px", textDecoration: 'underline' }}>
               Site map
             </Typography>
-            <Link href="/home" color="inherit" display="block">
+            <Link href="/home" color="inherit" sx={{ mt: "10px", textDecoration: 'none' }} display="block">
               Home
             </Link>
-            <Link href="/all-events" color="inherit" sx={{ mt: "10px" }} display="block">
+            <Link href="/all-events" color="inherit" sx={{ mt: "10px", textDecoration: 'none' }} display="block">
               Events
             </Link>
-            <Link href="/about" color="inherit" sx={{ mt: "10px" }} display="block">
+            <Link href="/about" color="inherit" sx={{ mt: "10px", textDecoration: 'none' }} display="block">
               About
             </Link>
-            <Link href="/signup" color="inherit" sx={{ mt: "10px" }} display="block">
+            <Link href="/signup" color="inherit" sx={{ mt: "10px", textDecoration: 'none' }} display="block">
               SignUp
             </Link>
-            <Link href="/login" color="inherit" sx={{ mt: "10px" }} display="block">
+            <Link href="/login" color="inherit" sx={{ mt: "10px", textDecoration: 'none' }} display="block">
               Login
             </Link>
           </Grid>
           <Grid item xs={5} sm={3} md={2}>
-            <Typography variant="subtitle1" color="text.primary" gutterBottom>
+            <Typography variant="subtitle1" color="text.primary" gutterBottom sx={{ mt: "10px", textDecoration: 'underline' }}>
               All Events
             </Typography>
-            <Link href="#" color="inherit" sx={{ mt: "10px" }} display="block">
+            <Link href="/musical" color="inherit" sx={{ mt: "10px", textDecoration: 'none' }} display="block">
               Musical concets
             </Link>
-            <Link href="#" color="inherit" sx={{ mt: "10px" }} display="block">
+            <Link href="/dancing" color="inherit" sx={{ mt: "10px", textDecoration: 'none' }} display="block">
               Dancing Events
             </Link>
-            <Link href="#" color="inherit" sx={{ mt: "10px" }} display="block">
+            <Link href="/stage-drama" color="inherit" sx={{ mt: "10px", textDecoration: 'none' }} display="block">
               Stage Drama
             </Link>
-            <Link href="#" color="inherit" sx={{ mt: "10px" }} display="block">
+            <Link href="/food-festival" color="inherit" sx={{ mt: "10px", textDecoration: 'none' }} display="block">
               Food Festival
             </Link>
           </Grid>
           <Grid item xs={5} sm={3} md={2}>
-            <Typography variant="subtitle1" color="text.primary" gutterBottom>
+            <Typography variant="subtitle1" color="text.primary" gutterBottom sx={{ mt: "10px", textDecoration: 'underline' }}>
               Support
             </Typography>
-            <Link href="#" color="inherit" sx={{ mt: "10px" }} display="block">
+            <Link href="#" color="inherit" sx={{ mt: "10px", textDecoration: 'none' }} display="block">
               Contact
             </Link>
-            <Link href="#" color="inherit" sx={{ mt: "10px" }} display="block">
+            <Link href="#" color="inherit" sx={{ mt: "10px", textDecoration: 'none' }} display="block">
               privacy Policy
             </Link>
-            <Link href="#" color="inherit" sx={{ mt: "10px" }} display="block">
+            <Link href="#" color="inherit" sx={{ mt: "10px", textDecoration: 'none' }} display="block">
               Guides
             </Link>
           </Grid>

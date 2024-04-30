@@ -1,7 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 // import AdminLogin from "../Admin/adminLogin";
-import ContactUs from "../Pages/ContactUs";
 import DancingEvents from "../Pages/DancingEvents";
 import FoodFestival from "../Pages/FoodFestival";
 import MusicalEvents from "../Pages/MusicalEvents";
@@ -20,6 +19,8 @@ import AllEvents from "../Pages/AllEvents";
 import BuyTickets from "../Pages/BuyTickets";
 import HanthanetaPayana from "../Pages/HanthanetaPayana";
 import BassEnigma from "../Pages/BassEnigma";
+import About from "../Pages/About";
+import Booking from "../Pages/Booking";
 
 const Routers = () => {
   return (
@@ -27,8 +28,9 @@ const Routers = () => {
       <Route path="/" element={<Layout/>}>
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<Home/>} />
-        <Route path="/contactus" element={<ContactUs/>} />
+        <Route path="/about" element={<About/>} />
         <Route path="/seat-selection" element={<SeatSelection/>} /> 
+        <Route path="/bookings" element={<Booking/>} />
         <Route path="/signup" element={<SignUp/>} /> 
         <Route path="/login" element={<Login/>} />
         <Route path="/card" element={<EventCards/>} />

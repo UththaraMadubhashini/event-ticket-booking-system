@@ -253,9 +253,9 @@ const Home = () => {
         </Box>
 
 
-    <div style={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bold', margin: '20px' }}>
-    All Events
-    </div>
+      <div style={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bold', margin: '20px' }}>
+      All Events
+      </div>
 
   {/* Cards */}
   <Grid container spacing={3} justifyContent="center">
@@ -264,8 +264,7 @@ const Home = () => {
  <Link
   key={index}
   to={{ pathname: '/buy-tickets', state: { event: event } }}
-  style={{ textDecoration: 'none', color: 'inherit' }}
->
+  style={{ textDecoration: 'none', color: 'inherit' }}>
   <EventCard
     title={event.title}
     image={event.image}
