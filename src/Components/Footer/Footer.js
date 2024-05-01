@@ -33,7 +33,7 @@ const Footer = () => {
     >
       <Container maxWidth={false}>
         <Grid container spacing={2} justifyContent="space-between">
-          <Grid item xs={12} sm={6} md={3} sx={{ textAlign: 'center' }}>
+          <Grid item xs={12} sm={6} md={3} sx={{ textAlign: '' }}>
             <div>
               <img className="img" width="40%" src={Logo} alt="Logo" style={{ marginLeft: 'auto' }}/>
             </div>

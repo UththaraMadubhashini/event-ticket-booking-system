@@ -21,6 +21,7 @@ import HanthanetaPayana from "../Pages/HanthanetaPayana";
 import BassEnigma from "../Pages/BassEnigma";
 import About from "../Pages/About";
 import Booking from "../Pages/Booking";
+import ConfrimPopup from "../Pages/ConfrimPopup";
 
 const Routers = () => {
   return (
@@ -42,6 +43,7 @@ const Routers = () => {
         <Route path="/buy-tickets/:eventTitle" element={<BuyTickets />} />
         <Route path="/hanthanete-payana" element={<HanthanetaPayana/>} />
         <Route path="/bass-enigma" element={<BassEnigma/>} />
+        <Route path="/confrim-popup" element={<ConfrimPopup/>} />
 
 
         

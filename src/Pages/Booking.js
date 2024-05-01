@@ -9,113 +9,156 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
-//Breadcrumbs
+
+// Breadcrumbs
 function handleClick(event) {
   event.preventDefault();
   console.info('You clicked a breadcrumb.');
 }
 
-//Create table
-const TAX_RATE = 0.07;
-
-function ccyFormat(num) {
-  return `${num.toFixed(2)}`;
-}
-
-function priceRow(qty, unit) {
-  return qty * unit;
-}
-
-function createRow(desc, qty, unit) {
-  const price = priceRow(qty, unit);
-  return { desc, qty, unit, price };
-}
-
-function subtotal(items) {
-  return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
+// Create table
+function createData(name, price, count, seats, amount) {
+  return { name, price, count, seats, amount };
 }
 
 const rows = [
-  createRow('Paperclips (Box)', 100, 1.15),
-  createRow('Paper (Case)', 10, 45.99),
-  createRow('Waste Basket', 2, 17.99),
+  createData('Event Name', 100, 1, 24, 100), // Default count is set to 1
 ];
 
-const invoiceSubtotal = subtotal(rows);
-const invoiceTaxes = TAX_RATE * invoiceSubtotal;
-const invoiceTotal = invoiceTaxes + invoiceSubtotal;
-
 export default function Booking() {
+  const [count, setCount] = React.useState(rows[0].count); // State for the selected count
+
+  const handleChange = (event) => {
+    const newCount = parseInt(event.target.value);
+    if (!isNaN(newCount)) {
+      setCount(newCount);
+    }
+  };
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      {/* Breadcrumb */}
-      <div role="presentation" onClick={handleClick}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link underline="hover" color="inherit" href="/">
-            MUI
-          </Link>
-          <Link
-            underline="hover"
-            color="inherit"
-            href="/material-ui/getting-started/installation/"
-          >
-            Core
-          </Link>
-          <Typography color="text.primary">Breadcrumbs</Typography>
-        </Breadcrumbs>
+    <Typography style={{ fontFamily: 'YourCreativeFont, sans-serif' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+        {/* Breadcrumb */}
+        <div role="presentation" onClick={handleClick}>
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link underline="hover" color="inherit" href="/">
+              MUI
+            </Link>
+            <Link
+              underline="hover"
+              color="inherit"
+              href="#"
+            >
+              Core
+            </Link>
+            <Typography color="text.primary">Breadcrumbs</Typography>
+          </Breadcrumbs>
 
-        <Typography variant="h6" gutterBottom sx={{ fontWeight: '700', textAlign:'center' }}>
-          Select Your Seats
+          <Typography variant="h6" gutterBottom sx={{ fontWeight: '700', textAlign: 'center' }}>
+            Select Your Seats
+          </Typography>
+        </div>
+
+        {/* Table */}
+        <div>
+          <TableContainer component={Paper} sx={{ width: '80%', margin: 'auto', marginTop: '30px', marginBottom: '80px'}}>
+            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#FFEFEF' }}>TICKET</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#FFEFEF' }}>PRICE</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#FFEFEF' }}>COUNT OF TICKETS</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#FFEFEF' }}>SEATS</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#F3D0D7' }}>AMOUNT</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell align="center" component="th" scope="row">{row.name}</TableCell>
+                    <TableCell align="center">{row.price}</TableCell>
+                    <TableCell align="center">
+                      <input
+                        type="number"
+                        value={count}
+                        onChange={handleChange}
+                        style={{ width: 60, textAlign: 'center' }}
+                      />
+                    </TableCell>
+                    <TableCell align="center">{row.seats}</TableCell>
+                    <TableCell align="center">{row.amount}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+        <Typography variant="h6" gutterBottom sx={{ fontWeight: '700', textAlign: 'center' }}>
+            Pick Your Seats
         </Typography>
-      </div>
 
-      {/* Table */}
-      <TableContainer component={Paper} sx={{ width: '80%', marginTop: '80px' }}>
-        <Table aria-label="spanning table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="center" colSpan={3}>
-                Details
-              </TableCell>
-              <TableCell align="right">Price</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Desc</TableCell>
-              <TableCell align="right">Qty.</TableCell>
-              <TableCell align="right">Unit</TableCell>
-              <TableCell align="right">Sum</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.desc}
-                sx={{ borderBottom: '2px solid rgba(0, 0, 0, 0.12)' }}
-              >
-                <TableCell>{row.desc}</TableCell>
-                <TableCell align="right">{row.qty}</TableCell>
-                <TableCell align="right">{row.unit}</TableCell>
-                <TableCell align="right">{ccyFormat(row.price)}</TableCell>
-              </TableRow>
-            ))}
-            <TableRow>
-              <TableCell rowSpan={3} />
-              <TableCell colSpan={2}>Subtotal</TableCell>
-              <TableCell align="right">{ccyFormat(invoiceSubtotal)}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Tax</TableCell>
-              <TableCell align="right">{`${(TAX_RATE * 100).toFixed(0)} %`}</TableCell>
-              <TableCell align="right">{ccyFormat(invoiceTaxes)}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={2}>Total</TableCell>
-              <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+        {/* Confrim popup */}
+        <React.Fragment>
+        <Button sx={{
+                width: '200px',
+                height: '40px',
+                mx: 'auto', // horizontally center the button
+            }}
+        variant="contained"
+        onClick={handleClickOpen}
+        startIcon={<ThumbUpAltIcon />}
+        >
+            Booking Confirm</Button>
+        <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description" 
+      >
+        <DialogTitle id="alert-dialog-title">
+        <Typography variant="h6" component="div" fontWeight="bold">
+            Your Booking Confirmations
+        </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Your Booking Total Amount
+            <Typography variant="subtitle1" color="textPrimary" textAlign="center">
+                <br/> RS. {}
+            </Typography>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>NEXT</Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
+
+
+
+
+      </div>
+    </Typography>
   );
 }
