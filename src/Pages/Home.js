@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ImageSlider from '../Components/ImageSlider/ImageSlider';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
-import ImageBtn1 from '../Assets/Images/music.jpg';
-import ImageBtn2 from '../Assets/Images/dance.jpg';
-import ImageBtn3 from '../Assets/Images/stageDrama.jpg';
-import ImageBtn4 from '../Assets/Images/foodFestival.jpg';
+import ImageBtn1 from '../Assets/Images/music.jpg'
+import ImageBtn2 from '../Assets/Images/dance.jpg'
+import ImageBtn3 from '../Assets/Images/stageDrama.jpg'
+import ImageBtn4 from '../Assets/Images/foodFestival.jpg'
 import Grid from '@mui/material/Grid';
 import EventCard from '../Components/EventCards/EventCards';
 import { Link } from 'react-router-dom';
 
-// Set image buttons
+//set image buttons
 const images = [
   {
     url: ImageBtn1,
@@ -47,6 +47,8 @@ const ImageButton = styled(ButtonBase)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     width: '100% !important',
     height: 100,
+
+
   },
   '&:hover, &.Mui-focusVisible': {
     zIndex: 1,
@@ -105,104 +107,179 @@ const ImageMarked = styled('span')(({ theme }) => ({
   transition: theme.transitions.create('opacity'),
 }));
 
-// Set card
+// set card
 const eventsData = [
-  // Event data objects
+  {
+    title: 'BASS ENIGMA',
+    image: require('../Assets/Images/01.BASS Cham_cd.jpg'),
+    date: 'SAT APR 27',
+    time: '03.00 PM',
+    location: 'Taprobane - Rajagiriya',
+    availability: '150',
+    priceRange: 'Rs. 1000 - Rs. 5000',
+    ticketImage: require('../Assets/Images/ticketIcon.png'),
+    priceTagImage: require('../Assets/Images/priceTag.png')
+  },
+  {
+    title: 'Hanthaneta payana',
+    image: require('../Assets/Images/Hanthanata-Payana-sanda_ cd.jpg'),
+    date: 'SUN APR 28',
+    time: '02.00 PM',
+    location: 'Colombo',
+    priceRange: 'Rs. 1500 - Rs. 6000',
+    ticketImage: require('../Assets/Images/ticketIcon.png'),
+    priceTagImage: require('../Assets/Images/priceTag.png')
+  },
+  {
+    title: 'Hanthaneta payana',
+    image: require('../'),
+    date: 'SUN APR 28',
+    time: '02.00 PM',
+    location: 'Colombo',
+    priceRange: 'Rs. 1500 - Rs. 6000',
+    ticketImage: require('../Assets/Images/ticketIcon.png'),
+    priceTagImage: require('../Assets/Images/priceTag.png')
+  },
+  {
+    title: 'Hanthaneta payana',
+    image: require('../'),
+    date: 'SUN APR 28',
+    time: '02.00 PM',
+    location: 'Colombo',
+    priceRange: 'Rs. 1500 - Rs. 6000',
+    ticketImage: require('../Assets/Images/ticketIcon.png'),
+    priceTagImage: require('../Assets/Images/priceTag.png')
+  },
+  {
+    title: 'Hanthaneta payana',
+    image: require('../'),
+    date: 'SUN APR 28',
+    time: '02.00 PM',
+    location: 'Colombo',
+    priceRange: 'Rs. 1500 - Rs. 6000',
+    ticketImage: require('../Assets/Images/ticketIcon.png'),
+    priceTagImage: require('../Assets/Images/priceTag.png')
+  },
+  {
+    title: 'Hanthaneta payana',
+    image: require('../'),
+    date: 'SUN APR 28',
+    time: '02.00 PM',
+    location: 'Colombo',
+    priceRange: 'Rs. 1500 - Rs. 6000',
+    ticketImage: require('../Assets/Images/ticketIcon.png'),
+    priceTagImage: require('../Assets/Images/priceTag.png')
+  },
+  {
+    title: 'Hanthaneta payana',
+    image: require('../'),
+    date: 'SUN APR 28',
+    time: '02.00 PM',
+    location: 'Colombo',
+    priceRange: 'Rs. 1500 - Rs. 6000',
+    ticketImage: require('../Assets/Images/ticketIcon.png'),
+    priceTagImage: require('../Assets/Images/priceTag.png')
+  },
+  {
+    title: 'Hanthaneta payana',
+    image: require('../'),
+    date: 'SUN APR 28',
+    time: '02.00 PM',
+    location: 'Colombo',
+    priceRange: 'Rs. 1500 - Rs. 6000',
+    ticketImage: require('../Assets/Images/ticketIcon.png'),
+    priceTagImage: require('../Assets/Images/priceTag.png')
+  },
+  {
+    title: 'Hanthaneta payana',
+    image: require('../'),
+    date: 'SUN APR 28',
+    time: '02.00 PM',
+    location: 'Colombo',
+    priceRange: 'Rs. 1500 - Rs. 6000',
+    ticketImage: require('../Assets/Images/ticketIcon.png'),
+    priceTagImage: require('../Assets/Images/priceTag.png')
+  },
+  {
+    title: 'Hanthaneta payana',
+    image: require('../'),
+    date: 'SUN APR 28',
+    time: '02.00 PM',
+    location: 'Colombo',
+    priceRange: 'Rs. 1500 - Rs. 6000',
+    ticketImage: require('../Assets/Images/ticketIcon.png'),
+    priceTagImage: require('../Assets/Images/priceTag.png')
+  },
+  // Add more event data objects as needed
 ];
 
 const Home = () => {
-  // State for search query values
-  const [keyword, setKeyword] = useState('');
-  const [date, setDate] = useState('');
-  const [location, setLocation] = useState('');
-
-  // Filter events based on search criteria
-  const filteredEvents = eventsData.filter(event => {
-    const keywordMatch = event.title.toLowerCase().includes(keyword.toLowerCase());
-    const dateMatch = event.date === date;
-    const locationMatch = event.location.toLowerCase().includes(location.toLowerCase());
-    return keywordMatch && dateMatch && locationMatch;
-  });
-
   return (
     <>
       <ImageSlider />
 
       {/* Image buttons */}
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
-        {images.map((image) => (
-          <ImageButton
-            key={image.title}
-            focusRipple
-            style={{
-              width: image.width,
-            }}
-            component={Link}
-            to={image.link}
-          >
-            <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
-            <ImageBackdrop className="MuiImageBackdrop-root" />
-            <Image>
-              <Typography
-                component="span"
-                variant="subtitle1"
-                color="inherit"
-                sx={{
-                  position: 'relative',
-                  p: 4,
-                  pt: 2,
-                  pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
-                }}
-              >
-                {image.title}
-                <ImageMarked className="MuiImageMarked-root" />
-              </Typography>
-            </Image>
-          </ImageButton>
-        ))}
-      </Box>
-
-      {/* Search bar */}
-      <div style={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bold', margin: '20px' }}>
-        Search Events
-      </div>
-      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-        {/* Keyword search */}
-        <input type="text" placeholder="Keyword" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
-        {/* Date search */}
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-        {/* Location search */}
-        <input type="text" placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
-      </div>
-
-      {/* All Events */}
-      <div style={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bold', margin: '20px' }}>
-        All Events
-      </div>
-      {/* Cards */}
-      <Grid container spacing={3} justifyContent="center">
-        {filteredEvents.map((event, index) => (
-          <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-            <Link
-              key={index}
-              to={{ pathname: '/buy-tickets', state: { event: event } }}
-              style={{ textDecoration: 'none', color: 'inherit' }}
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
+          {images.map((image) => (
+            <ImageButton
+              key={image.title}
+              focusRipple
+              style={{
+                width: image.width,
+              }}
+              component={Link}
+              to={image.link}
             >
-              <EventCard
-                title={event.title}
-                image={event.image}
-                date={event.date}
-                time={event.time}
-                location={event.location}
-                priceRange={event.priceRange}
-                ticketImage={event.ticketImage}
-                priceTagImage={event.priceTagImage}
-                availability={event.availability}
-              />
-            </Link>
-          </Grid>
-        ))}
-      </Grid>
+              <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: 'relative',
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                  }}
+                >
+                  {image.title}
+                  <ImageMarked className="MuiImageMarked-root" />
+                </Typography>
+              </Image>
+            </ImageButton>
+          ))}
+        </Box>
+
+
+      <div style={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bold', margin: '20px' }}>
+      All Events
+      </div>
+
+  {/* Cards */}
+  <Grid container spacing={3} justifyContent="center">
+      {eventsData.map((event, index) => (
+        <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+ <Link
+  key={index}
+  to={{ pathname: '/buy-tickets', state: { event: event } }}
+  style={{ textDecoration: 'none', color: 'inherit' }}>
+  <EventCard
+    title={event.title}
+    image={event.image}
+    date={event.date}
+    time={event.time}
+    location={event.location}
+    priceRange={event.priceRange}
+    ticketImage={event.ticketImage}
+    priceTagImage={event.priceTagImage}
+    availability={event.availability}
+  />
+</Link>
+        </Grid>
+      ))}
+    </Grid>
     </>
   );
 }
