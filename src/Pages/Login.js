@@ -92,6 +92,26 @@ export default function Login() {
     event.preventDefault();
   };
 
+  // Button color
+  const buttonGradient = {
+    background: 'linear-gradient(45deg, #a05aff 30%, #9e58ff 90%)',
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(158, 88, 255, .3)',
+    color: 'white',
+    height: 48,
+    padding: '0 30px',
+    marginTop: '10px',
+  };
+
+  // Paper color
+  const paperGradient = {
+    background: '#B9F3FC',
+    textAlign: 'center',
+    p: 2,
+    width: '350px',
+  };
+
   return (
     <Box
       sx={{
@@ -104,14 +124,17 @@ export default function Login() {
       <Paper
         elevation={4}
         sx={{
+          ...paperGradient,
           width: '350px',
           textAlign: 'center',
           p: 2,
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Chip icon={<LockOutlinedIcon />} label="Login" color="primary" variant="outlined" />
+          <Chip icon={<LockOutlinedIcon sx={{ color: '#a05aff' }}/>} label="Login" color="primary" variant="outlined" 
+          sx={{ color: '#a05aff', borderColor: '#a05aff' }} />
         </Box>
+
         <TextField
           id="standard-basic"
           error={UsernameError}
@@ -126,10 +149,20 @@ export default function Login() {
           fullWidth
           size="small"
           required
-          sx={{ marginBottom: '10px' }}
+          sx={{
+            marginBottom: '10px',
+            '& label': {
+              color: '#1C1678', // Change label color
+            },
+            '& .MuiInputBase-input': {
+              color: '#1C1678', // Change text field color
+            },
+          }}
         />
 
-        <FormControl sx={{ width: '100%', marginBottom: '10px' }} variant="standard">
+        <FormControl sx={{ width: '100%', marginBottom: '10px', '& label': {
+            color: '#1C1678', // Change label color
+          }, }} variant="standard">
           <InputLabel error={passwordError} htmlFor="standard-adornment-password">Password *</InputLabel>
           <Input
             id="standard-adornment-password"
@@ -153,6 +186,11 @@ export default function Login() {
               </InputAdornment>
             }
             required
+            sx={{
+              '& .MuiInputBase-input': {
+                color: '#1C1678', // Change text field color
+              },
+            }}
           />
         </FormControl>
 
@@ -161,11 +199,12 @@ export default function Login() {
             checked={rememberMe}
             onChange={(event) => setRememberMe(event.target.checked)}
             inputProps={{ 'aria-label': 'controlled' }}
-          /> Remember Me
+          /> <span style={{ color: '#1C1678' }}>Remember Me</span>
         </div>
 
         <p>
-          <Button onClick={handleSubmit} fullWidth variant="contained" startIcon={<LoginOutlinedIcon />}>
+          <Button onClick={handleSubmit} fullWidth variant="contained" startIcon={<LoginOutlinedIcon />}
+          sx={buttonGradient}>
             LOGIN
           </Button>
         </p>
@@ -186,7 +225,7 @@ export default function Login() {
         </p>
 
         <p>
-          Do you haven't account? <Link to="/signup">Sign Up</Link>
+          <h4>Do you haven't account? <Link to="/signup" style={{ color: '#1C1678', textDecoration: 'none' }}>Sign Up</Link></h4>
         </p>
       </Paper>
     </Box>

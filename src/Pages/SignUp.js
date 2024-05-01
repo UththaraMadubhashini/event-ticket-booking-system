@@ -196,7 +196,7 @@ export default function SignUp() {
     marginTop: '10px',
   };
 
-  // Paper gradient
+  // Paper color
   const paperGradient = {
     background: '#B9F3FC',
     textAlign: 'center',
@@ -206,13 +206,36 @@ export default function SignUp() {
     
   return (
     <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        marginTop: '30px',
-      }}
-    >
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexDirection: 'row',
+          width: '90%',
+          height: '80vh',
+        }}
+      >
+        <Box
+          sx={{
+            flex: '1',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            textAlign: 'center',
+          }}
+        >
+          <h1>Enjoy with us! <br/><br/> JOIN WITH US!</h1>
+        </Box>
+
+        <Box
+          sx={{
+            flex: '1',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
       <Paper
           elevation={4}
           sx={{
@@ -283,46 +306,46 @@ export default function SignUp() {
           }}
         />
 
-<FormControl
-  sx={{
-    width: '100%',
-    marginBottom: '10px',
-    '& label': {
-      color: '#1C1678', // Change label color
-    },
-  }}
-  variant="standard"
->
-  <InputLabel error={passwordError} htmlFor="standard-adornment-password">Password *</InputLabel>
-  <Input
-    id="standard-adornment-password"
-    type={showPassword ? 'text' : 'password'}
-    value={passwordInput}
-    error={passwordError}
-    onChange={(event) => {
-      setPasswordInput(event.target.value);
-      setPasswordError(false);
-    }}
-    onBlur={handlePassword}
-    endAdornment={
-      <InputAdornment position="end">
-        <IconButton
-          aria-label="toggle password visibility"
-          onClick={handleClickShowPassword}
-          onMouseDown={handleMouseDownPassword}
-        >
-          {showPassword ? <VisibilityOff /> : <Visibility />}
-        </IconButton>
-      </InputAdornment>
-    }
-    required
-    sx={{
-      '& .MuiInputBase-input': {
-        color: '#1C1678', // Change text field color
-      },
-    }}
-  />
-</FormControl>
+      <FormControl
+        sx={{
+          width: '100%',
+          marginBottom: '10px',
+          '& label': {
+            color: '#1C1678', // Change label color
+          },
+        }}
+        variant="standard"
+      >
+        <InputLabel error={passwordError} htmlFor="standard-adornment-password">Password *</InputLabel>
+        <Input
+          id="standard-adornment-password"
+          type={showPassword ? 'text' : 'password'}
+          value={passwordInput}
+          error={passwordError}
+          onChange={(event) => {
+            setPasswordInput(event.target.value);
+            setPasswordError(false);
+          }}
+          onBlur={handlePassword}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          }
+          required
+          sx={{
+            '& .MuiInputBase-input': {
+              color: '#1C1678', // Change text field color
+            },
+          }}
+        />
+      </FormControl>
 
 
         <TextField
@@ -389,6 +412,7 @@ export default function SignUp() {
           }
         </p>
       </Paper>
+    </Box>
     </Box>
   );
 }

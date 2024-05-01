@@ -17,6 +17,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
+//button color
+const buttonGradient = {
+  background: 'linear-gradient(45deg, #a05aff 30%, #9e58ff 90%)',
+  border: 0,
+  borderRadius: 3,
+  boxShadow: '0 3px 5px 2px rgba(158, 88, 255, .3)',
+  color: 'white',
+  height: 48,
+  padding: '0 30px',
+  marginTop: '10px',
+};
 
 // Breadcrumbs
 function handleClick(event) {
@@ -59,17 +70,17 @@ export default function Booking() {
         {/* Breadcrumb */}
         <div role="presentation" onClick={handleClick}>
           <Breadcrumbs aria-label="breadcrumb">
-            <Link underline="hover" color="inherit" href="/">
-              MUI
+            <Link underline="hover" color="inherit" href="#">
+              Home
             </Link>
             <Link
               underline="hover"
               color="inherit"
               href="#"
             >
-              Core
+              Buy Ticket
             </Link>
-            <Typography color="text.primary">Breadcrumbs</Typography>
+            <Typography color="text.primary">Ticket Bookings</Typography>
           </Breadcrumbs>
 
           <Typography variant="h6" gutterBottom sx={{ fontWeight: '700', textAlign: 'center' }}>
@@ -120,16 +131,20 @@ export default function Booking() {
 
         {/* Confrim popup */}
         <React.Fragment>
-        <Button sx={{
-                width: '200px',
-                height: '40px',
-                mx: 'auto', // horizontally center the button
-            }}
+        <Button
+    sx={{
+        width: '250px',
+        height: '40px',
+        mx: 'auto', // horizontally center the button
+        ...buttonGradient // Merge buttonGradient style with existing styles
+        }}
         variant="contained"
         onClick={handleClickOpen}
         startIcon={<ThumbUpAltIcon />}
-        >
-            Booking Confirm</Button>
+      >
+        Booking Confirm
+        </Button>
+
         <Dialog
         open={open}
         onClose={handleClose}

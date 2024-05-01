@@ -10,7 +10,8 @@ import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
-import logo from '../../Assets/Images/Logo.png';
+// import logo from '../../Assets/Images/Logo.png';
+import logo2 from '../../Assets/Images/Logo2.png'
 
 const pages = ['Home', 'Events', 'About', 'SignUp', 'Login'];
 
@@ -66,11 +67,11 @@ function Header() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#720455' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#121481' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ marginTop: 1.5,  alignItems: 'center', marginLeft:5 }}>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <img src={logo} alt="Logo" style={{ height: 80, width: 95, borderRadius: '50%'}} />
+            <img src={logo2} alt="Logo" style={{ height: 80, width: 95, borderRadius: '50%'}} />
           </Typography>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
