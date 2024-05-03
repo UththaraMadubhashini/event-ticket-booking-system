@@ -392,7 +392,8 @@ export default function SignUp() {
         />
         <p>
           <Button onClick={handleSubmit} fullWidth variant="contained" startIcon={<LoginOutlinedIcon />}
-          sx={buttonGradient}>
+          sx={{...buttonGradient,
+            borderRadius: '40px'}}>
             SIGN UP
           </Button>
         </p>

@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { Button, Grid } from '@mui/material';
 import ImageBuy2 from '../Assets/Images/Hanthanata-Payana-sanda_ buyImage.jpg';
-import EventCard from '../Components/EventCards/EventCards';
+import { Link } from 'react-router-dom';
+
+// Define button gradient style
+const buttonGradient = {
+  background: 'linear-gradient(45deg, #a05aff 30%, #9e58ff 90%)',
+  border: 0,
+  borderRadius: 3,
+  boxShadow: '0 3px 5px 2px rgba(158, 88, 255, .3)',
+  color: 'white',
+  height: 48,
+  padding: '0 30px',
+  marginTop: '10px',
+};
 
 const HanthanetaPayana = () => {
-  // State to store the details of the selected event
-  const [selectedEvent, setSelectedEvent] = useState(null);
-
-  // Function to handle button click and update selectedEvent state
-  const handleButtonClick = (eventDetails) => {
-    setSelectedEvent(eventDetails);
-  };
 
   return (
     <Grid container spacing={2}>
@@ -73,19 +78,13 @@ const HanthanetaPayana = () => {
             <Typography variant="body1" gutterBottom>
               - Seating: Rs. 5000
             </Typography>
-            {/* Button for buying ticket */}
+            
             <Button 
               variant="contained" 
               color="primary"
-              onClick={() => handleButtonClick({
-                title: 'Hanthanata Payana sanda',
-                date: 'SAT APR 27',
-                time: '03.00 PM',
-                location: 'Taprobane - Rajagiriya',
-                availability: 150,
-                standingPrice: 1000,
-                seatingPrice: 5000
-              })}
+              component={Link} // Use Link component for navigation
+                to="/bookings"
+              sx={buttonGradient}
             >
               Purchase Ticket
             </Button>
@@ -93,21 +92,6 @@ const HanthanetaPayana = () => {
         </Box>
         
       </Grid>
-
-      {/* Display selected event details in the EventCard */}
-      {selectedEvent && (
-        <Grid item xs={12}>
-          <EventCard
-            title={selectedEvent.title}
-            date={selectedEvent.date}
-            time={selectedEvent.time}
-            location={selectedEvent.location}
-            availability={selectedEvent.availability}
-            standingPrice={selectedEvent.standingPrice}
-            seatingPrice={selectedEvent.seatingPrice}
-          />
-        </Grid>
-      )}
     </Grid>
   );
 };

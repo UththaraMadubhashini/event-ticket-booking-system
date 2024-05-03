@@ -94,11 +94,11 @@ export default function Booking() {
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#FFEFEF' }}>TICKET</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#FFEFEF' }}>PRICE</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#FFEFEF' }}>COUNT OF TICKETS</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#FFEFEF' }}>SEATS</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#F3D0D7' }}>AMOUNT</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E0F4FF' }}>TICKET</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E0F4FF' }}>PRICE</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E0F4FF' }}>COUNT OF TICKETS</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E0F4FF' }}>SEATS</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#A0E9FF' }}>AMOUNT</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -160,12 +160,13 @@ export default function Booking() {
           <DialogContentText id="alert-dialog-description">
             Your Booking Total Amount
             <Typography variant="subtitle1" color="textPrimary" textAlign="center">
-                <br/> RS. {}
+                <br/> RS.__ {}
             </Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>NEXT</Button>
+          <Button onClick={handleClose}  sx={{...buttonGradient,
+            borderRadius: '40px'}}> NEXT</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

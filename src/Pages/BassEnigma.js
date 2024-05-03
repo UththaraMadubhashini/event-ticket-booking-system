@@ -85,7 +85,8 @@ const buttonGradient = {
               color="primary"
               component={Link} // Use Link component for navigation
                 to="/bookings"
-              sx={buttonGradient}
+                sx={{...buttonGradient,
+                  borderRadius: '40px'}}
             >
               Purchase Ticket
             </Button>

@@ -31,7 +31,7 @@ const EventCard = ({ title, image, date, time, location, priceRange, ticketImage
       height: 525,
       marginTop: 3.5,
       marginRight: 3,
-      background: 'linear-gradient(45deg, #E1F7F5 40%, #E7BCDE 80%)',
+      background: '#E0F4FF',
     }}>
     
       <CardHeader
@@ -46,15 +46,15 @@ const EventCard = ({ title, image, date, time, location, priceRange, ticketImage
       <CardContent>
   <Grid container alignItems="center" spacing={8}>
     <Grid item>
-      <Chip icon={<CalendarMonthIcon />} label={date} sx={{ backgroundColor: '#F8EDFF' }} />
+      <Chip icon={<CalendarMonthIcon />} label={date} sx={{ backgroundColor: '##A0E9FF' }} />
     </Grid>
     <Grid item>
-      <Chip icon={<AccessTimeIcon />} label={time} sx={{ backgroundColor: '#F8EDFF' }} />
+      <Chip icon={<AccessTimeIcon />} label={time} sx={{ backgroundColor: '##A0E9FF' }} />
     </Grid>
   </Grid>
   <Grid container alignItems="center" marginTop={2}>
     <Grid item>
-      <Chip icon={<RoomIcon />} label={location} sx={{ backgroundColor: '#F8EDFF' }} />
+      <Chip icon={<RoomIcon />} label={location} sx={{ backgroundColor: '##A0E9FF' }} />
     </Grid>
   </Grid>
   <Grid item>
@@ -62,7 +62,7 @@ const EventCard = ({ title, image, date, time, location, priceRange, ticketImage
       icon={<img src={require('../../Assets/Images/availabilityIcon.png')} alt="Availability" 
       style={{ width: '20px', height: '20px', marginRight: '0px'}} />}
       label={`Availability: ${availability}`} 
-      sx={{ backgroundColor: '#F8EDFF', marginTop: '15px' }}
+      sx={{ backgroundColor: '##A0E9FF', marginTop: '15px' }}
     />
   </Grid>
   <Grid container alignItems="center" marginTop={2}>
@@ -71,7 +71,7 @@ const EventCard = ({ title, image, date, time, location, priceRange, ticketImage
         icon={<img src={priceTagImage} alt="Price Tag" 
         style={{ width: '25px', height: '20px', marginRight: '5px'}} />}
         label={priceRange}
-        sx={{ backgroundColor: '#F8EDFF' }}
+        sx={{ backgroundColor: '##A0E9FF' }}
       />
     </Grid>
   </Grid>
@@ -83,7 +83,8 @@ const EventCard = ({ title, image, date, time, location, priceRange, ticketImage
   component={Link}
   to={`/buy-tickets/${title.replace(/\s+/g, '-').toLowerCase()}`} // Dynamic path generation
   startIcon={<img src={ticketImage} alt="Ticket Icon" style={{ width: '25px', height: '20px', marginRight: '5px' }} />}
-  sx={buttonGradient} // Apply the buttonGradient style
+  sx={{...buttonGradient,
+    borderRadius: '40px'}}
 >
   Buy Tickets
 </Button>
