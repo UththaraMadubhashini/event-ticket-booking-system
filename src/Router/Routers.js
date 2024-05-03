@@ -5,7 +5,7 @@ import DancingEvents from "../Pages/DancingEvents";
 import FoodFestival from "../Pages/FoodFestival";
 import MusicalEvents from "../Pages/MusicalEvents";
 import StageDrama from "../Pages/StageDrama";
-import SeatSelection from "../Pages/SeatSelection";
+import SeatSelection from "../Pages/SeatBookings/SeatSelection";
 import ManageEvents from "../Pages/Admin/ManageEvents";
 import ManageTickets from "../Pages/Admin/ManageTickets";
 import Dashboard from "../Pages/Admin/DashBoard";
