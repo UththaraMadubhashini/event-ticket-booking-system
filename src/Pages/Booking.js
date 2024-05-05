@@ -136,7 +136,8 @@ export default function Booking() {
         width: '250px',
         height: '40px',
         mx: 'auto', // horizontally center the button
-        ...buttonGradient // Merge buttonGradient style with existing styles
+        ...buttonGradient, // Merge buttonGradient style with existing styles
+        borderRadius: '40px',
         }}
         variant="contained"
         onClick={handleClickOpen}
