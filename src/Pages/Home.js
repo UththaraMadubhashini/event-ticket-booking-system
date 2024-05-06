@@ -172,6 +172,11 @@ const Home = () => {
                     p: 4,
                     pt: 2,
                     pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                    fontSize: '25px',
+                    fontFamily: 'American Typewriter, serif',
+                    fontStyle: 'italic', 
+                    fontWeight: 300, 
+                    fontVariant: 'normal',
                   }}
                 >
                   {image.title}
@@ -183,7 +188,8 @@ const Home = () => {
         </Box>
 
 
-      <div style={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bold', margin: '20px' }}>
+      <div style={{ textAlign: 'center', fontSize: '50px', margin: '20px', 
+      fontFamily: 'Trattatello, fantasy', fontStyle: 'oblique', fontWeight: 900, fontVariant: 'small-caps' }}>
       All Events
       </div>
 

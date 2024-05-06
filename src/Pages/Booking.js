@@ -18,13 +18,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 //button color
-const buttonGradient = {
-  background: 'linear-gradient(45deg, #a05aff 30%, #9e58ff 90%)',
-  border: 0,
+const buttonColor = {
+  background: '#439A97',
+  border: '3.5px solid #135D66',
   borderRadius: 3,
-  boxShadow: '0 3px 5px 2px rgba(158, 88, 255, .3)',
+  boxShadow: '#62B6B7',
   color: 'white',
-  height: 48,
+  height: 45,
   padding: '0 30px',
   marginTop: '10px',
 };
@@ -94,18 +94,18 @@ export default function Booking() {
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E0F4FF' }}>TICKET</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E0F4FF' }}>PRICE</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E0F4FF' }}>COUNT OF TICKETS</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E0F4FF' }}>SEATS</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#A0E9FF' }}>AMOUNT</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>TICKET</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>PRICE</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>COUNT OF TICKETS</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>SEATS</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#7AB2B2' }}>AMOUNT</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {rows.map((row) => (
                   <TableRow
                     key={row.name}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    sx={{ '&:last-child td, &:last-child th': { border: 2 } }}
                   >
                     <TableCell align="center" component="th" scope="row">{row.name}</TableCell>
                     <TableCell align="center">{row.price}</TableCell>
@@ -132,13 +132,15 @@ export default function Booking() {
         {/* Confrim popup */}
         <React.Fragment>
         <Button
-    sx={{
+        sx={{
         width: '250px',
         height: '40px',
         mx: 'auto', // horizontally center the button
-        ...buttonGradient, // Merge buttonGradient style with existing styles
+        ...buttonColor,
         borderRadius: '40px',
-        }}
+        '&:hover': {
+          background: '#135D66', // Change hover background color
+        }}}
         variant="contained"
         onClick={handleClickOpen}
         startIcon={<ThumbUpAltIcon />}
@@ -166,8 +168,12 @@ export default function Booking() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}  sx={{...buttonGradient,
-            borderRadius: '40px'}}> NEXT</Button>
+          <Button onClick={handleClose} 
+          sx={{...buttonColor,
+              borderRadius: '40px',
+              '&:hover': {
+              background: '#135D66', // Change hover background color
+        }}}> NEXT</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

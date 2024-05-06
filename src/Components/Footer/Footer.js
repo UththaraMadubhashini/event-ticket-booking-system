@@ -24,7 +24,7 @@ const Footer = () => {
   return (
     <Box
     sx={{
-      bgcolor: "#121481", 
+      bgcolor: "#135D66", 
       color: "text.secondary",
       py: 3,
       borderTop: "1px solid",

@@ -8,16 +8,16 @@ import { Link } from 'react-router-dom';
 const BassEnigma = () => {
 
   // Define button gradient style
-const buttonGradient = {
-  background: 'linear-gradient(45deg, #a05aff 30%, #9e58ff 90%)',
-  border: 0,
-  borderRadius: 3,
-  boxShadow: '0 3px 5px 2px rgba(158, 88, 255, .3)',
-  color: 'white',
-  height: 48,
-  padding: '0 30px',
-  marginTop: '10px',
-};
+  const buttonColor = {
+    background: '#439A97',
+    border: '3.5px solid #135D66',
+    borderRadius: 3,
+    boxShadow: '#62B6B7',
+    color: 'white',
+    height: 45,
+    padding: '0 30px',
+    marginTop: '10px',
+  };
 
   return (
     <Grid container spacing={2}>
@@ -85,8 +85,11 @@ const buttonGradient = {
               color="primary"
               component={Link} // Use Link component for navigation
                 to="/bookings"
-                sx={{...buttonGradient,
-                  borderRadius: '40px'}}
+                sx={{...buttonColor,
+                  borderRadius: '40px',
+                  '&:hover': {
+                    background: '#135D66', // Change hover background color
+                  }}}
             >
               Purchase Ticket
             </Button>

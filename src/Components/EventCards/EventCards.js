@@ -13,13 +13,13 @@ import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
 
 //button color
-const buttonGradient = {
-  background: 'linear-gradient(45deg, #a05aff 30%, #9e58ff 90%)',
-  border: 0,
+const buttonColor = {
+  background: '#439A97',
+  border: '3.5px solid #135D66',
   borderRadius: 3,
-  boxShadow: '0 3px 5px 2px rgba(158, 88, 255, .3)',
+  boxShadow: '#62B6B7',
   color: 'white',
-  height: 48,
+  height: 45,
   padding: '0 30px',
   marginTop: '10px',
 };
@@ -31,7 +31,9 @@ const EventCard = ({ title, image, date, time, location, priceRange, ticketImage
       height: 525,
       marginTop: 3.5,
       marginRight: 3,
-      background: '#E0F4FF',
+      background: '#CBEDD5',
+      border: '3px solid #003C43', // Set thick border color
+      
     }}>
     
       <CardHeader
@@ -46,15 +48,15 @@ const EventCard = ({ title, image, date, time, location, priceRange, ticketImage
       <CardContent>
   <Grid container alignItems="center" spacing={8}>
     <Grid item>
-      <Chip icon={<CalendarMonthIcon />} label={date} sx={{ backgroundColor: '##A0E9FF' }} />
+      <Chip icon={<CalendarMonthIcon />} label={date} sx={{ backgroundColor: '#E3FEF7' }} />
     </Grid>
     <Grid item>
-      <Chip icon={<AccessTimeIcon />} label={time} sx={{ backgroundColor: '##A0E9FF' }} />
+      <Chip icon={<AccessTimeIcon />} label={time} sx={{ backgroundColor: '#E3FEF7' }} />
     </Grid>
   </Grid>
   <Grid container alignItems="center" marginTop={2}>
     <Grid item>
-      <Chip icon={<RoomIcon />} label={location} sx={{ backgroundColor: '##A0E9FF' }} />
+      <Chip icon={<RoomIcon />} label={location} sx={{ backgroundColor: '#E3FEF7' }} />
     </Grid>
   </Grid>
   <Grid item>
@@ -62,7 +64,7 @@ const EventCard = ({ title, image, date, time, location, priceRange, ticketImage
       icon={<img src={require('../../Assets/Images/availabilityIcon.png')} alt="Availability" 
       style={{ width: '20px', height: '20px', marginRight: '0px'}} />}
       label={`Availability: ${availability}`} 
-      sx={{ backgroundColor: '##A0E9FF', marginTop: '15px' }}
+      sx={{ backgroundColor: '#E3FEF7', marginTop: '15px' }}
     />
   </Grid>
   <Grid container alignItems="center" marginTop={2}>
@@ -71,7 +73,7 @@ const EventCard = ({ title, image, date, time, location, priceRange, ticketImage
         icon={<img src={priceTagImage} alt="Price Tag" 
         style={{ width: '25px', height: '20px', marginRight: '5px'}} />}
         label={priceRange}
-        sx={{ backgroundColor: '##A0E9FF' }}
+        sx={{ backgroundColor: '#E3FEF7' }}
       />
     </Grid>
   </Grid>
@@ -81,10 +83,13 @@ const EventCard = ({ title, image, date, time, location, priceRange, ticketImage
       <Button
   variant="contained"
   component={Link}
-  to={`/buy-tickets/${title.replace(/\s+/g, '-').toLowerCase()}`} // Dynamic path generation
+  to={`/buy-tickets/${title.replace(/\s+/g, '-').toLowerCase()}`}
   startIcon={<img src={ticketImage} alt="Ticket Icon" style={{ width: '25px', height: '20px', marginRight: '5px' }} />}
-  sx={{...buttonGradient,
-    borderRadius: '40px'}}
+  sx={{...buttonColor,
+    borderRadius: '40px',
+    '&:hover': {
+      background: '#135D66', // Change hover background color
+    }}}
 >
   Buy Tickets
 </Button>
