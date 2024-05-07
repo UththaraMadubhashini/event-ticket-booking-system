@@ -53,7 +53,15 @@ const BassEnigma = () => {
       </Grid>
       <Grid item xs={12} sm={6}>
         <Box sx={{ textAlign: 'center', padding: '20px' }}>
-          <Paper elevation={3} sx={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+          <Paper elevation={3} 
+          sx={{ 
+          padding: '20px', 
+          maxWidth: '800px', 
+          margin: '0 auto', 
+          background: '#CBEDD5',
+          border: '3px solid #003C43', 
+          }}
+          >
             <img src={ImageBuy1} alt="" style={{ width: '100%', marginBottom: '20px' }} />
             <Typography variant="h4" gutterBottom>
               BassEnigma

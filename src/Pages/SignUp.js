@@ -185,20 +185,21 @@ export default function SignUp() {
   };
 
   // Button color
-  const buttonGradient = {
-    background: 'linear-gradient(45deg, #a05aff 30%, #9e58ff 90%)',
-    border: 0,
+  const buttonColor = {
+    background: '#439A97',
+    border: '3.5px solid #135D66',
     borderRadius: 3,
-    boxShadow: '0 3px 5px 2px rgba(158, 88, 255, .3)',
+    boxShadow: '#62B6B7',
     color: 'white',
-    height: 48,
+    height: 45,
     padding: '0 30px',
     marginTop: '10px',
   };
 
   // Paper color
-  const paperGradient = {
-    background: '#B9F3FC',
+  const paperColor = {
+    background: '#CBEDD5',
+    border: '3px solid #003C43',
     textAlign: 'center',
     p: 2,
     width: '350px',
@@ -239,7 +240,7 @@ export default function SignUp() {
       <Paper
           elevation={4}
           sx={{
-            ...paperGradient,
+            ...paperColor,
             width: '350px',
             textAlign: 'center',
             p: 2,
@@ -248,11 +249,11 @@ export default function SignUp() {
   
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Chip
-          icon={<FaceIcon sx={{ color: '#a05aff' }} />} 
+          icon={<FaceIcon/>} 
           label="Sign Up" 
           color="primary" 
           variant="outlined" 
-          sx={{ color: '#a05aff', borderColor: '#a05aff' }} 
+          sx={{ color: '#003C43', borderColor: '#135D66' }} 
         />
         </Box>
 
@@ -392,8 +393,12 @@ export default function SignUp() {
         />
         <p>
           <Button onClick={handleSubmit} fullWidth variant="contained" startIcon={<LoginOutlinedIcon />}
-          sx={{...buttonGradient,
-            borderRadius: '40px'}}>
+          sx={{...buttonColor,
+            borderRadius: '40px',
+            '&:hover': {
+              background: '#135D66', // Change hover background color
+            }}}
+        >
             SIGN UP
           </Button>
         </p>

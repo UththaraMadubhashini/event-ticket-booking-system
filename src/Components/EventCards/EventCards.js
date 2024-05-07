@@ -16,7 +16,6 @@ import { Link } from 'react-router-dom';
 const buttonColor = {
   background: '#439A97',
   border: '3.5px solid #135D66',
-  borderRadius: 3,
   boxShadow: '#62B6B7',
   color: 'white',
   height: 45,

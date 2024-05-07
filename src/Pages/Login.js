@@ -92,26 +92,6 @@ export default function Login() {
     event.preventDefault();
   };
 
-  // Button color
-  const buttonGradient = {
-    background: 'linear-gradient(45deg, #a05aff 30%, #9e58ff 90%)',
-    border: 0,
-    borderRadius: 3,
-    boxShadow: '0 3px 5px 2px rgba(158, 88, 255, .3)',
-    color: 'white',
-    height: 48,
-    padding: '0 30px',
-    marginTop: '10px',
-  };
-
-  // Paper color
-  const paperGradient = {
-    background: '#B9F3FC',
-    textAlign: 'center',
-    p: 2,
-    width: '350px',
-  };
-
   return (
     <Box
       sx={{
@@ -124,15 +104,16 @@ export default function Login() {
       <Paper
         elevation={4}
         sx={{
-          ...paperGradient,
+          background: '#CBEDD5',
+          border: '3px solid #003C43',
           width: '350px',
           textAlign: 'center',
           p: 2,
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Chip icon={<LockOutlinedIcon sx={{ color: '#a05aff' }}/>} label="Login" color="primary" variant="outlined" 
-          sx={{ color: '#a05aff', borderColor: '#a05aff' }} />
+          <Chip icon={<LockOutlinedIcon/>} label="Login" color="primary" variant="outlined" 
+          sx={{ color: '#003C43', borderColor: '#135D66' }} />
         </Box>
 
         <TextField
@@ -199,13 +180,25 @@ export default function Login() {
             checked={rememberMe}
             onChange={(event) => setRememberMe(event.target.checked)}
             inputProps={{ 'aria-label': 'controlled' }}
-          /> <span style={{ color: '#1C1678' }}>Remember Me</span>
+          /> <span style={{ color: '#135D66' }}>Remember Me</span>
         </div>
 
         <p>
           <Button onClick={handleSubmit} fullWidth variant="contained" startIcon={<LoginOutlinedIcon />}
-           sx={{...buttonGradient,
-            borderRadius: '40px'}}>
+           sx={{
+            borderRadius: '40px',
+            background: '#439A97',
+            border: '3.5px solid #135D66',
+            boxShadow: '#62B6B7',
+            color: 'white',
+            height: 45,
+            padding: '0 30px',
+            marginTop: '10px',
+            '&:hover': {
+              background: '#135D66', // Change hover background color
+            }
+            }}
+          >
             LOGIN
           </Button>
         </p>
@@ -226,7 +219,7 @@ export default function Login() {
         </p>
 
         <p>
-          <h4>Do you haven't account? <Link to="/signup" style={{ color: '#1C1678', textDecoration: 'none' }}>Sign Up</Link></h4>
+          <h4>Do you haven't account? <Link to="/signup" style={{ color: '#135D66', textDecoration: 'none' }}>Sign Up</Link></h4>
         </p>
       </Paper>
     </Box>
