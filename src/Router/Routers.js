@@ -8,7 +8,7 @@ import StageDrama from "../Pages/StageDrama";
 import SeatSelection from "../Pages/SeatBookings/SeatSelection";
 import ManageEvents from "../Pages/Admin/ManageEvents";
 import ManageTickets from "../Pages/Admin/ManageTickets";
-import Dashboard from "../Pages/Admin/DashBoard";
+import Dashboard from "../Pages/Admin/Dashboard/DashBoard";
 import Home from "../Pages/Home";
 import Layout from "../Components/Layouts/Layout";
 import AdminLayOut from "../Components/Layouts/AdminLayOut";
