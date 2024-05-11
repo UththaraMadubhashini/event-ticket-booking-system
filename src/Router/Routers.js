@@ -11,7 +11,7 @@ import ManageTickets from "../Pages/Admin/ManageTickets";
 import Dashboard from "../Pages/Admin/Dashboard/DashBoard";
 import Home from "../Pages/Home";
 import Layout from "../Components/Layouts/Layout";
-import AdminLayOut from "../Components/Layouts/AdminLayOut";
+import AdminLayout from '../Components/Layouts/AdminLayOut';
 import SignUp from "../Pages/SignUp";
 import Login from "../Pages/Login";
 import EventCards from "../Components/EventCards/EventCards";
@@ -50,11 +50,11 @@ const Routers = () => {
 
       {/* <Route path="/admin/login" element={<AdminLogin />} /> */}
 
-      <Route path="/admin" element={<AdminLayOut/>}>
-        {/* <Route path="/admin" element={<Navigate to="/admin/dashboard"/>} /> */}
-        <Route path="/admin/dashboard" element={<Dashboard/>} />
-        <Route path="/admin/manageevents" element={<ManageEvents/>} />
-        <Route path="/admin/managetickets" element={<ManageTickets/>} />
+      <Route path="/admin/*" element={<AdminLayout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="manageevents" element={<ManageEvents />} />
+        <Route path="managetickets" element={<ManageTickets />} />
       </Route>
     </Routes>
   );
