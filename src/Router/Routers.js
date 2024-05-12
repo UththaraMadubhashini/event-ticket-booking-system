@@ -1,13 +1,10 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-// import AdminLogin from "../Admin/adminLogin";
 import DancingEvents from "../Pages/DancingEvents";
 import FoodFestival from "../Pages/FoodFestival";
 import MusicalEvents from "../Pages/MusicalEvents";
 import StageDrama from "../Pages/StageDrama";
 import SeatSelection from "../Pages/SeatBookings/SeatSelection";
-import ManageEvents from "../Pages/Admin/ManageEvents";
-import ManageTickets from "../Pages/Admin/ManageTickets";
 import Dashboard from "../Pages/Admin/Dashboard/DashBoard";
 import Home from "../Pages/Home";
 import Layout from "../Components/Layouts/Layout";
@@ -21,6 +18,8 @@ import HanthanetaPayana from "../Pages/HanthanetaPayana";
 import BassEnigma from "../Pages/BassEnigma";
 import About from "../Pages/About";
 import Booking from "../Pages/Booking";
+import ManageEvents from "../Pages/Admin/ManageEvents";
+import ManageTickets from "../Pages/Admin/ManageTickets";
 
 const Routers = () => {
   return (
@@ -42,19 +41,13 @@ const Routers = () => {
         <Route path="/buy-tickets/:eventTitle" element={<BuyTickets />} />
         <Route path="/hanthanete-payana" element={<HanthanetaPayana/>} />
         <Route path="/bass-enigma" element={<BassEnigma/>} />
-
-
-        
-
       </Route>
 
-      {/* <Route path="/admin/login" element={<AdminLogin />} /> */}
-
-      <Route path="/admin/*" element={<AdminLayout />}>
-        <Route index element={<Dashboard />} />
+      <Route path="/admin" element={<AdminLayout/>}>
+        <Route path="admin" element={<Navigate to="/admin/dashboard" />} />
         <Route path="dashboard" element={<Dashboard />} />
-        <Route path="manageevents" element={<ManageEvents />} />
-        <Route path="managetickets" element={<ManageTickets />} />
+        <Route path="manage-events" element={<ManageEvents />} />
+        <Route path="manage-tickets" element={<ManageTickets />} /> 
       </Route>
     </Routes>
   );

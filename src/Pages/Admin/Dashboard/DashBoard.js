@@ -1,12 +1,9 @@
-import * as React from "react";
+import React from 'react'
 
-
-const DashBoard = () => {
+const Dashboard = () => {
   return (
-    <div>
-      fbgfhg
-      </div>
-  );
+    <div>Dashboard</div>
+  )
 }
 
-export default DashBoard;
+export default Dashboard
