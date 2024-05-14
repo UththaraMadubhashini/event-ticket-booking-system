@@ -31,7 +31,7 @@ const EventCard = ({ title, image, date, time, location, priceRange, ticketImage
       marginTop: 3.5,
       marginRight: 3,
       background: '#CBEDD5',
-      border: '3px solid #003C43', // Set thick border color
+      border: '3px solid #003C43',
       
     }}>
     

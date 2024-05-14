@@ -20,6 +20,7 @@ import About from "../Pages/About";
 import Booking from "../Pages/Booking";
 import ManageEvents from "../Pages/Admin/ManageEvents";
 import ManageTickets from "../Pages/Admin/ManageTickets";
+import ManageUser from "../Pages/Admin/ManageUser";
 
 const Routers = () => {
   return (
@@ -47,6 +48,7 @@ const Routers = () => {
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="manage-events" element={<ManageEvents />} />
       <Route path="manage-tickets" element={<ManageTickets />} /> 
+      <Route path="manage-user" element={<ManageUser />} /> 
      </Route>
     
     </Routes>
