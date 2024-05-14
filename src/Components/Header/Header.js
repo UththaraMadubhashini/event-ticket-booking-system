@@ -55,7 +55,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [selectedPage, setSelectedPage] = React.useState('Home'); // State to manage the selected page
+  const [selectedPage, setSelectedPage] = React.useState('Home');
   
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);

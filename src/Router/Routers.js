@@ -21,6 +21,7 @@ import Booking from "../Pages/Booking";
 import ManageEvents from "../Pages/Admin/ManageEvents";
 import ManageTickets from "../Pages/Admin/ManageTickets";
 import ManageUser from "../Pages/Admin/ManageUser";
+import BookingDetails from "../Pages/Admin/BookingDetails";
 
 const Routers = () => {
   return (
@@ -49,6 +50,7 @@ const Routers = () => {
       <Route path="manage-events" element={<ManageEvents />} />
       <Route path="manage-tickets" element={<ManageTickets />} /> 
       <Route path="manage-user" element={<ManageUser />} /> 
+      <Route path="booking-details" element={<BookingDetails />} /> 
      </Route>
     
     </Routes>

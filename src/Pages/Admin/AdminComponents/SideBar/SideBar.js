@@ -1,13 +1,10 @@
 import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -16,7 +13,10 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import PeopleIcon from '@mui/icons-material/People';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
+import StickyNote2Icon from '@mui/icons-material/StickyNote2';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import { useNavigate } from 'react-router-dom';
+import { useAppStore } from '../../../../appStore';
 
 const drawerWidth = 240;
 
@@ -41,15 +41,6 @@ const closedMixin = (theme) => ({
   },
 });
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
-
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     width: drawerWidth,
@@ -68,27 +59,33 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function SideBar() {
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
   const navigate = useNavigate();
+  const open = useAppStore((state) => state.dopen);
+  const [selectedItem, setSelectedItem] = React.useState(null);
+
+  const handleNavigation = (path, item) => {
+    navigate(path);
+    setSelectedItem(item);
+  };
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={()=>setOpen(!open)}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
+        <Divider /> <br/><br/><br/>
         <List>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate("/admin/manage-user") }}>
+          <ListItem disablePadding 
+            sx={{ display: 'block', backgroundColor: selectedItem === "dashboard" ? '#E3FEF7' : 'transparent' }}
+            onClick={() => handleNavigation("/admin/dashboard", "dashboard")}
+          >
             <ListItemButton
               sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',
                 px: 2.5,
+                '&:hover': {
+                  backgroundColor: '#E3FEF7',
+                },
               }}
             >
               <ListItemIcon
@@ -98,17 +95,24 @@ export default function SideBar() {
                   justifyContent: 'center',
                 }}
               >
-                <PeopleIcon sx={{ color: '#003C43' }} />
+                <DashboardIcon sx={{ color: '#135D66' }} />
               </ListItemIcon>
-              <ListItemText primary="User Manage" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary="Dashboard" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate("/admin/manage-events") }}>
+
+          <ListItem disablePadding 
+            sx={{ display: 'block', backgroundColor: selectedItem === "manage-user" ? '#E3FEF7' : 'transparent' }} 
+            onClick={() => handleNavigation("/admin/manage-user", "manage-user")}
+          >
             <ListItemButton
               sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',
                 px: 2.5,
+                '&:hover': {
+                  backgroundColor: '#E3FEF7', // Set hover color
+                },
               }}
             >
               <ListItemIcon
@@ -118,17 +122,51 @@ export default function SideBar() {
                   justifyContent: 'center',
                 }}
               >
-                <DateRangeIcon sx={{ color: '#003C43' }} />
+                <PeopleIcon sx={{ color: '#135D66' }} />
+              </ListItemIcon>
+              <ListItemText primary="User Details" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding 
+            sx={{ display: 'block', backgroundColor: selectedItem === "manage-events" ? '#E3FEF7' : 'transparent' }} 
+            onClick={() => handleNavigation("/admin/manage-events", "manage-events")}
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+                '&:hover': {
+                  backgroundColor: '#E3FEF7', // Set hover color
+                },
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <DateRangeIcon sx={{ color: '#135D66' }} />
               </ListItemIcon>
               <ListItemText primary="Events Manage" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate("/admin/manage-tickets") }}>
+
+          <ListItem disablePadding 
+            sx={{ display: 'block', backgroundColor: selectedItem === "manage-tickets" ? '#E3FEF7' : 'transparent' }} 
+            onClick={() => handleNavigation("/admin/manage-tickets", "manage-tickets")}
+          >
             <ListItemButton
               sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',
                 px: 2.5,
+                '&:hover': {
+                  backgroundColor: '#E3FEF7', // Set hover color
+                },
               }}
             >
               <ListItemIcon
@@ -138,18 +176,24 @@ export default function SideBar() {
                   justifyContent: 'center',
                 }}
               >
-                <ConfirmationNumberIcon sx={{ color: '#003C43' }} />
+                <ConfirmationNumberIcon sx={{ color: '#135D66' }} />
               </ListItemIcon>
               <ListItemText primary="Tickets Manage" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
 
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate("/admin/dashboard") }}>
+          <ListItem disablePadding 
+            sx={{ display: 'block', backgroundColor: selectedItem === "booking-details" ? '#E3FEF7' : 'transparent' }} 
+            onClick={() => handleNavigation("/admin/booking-details", "booking-details")}
+          >
             <ListItemButton
               sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',
                 px: 2.5,
+                '&:hover': {
+                  backgroundColor: '#E3FEF7', // Set hover color
+                },
               }}
             >
               <ListItemIcon
@@ -159,7 +203,34 @@ export default function SideBar() {
                   justifyContent: 'center',
                 }}
               >
-                <ExitToAppIcon sx={{ color: '#003C43' }} />
+                <StickyNote2Icon sx={{ color: '#135D66' }} />
+              </ListItemIcon>
+              <ListItemText primary="Manage Book Tickets" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding 
+            sx={{ display: 'block', backgroundColor: selectedItem === "login" ? '#E3FEF7' : 'transparent' }} 
+            onClick={() => handleNavigation("/login", "login")}
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+                '&:hover': {
+                  backgroundColor: '#E3FEF7', // Set hover color
+                },
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <ExitToAppIcon sx={{ color: '#135D66' }} />
               </ListItemIcon>
               <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
