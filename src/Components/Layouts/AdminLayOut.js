@@ -5,11 +5,11 @@ import { Outlet } from 'react-router';
 const AdminLayOut = () => {
   return (
     <>
-        <SideBar />
-        <Outlet />
-      
+      <SideBar />
+      <Outlet /> 
     </>
   );
 }
+
 
 export default AdminLayOut;

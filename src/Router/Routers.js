@@ -44,11 +44,11 @@ const Routers = () => {
       </Route>
 
       <Route path="/admin" element={<AdminLayout/>}>
-        <Route path="admin" element={<Navigate to="/admin/dashboard" />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="manage-events" element={<ManageEvents />} />
-        <Route path="manage-tickets" element={<ManageTickets />} /> 
-      </Route>
+      <Route path="dashboard" element={<Dashboard />} />
+      <Route path="manage-events" element={<ManageEvents />} />
+      <Route path="manage-tickets" element={<ManageTickets />} /> 
+     </Route>
+    
     </Routes>
   );
 };
