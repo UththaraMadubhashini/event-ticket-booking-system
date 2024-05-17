@@ -11,7 +11,7 @@ import StoreIcon from '@mui/icons-material/Store';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import AccordionComp from '../Dashboard/AccordionComp';
-
+import BarChart from '../Charts/BarChart';
 import PieChart from '../Charts/PieChart';
 
 const Dashboard = () => {
@@ -85,7 +85,7 @@ const Dashboard = () => {
             <Grid item xs={8}>
               <Card sx={{ height: "60vh" }}>
                 <CardContent>
-                  {/* <BarChart /> */}
+                  <BarChart />
                 </CardContent>
               </Card>
             </Grid>    
