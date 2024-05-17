@@ -111,7 +111,7 @@ export default function SideBar() {
                 justifyContent: open ? 'initial' : 'center',
                 px: 2.5,
                 '&:hover': {
-                  backgroundColor: '#E3FEF7', // Set hover color
+                  backgroundColor: '#E3FEF7',
                 },
               }}
             >
@@ -138,7 +138,7 @@ export default function SideBar() {
                 justifyContent: open ? 'initial' : 'center',
                 px: 2.5,
                 '&:hover': {
-                  backgroundColor: '#E3FEF7', // Set hover color
+                  backgroundColor: '#E3FEF7', 
                 },
               }}
             >
@@ -165,7 +165,7 @@ export default function SideBar() {
                 justifyContent: open ? 'initial' : 'center',
                 px: 2.5,
                 '&:hover': {
-                  backgroundColor: '#E3FEF7', // Set hover color
+                  backgroundColor: '#E3FEF7',
                 },
               }}
             >

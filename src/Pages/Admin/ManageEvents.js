@@ -10,7 +10,7 @@ const ManageEvents = () => {
     <Box height={50}/>
     <Box sx={{ display: 'flex' }}>
     <SideBar/>
-    <h1>ManageEvents</h1>
+    <h1>Manage Events</h1>
     </Box>
     </>
   )

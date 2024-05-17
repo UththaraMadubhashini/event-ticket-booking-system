@@ -65,8 +65,8 @@ export default function NavBar() {
     const dopen = useAppStore((state)=> state.dopen);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ backgroundColor: '#135D66' }}>
+    <Box sx={{ flexGrow: 1, marginBottom: "30px" }}>
+      <AppBar position="fixed" elevation={0} sx={{ backgroundColor: '#135D66' }}>
         <Toolbar>
           <IconButton
             size="large"
