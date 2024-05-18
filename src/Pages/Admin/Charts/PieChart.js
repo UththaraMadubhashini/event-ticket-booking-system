@@ -15,7 +15,7 @@ export const data = [
 export const options = {
   is3D: true,
   backgroundColor: 'transparent',
-  legend: { position: 'right', alignment: 'center' },
+  legend: { position: '60px', alignment: 'center' },
 };
 
 export default function PieChart() {

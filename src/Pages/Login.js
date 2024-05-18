@@ -96,8 +96,8 @@ export default function Login() {
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column', // Change flex direction to column
-        alignItems: 'center', // Center items vertically
+        flexDirection: 'column', 
+        alignItems: 'center',
         marginTop: '30px',
       }}
     >

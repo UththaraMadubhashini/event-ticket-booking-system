@@ -10,9 +10,9 @@ import Stack from '@mui/material/Stack';
 import StoreIcon from '@mui/icons-material/Store';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
-import AccordionComp from '../Dashboard/AccordionComp';
 import BarChart from '../Charts/BarChart';
 import PieChart from '../Charts/PieChart';
+import LineChart from '../Charts/LineChart';
 
 const Dashboard = () => {
   return (
@@ -57,7 +57,7 @@ const Dashboard = () => {
             </Grid>
             <Grid item xs={4}>
               <Stack spacing={2}>
-                <Card sx={{ width: 345, backgroundImage: 'linear-gradient(50deg, #439A97, #FFD31D)' }}>
+                <Card sx={{ width: 400, backgroundImage: 'linear-gradient(50deg, #439A97, #FFD31D)' }}>
                   <Stack spacing={2} direction="row" sx={{ padding: '10px' }}>
                     <StoreIcon sx={{ marginTop: '20px', marginLeft: '20px', color: '#FFFE9A' }} />
                     <div sx={{ padding: '10px' }}>
@@ -67,7 +67,7 @@ const Dashboard = () => {
                     </div>
                   </Stack>
                 </Card>
-                <Card sx={{ width: 345, backgroundImage: 'linear-gradient(50deg, #439A97, #FFD31D)' }}>
+                <Card sx={{ width: 400, backgroundImage: 'linear-gradient(50deg, #439A97, #FFD31D)' }}>
                   <Stack spacing={2} direction="row" sx={{ padding: '10px' }}>
                     <StoreIcon sx={{ marginTop: '20px', marginLeft: '20px', color: '#FFFE9A' }} />
                     <div sx={{ padding: '10px' }}>
@@ -85,17 +85,14 @@ const Dashboard = () => {
             <Grid item xs={8}>
               <Card sx={{ height: "60vh" }}>
                 <CardContent>
-                  <BarChart />
+                  <BarChart/>
                 </CardContent>
               </Card>
             </Grid>    
             <Grid item xs={4}>
               <Card sx={{ height: "60vh" }}>
                 <CardContent>
-                  <Typography sx={{ fontSize: '14px', fontWeight: 600, margin: '10px' }}>
-                    Most Like events
-                  </Typography>
-                  <AccordionComp />
+                  <PieChart />
                 </CardContent>
               </Card>
             </Grid>
@@ -103,34 +100,58 @@ const Dashboard = () => {
 
           <Box height={20} />
           <Grid container spacing={2}>
-          <Grid item xs={8}>
-              <Stack spacing={2} direction="row">
+            <Grid item xs={6}>
+              <Card sx={{ height: "60vh", width: "700px"}}>
+                <CardContent>
+                  <LineChart />
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+
+          <Box sx={{ float: 'right'}}>
+          <Grid container spacing={2} />
+            <Grid item xs={4} >
+              <Stack spacing={2} direction="row" sx={{ padding: '10px', marginTop: "-420px", }}>
                 <Card 
-                  sx={{ height: "50vh", backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
+                  sx={{ width: '243px', height: '203px', backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
                   <CardContent>
-                   <PieChart />
+      
                   </CardContent>
                 </Card>
 
-                <Card sx={{ minWidth: '49%', height: 150, backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
+                <Card sx={{ width: '243px', height: '203px', backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
                   <CardContent>
-                    <div>
-                      <LocalActivityIcon sx={{ color: '#003C43' }}/>
-                    </div>
-                    <Typography gutterBottom variant="h5" component="div">
-                      0000
-                    </Typography>
-                    <Typography gutterBottom variant="body2" component="div" sx={{color: "#135D66"}}>
-                      Events availability
-                    </Typography>
+                    
                   </CardContent>
                 </Card>
               </Stack>
             </Grid>
-          </Grid>
-          
+            
+            <Grid item xs={4}>
+              <Stack spacing={2} direction="row" sx={{ padding: '10px' }}>
+                <Card 
+                  sx={{ width: '243px', height: '203px', backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
+                  <CardContent>
+                    
+                  </CardContent>
+                </Card>
+
+                <Card sx={{ width: '243px', height: '203px', backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
+                  <CardContent>
+                    
+                  </CardContent>
+                </Card>
+              </Stack>
+            </Grid>
+            </Box>
         </Box>
       </Box>
+         
+             
+
+
+
     </>
   );
 }
