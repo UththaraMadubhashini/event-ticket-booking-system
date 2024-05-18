@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 export const data = [
-  ["Year", "Sales", "Expenses"],
+  ["Months", "Sales", "Expenses"],
   ["2004", 1000, 400],
   ["2005", 1170, 460],
   ["2006", 660, 1120],

@@ -5,8 +5,8 @@ import Typography from "@mui/material/Typography";
 
 export const data = [
   ["Task", "Hours per Day"],
-  ["Work", 11],
-  ["Eat", 2],
+  ["Ticket Sold", 11],
+  ["Events held", 2],
   ["Commute", 2],
   ["Watch TV", 2],
   ["Sleep", 7],
