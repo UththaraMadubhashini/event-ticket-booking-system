@@ -8,21 +8,9 @@ import ImageBtn1 from '../Assets/Images/music.jpg'
 import ImageBtn2 from '../Assets/Images/dance.jpg'
 import ImageBtn3 from '../Assets/Images/stageDrama.jpg'
 import ImageBtn4 from '../Assets/Images/foodFestival.jpg'
-import { Button, Grid } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import EventCard from '../Components/EventCards/EventCards';
 import { Link } from 'react-router-dom';
-
-// Define button gradient style
-const buttonColor = {
-  background: '#439A97',
-  border: '3.5px solid #135D66',
-  borderRadius: 3,
-  boxShadow: '#62B6B7',
-  color: 'white',
-  height: 45,
-  padding: '0 30px',
-  marginTop: '10px',
-};
 
 //set image buttons
 const images = [
@@ -59,6 +47,8 @@ const ImageButton = styled(ButtonBase)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     width: '100% !important',
     height: 100,
+
+
   },
   '&:hover, &.Mui-focusVisible': {
     zIndex: 1,
@@ -153,99 +143,81 @@ const eventsData = [
   // Add more event data objects as needed
 ];
 
-const Home = () => {
+const ViewHome = () => {
   return (
     <>
       <ImageSlider />
 
       {/* Image buttons */}
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
-        {images.map((image) => (
-          <ImageButton
-            key={image.title}
-            focusRipple
-            style={{
-              width: image.width,
-            }}
-            component={Link}
-            to={image.link}
-          >
-            <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
-            <ImageBackdrop className="MuiImageBackdrop-root" />
-            <Image>
-              <Typography
-                component="span"
-                variant="subtitle1"
-                color="inherit"
-                sx={{
-                  position: 'relative',
-                  p: 4,
-                  pt: 2,
-                  pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
-                  fontSize: '25px',
-                  fontFamily: 'American Typewriter, serif',
-                  fontStyle: 'italic', 
-                  fontWeight: 300, 
-                  fontVariant: 'normal',
-                }}
-              >
-                {image.title}
-                <ImageMarked className="MuiImageMarked-root" />
-              </Typography>
-            </Image>
-          </ImageButton>
-        ))}
-      </Box>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
+          {images.map((image) => (
+            <ImageButton
+              key={image.title}
+              focusRipple
+              style={{
+                width: image.width,
+              }}
+              component={Link}
+              to={image.link}
+            >
+              <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: 'relative',
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                    fontSize: '25px',
+                    fontFamily: 'American Typewriter, serif',
+                    fontStyle: 'italic', 
+                    fontWeight: 300, 
+                    fontVariant: 'normal',
+                  }}
+                >
+                  {image.title}
+                  <ImageMarked className="MuiImageMarked-root" />
+                </Typography>
+              </Image>
+            </ImageButton>
+          ))}
+        </Box>
+
 
       <div style={{ textAlign: 'center', fontSize: '50px', margin: '20px', 
       fontFamily: 'Trattatello, fantasy', fontStyle: 'oblique', fontWeight: 900, fontVariant: 'small-caps' }}>
-        All Events
+      All Events
       </div>
 
-      {/* Cards */}
-      <Grid container spacing={3} justifyContent="center">
-        {eventsData.map((event, index) => (
-          <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-            <Link
-              key={index}
-              to={{ pathname: '/buy-tickets', state: { event: event } }}
-              style={{ textDecoration: 'none', color: 'inherit' }}>
-              <EventCard
-                title={event.title}
-                image={event.image}
-                date={event.date}
-                time={event.time}
-                location={event.location}
-                priceRange={event.priceRange}
-                ticketImage={event.ticketImage}
-                priceTagImage={event.priceTagImage}
-                availability={event.availability}
-              />
-            </Link>
-          </Grid>
-        ))}
-      </Grid>
-
-      {/* Sign Out link */}
-      <Box sx={{ textAlign: 'center', marginTop: '20px' }}>
-        <Button 
-          variant="contained" 
-          color="primary"
-          component={Link} 
-          to="/login"
-          sx={{
-            ...buttonColor,
-            borderRadius: '40px',
-            '&:hover': {
-              background: '#135D66',
-            }
-          }}
-        >
-          Sign Out
-        </Button>
-      </Box>
+  {/* Cards */}
+  <Grid container spacing={3} justifyContent="center">
+      {eventsData.map((event, index) => (
+        <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+ <Link
+  key={index}
+  to={{ pathname: '/buy-tickets', state: { event: event } }}
+  style={{ textDecoration: 'none', color: 'inherit' }}>
+  <EventCard
+    title={event.title}
+    image={event.image}
+    date={event.date}
+    time={event.time}
+    location={event.location}
+    priceRange={event.priceRange}
+    ticketImage={event.ticketImage}
+    priceTagImage={event.priceTagImage}
+    availability={event.availability}
+  />
+</Link>
+        </Grid>
+      ))}
+    </Grid>
     </>
   );
 }
 
-export default Home;
+export default ViewHome;

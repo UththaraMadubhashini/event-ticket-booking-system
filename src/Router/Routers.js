@@ -6,7 +6,7 @@ import MusicalEvents from "../Pages/MusicalEvents";
 import StageDrama from "../Pages/StageDrama";
 import SeatSelection from "../Pages/SeatBookings/SeatSelection";
 import Dashboard from "../Pages/Admin/Dashboard/DashBoard";
-import Home from "../Pages/Home";
+import ViewHome from "../Pages/ViewHome";
 import Layout from "../Components/Layouts/Layout";
 import AdminLayout from '../Components/Layouts/AdminLayOut';
 import SignUp from "../Pages/SignUp";
@@ -20,14 +20,17 @@ import About from "../Pages/About";
 import Booking from "../Pages/Booking";
 import ManageEvents from "../Pages/Admin/ManageEvents";
 import ManageTickets from "../Pages/Admin/ManageTickets";
-import ManageUser from "../Pages/Admin/ManageUser";
+import ManageUser from "../Pages/Admin/Dashboard/ManageUser/ManageUser"
 import BookingDetails from "../Pages/Admin/BookingDetails";
+import Home from "../Pages/Home";
+import Payment from "../Pages/Payment/Payment";
 
 const Routers = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout/>}>
-        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/" element={<Navigate to="/view-home" />} />
+        <Route path="/view-home" element={<ViewHome/>} />
         <Route path="/home" element={<Home/>} />
         <Route path="/about" element={<About/>} />
         <Route path="/seat-selection" element={<SeatSelection/>} /> 
@@ -43,6 +46,7 @@ const Routers = () => {
         <Route path="/buy-tickets/:eventTitle" element={<BuyTickets />} />
         <Route path="/hanthanete-payana" element={<HanthanetaPayana/>} />
         <Route path="/bass-enigma" element={<BassEnigma/>} />
+        <Route path="/cd-payment" element={<Payment />} />
       </Route>
 
       <Route path="/admin" element={<AdminLayout/>}>

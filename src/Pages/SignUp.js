@@ -18,7 +18,7 @@ import Alert from '@mui/material/Alert';
 
 // Import Firebase modules
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, push } from 'firebase/database';
+import { getDatabase, ref, set } from 'firebase/database';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -159,9 +159,9 @@ export default function SignUp() {
         options
       );
       console.log(res);
-
-      // Push the user data to Firebase
-      await push(ref(database, 'users'), userData);
+      
+      //set data for firebase
+      await set(ref(database, 'user : ' + UsernameInput), userData);
       
       setSuccess("Form Submitted Successfully");
       setFormvalid('');
