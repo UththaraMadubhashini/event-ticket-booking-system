@@ -16,9 +16,9 @@ import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import { useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Checkbox from '@mui/material/Checkbox';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { database } from '../firebase-config';
+import { authDatabase } from '../firebase-config';
 
 const isEmail = (email) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email);
 
@@ -47,10 +47,10 @@ export default function Login() {
     const email = emailInput; // Use state variable directly
     const password = passwordInput; // Use state variable directly
   
-    createUserWithEmailAndPassword(database, email, password)
+    createUserWithEmailAndPassword(authDatabase, email, password)
       .then(() => {
         setSuccess("Login Successful");
-        history("/home"); // Corrected navigation call
+        history("/home");
       })
       .catch((error) => {
         setFormValid(error.message);

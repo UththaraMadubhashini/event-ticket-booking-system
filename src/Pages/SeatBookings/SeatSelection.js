@@ -1,8 +1,18 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import SquareIcon from '@mui/icons-material/Square';
+import SquareIcon from "@mui/icons-material/Square";
 import Paper from "@mui/material/Paper";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import "./seats.css";
+
+function createData(ticket, count, seats, amount) {
+  return { ticket, count, seats, amount };
+}
 
 class SeatSelection extends React.Component {
   constructor() {
@@ -13,7 +23,7 @@ class SeatSelection extends React.Component {
         "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10",
         "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10",
         "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
-        // Additional 100 seats with letters D, E, F, G, ...
+        // Additional seats with letters D, E, F, G, ...
         ...Array.from({ length: 15 }, (_, index) => `D${index + 1}`),
         ...Array.from({ length: 15 }, (_, index) => `E${index + 1}`),
         ...Array.from({ length: 15 }, (_, index) => `F${index + 1}`),
@@ -35,7 +45,6 @@ class SeatSelection extends React.Component {
         "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10",
         "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
         // Additional available seats
-        // Additional 100 seats with letters D, E, F, G, ...
         ...Array.from({ length: 15 }, (_, index) => `D${index + 1}`),
         ...Array.from({ length: 15 }, (_, index) => `E${index + 1}`),
         ...Array.from({ length: 15 }, (_, index) => `F${index + 1}`),
@@ -52,7 +61,9 @@ class SeatSelection extends React.Component {
         // and so on...
       ],
       seatReserved: [],
-      seatSelected: []
+      seatSelected: [],
+      count: 1,
+      Rows: [] // Initialize as an empty array
     };
   }
 
@@ -75,16 +86,40 @@ class SeatSelection extends React.Component {
   }
 
   handleSubmited() {
+    const { seatReserved, count } = this.state;
+    const newRows = seatReserved.map(seat => {
+      let category = 'Normal';
+      let price = 2500;
+      if (seat.startsWith('C') || seat.startsWith('J')) {
+        category = 'Premium';
+        price = 8000;
+      } else if (seat.startsWith('F') || seat.startsWith('M')) {
+        category = 'Silver';
+        price = 5000;
+      }
+      return createData(`${seat} / ${category}`, count, seat, price * count);
+    });
     this.setState(prevState => ({
       seatSelected: [...prevState.seatSelected, ...prevState.seatReserved],
-      seatReserved: []
+      seatReserved: [],
+      Rows: [...prevState.Rows, ...newRows]
     }));
   }
 
+  handleChange = (event) => {
+    const newCount = parseInt(event.target.value);
+    if (!isNaN(newCount)) {
+      this.setState({ count: newCount });
+    }
+  };
+
   render() {
+    // Calculate the total amount
+    const totalAmount = this.state.Rows.reduce((total, row) => total + row.amount, 0);
+
     return (
       <div>
-        <h1>Seat Reservation System</h1>
+        <h1>Select your seats..</h1>
         <DrawGrid
           seat={this.state.seat}
           available={this.state.seatAvailable}
@@ -94,12 +129,55 @@ class SeatSelection extends React.Component {
           checktrue={this.checktrue.bind(this)}
           handleSubmited={this.handleSubmited.bind(this)}
         />
+        {/* Table */}
+        <TableContainer component={Paper} sx={{ width: '80%', margin: 'auto', marginTop: '30px', marginBottom: '80px'}}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>TICKET</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>PRICE</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>COUNT OF TICKETS</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>SEATS</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>AMOUNT</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.state.Rows.map((row, index) => (
+                <TableRow
+                  key={index}
+                  sx={{ '&:last-child td, &:last-child th': { border: 2 } }}
+                >
+                  <TableCell align="center" component="th" scope="row">{row.ticket}</TableCell>
+                  <TableCell align="center">{row.amount / row.count}</TableCell>
+                  <TableCell align="center">
+                    <input
+                      type="number"
+                      value={row.count}
+                      onChange={this.handleChange}
+                      style={{ width: 60, textAlign: 'center' }}
+                    />
+                  </TableCell>
+                  <TableCell align="center">{row.seats}</TableCell>
+                  <TableCell align="center">{row.amount}</TableCell>
+                </TableRow>
+              ))}
+              <TableRow>
+                <TableCell align="center" colSpan={4} sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>TOTAL AMOUNT</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>{totalAmount}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     );
   }
 }
 
 class DrawGrid extends React.Component {
+  onClickSeat(seat) {
+    this.props.onClickData(seat);
+  }
+
   render() {
     const { seat, selected, reserved, checktrue } = this.props;
     const seatsPerRow = 10;
@@ -130,6 +208,10 @@ class DrawGrid extends React.Component {
                           ? "reserved"
                           : reserved.indexOf(seatLabel) > -1
                           ? "selected"
+                          : seatLabel.startsWith('C') || seatLabel.startsWith('J')
+                          ? "premium"
+                          : seatLabel.startsWith('F') || seatLabel.startsWith('M')
+                          ? "silver"
                           : "available"
                       }
                       key={columnIndex}
@@ -157,6 +239,10 @@ class DrawGrid extends React.Component {
                           ? "reserved"
                           : reserved.indexOf(seatLabel) > -1
                           ? "selected"
+                          : seatLabel.startsWith('C') || seatLabel.startsWith('J')
+                          ? "premium"
+                          : seatLabel.startsWith('F') || seatLabel.startsWith('M')
+                          ? "silver"
                           : "available"
                       }
                       key={columnIndex}
@@ -172,18 +258,22 @@ class DrawGrid extends React.Component {
           </table>
         </Grid>
 
-    <div style={{ position: 'absolute', top: '350px', right: '18px' }}>
-        <Paper elevation={4} sx={{ width: '150px', textAlign: 'center', p: 2}}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'column' }}>
-            <SquareIcon sx={{ color: 'red', fontSize: '20px' }} />
-            <p>Reserved</p>
-            <SquareIcon sx={{ color: 'blue', fontSize: '20px' }} />
-            <p>Your Selection</p>
-            <SquareIcon sx={{ color: 'transparent', border: '0.5px solid black', fontSize: '17px' }} />
-            <p>Available</p>
+        <div style={{ position: 'absolute', top: '270px', right: '18px' }}>
+          <Paper elevation={4} sx={{ width: '150px', textAlign: 'center', p: 2 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'column' }}>
+              <SquareIcon sx={{ color: 'red', fontSize: '20px' }} />
+              <p>Reserved</p>
+              <SquareIcon sx={{ color: 'blue', fontSize: '20px' }} />
+              <p>Your Selection</p>
+              <SquareIcon sx={{ color: 'transparent', border: '4px solid black', fontSize: '17px' }} />
+              <p>Available</p>
+              <SquareIcon sx={{ color: 'gold', fontSize: '20px' }} />
+              <p>Premium</p>
+              <SquareIcon sx={{ color: 'silver', fontSize: '20px' }} />
+              <p>Silver</p>
+            </div>
+          </Paper>
         </div>
-        </Paper>
-    </div>
 
         {/* Confirm Booking Button */}
         <Grid item xs={12}>
@@ -197,10 +287,6 @@ class DrawGrid extends React.Component {
         </Grid>
       </Grid>
     );
-  }
-
-  onClickSeat(seat) {
-    this.props.onClickData(seat);
   }
 }
 

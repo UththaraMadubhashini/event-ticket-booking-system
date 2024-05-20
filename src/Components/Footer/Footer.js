@@ -1,17 +1,9 @@
 import * as React from "react";
-import {
-  Box,
-  Grid,
-  Link,
-  Typography,
-  Container,
-  IconButton,
-} from "@mui/material";
+import {Box, Grid, Link, Typography, Container, IconButton } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-// import Logo from "../../Assets/Images/Logo.png";
 import Logo2 from "../../Assets/Images/Logo2.png";
 
 const socialMediaLinks = {
@@ -112,7 +104,7 @@ const Footer = () => {
                 color="#A3D8FF"
                 component="a"
                 href={socialMediaLinks.facebook}
-                sx={{ "&:hover": { color: "#1877f2" } }} // Change color on hover
+                sx={{ "&:hover": { color: "#1877f2" } }} 
               >
                 <FacebookIcon />
               </IconButton>
@@ -121,7 +113,7 @@ const Footer = () => {
                 color="#A3D8FF"
                 component="a"
                 href={socialMediaLinks.twitter}
-                sx={{ "&:hover": { color: "#1da1f2" } }} // Change color on hover
+                sx={{ "&:hover": { color: "#1da1f2" } }} 
               >
                 <TwitterIcon />
               </IconButton>
@@ -130,7 +122,7 @@ const Footer = () => {
                 color="#A3D8FF"
                 component="a"
                 href={socialMediaLinks.instagram}
-                sx={{ "&:hover": { color: "#e56969" } }} // Change color on hover
+                sx={{ "&:hover": { color: "#e56969" } }} 
               >
                 <InstagramIcon />
               </IconButton>
@@ -139,7 +131,7 @@ const Footer = () => {
                 color="#A3D8FF"
                 component="a"
                 href={socialMediaLinks.youtube}
-                sx={{ "&:hover": { color: "#E72929" } }} // Change color on hover
+                sx={{ "&:hover": { color: "#E72929" } }} 
               >
                 <YouTubeIcon />
               </IconButton>
