@@ -26,11 +26,10 @@ h1 {
   background: red;
   color: #fff;
   display: inline-block;
-  
 }
 
 .selected {
-  background: rgb(0, 38, 255);
+  background: blue;
   color: #fff;
   display: inline-block;
 }
@@ -95,5 +94,5 @@ li {
 }
 
 .selected:before {
-  border-color: rgb(0, 38, 255);
+  border-color: blue; /* Set border color to blue */
 }

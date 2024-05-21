@@ -39,27 +39,7 @@ class SeatSelection extends React.Component {
         ...Array.from({ length: 10 }, (_, index) => `S${index + 1}`),
         // and so on...
       ],
-      seatAvailable: [
-        // Original available seats
-        "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10",
-        "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10",
-        "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10",
-        // Additional available seats
-        ...Array.from({ length: 15 }, (_, index) => `D${index + 1}`),
-        ...Array.from({ length: 15 }, (_, index) => `E${index + 1}`),
-        ...Array.from({ length: 15 }, (_, index) => `F${index + 1}`),
-        ...Array.from({ length: 15 }, (_, index) => `G${index + 1}`),
-        ...Array.from({ length: 15 }, (_, index) => `H${index + 1}`),
-        ...Array.from({ length: 15 }, (_, index) => `I${index + 1}`),
-        ...Array.from({ length: 15 }, (_, index) => `J${index + 1}`),
-        ...Array.from({ length: 15 }, (_, index) => `K${index + 1}`),
-        ...Array.from({ length: 15 }, (_, index) => `L${index + 1}`),
-        ...Array.from({ length: 15 }, (_, index) => `M${index + 1}`),
-        ...Array.from({ length: 15 }, (_, index) => `N${index + 1}`),
-        ...Array.from({ length: 15 }, (_, index) => `P${index + 1}`),
-        ...Array.from({ length: 10 }, (_, index) => `S${index + 1}`),
-        // and so on...
-      ],
+      seatAvailable: [],
       seatReserved: [],
       seatSelected: [],
       count: 1,
@@ -67,11 +47,20 @@ class SeatSelection extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const reservedSeats = JSON.parse(localStorage.getItem('reservedSeats')) || [];
+    this.setState({ seatReserved: reservedSeats });
+  }
+
   onClickData(seat) {
+    let newRows = [];
     if (this.state.seatReserved.indexOf(seat) > -1) {
       this.setState({
         seatAvailable: [...this.state.seatAvailable, seat],
         seatReserved: this.state.seatReserved.filter(res => res !== seat)
+      }, () => {
+        newRows = this.state.Rows.filter(row => row.seats !== seat);
+        this.updateRows(newRows);
       });
     } else {
       this.setState({
@@ -83,6 +72,12 @@ class SeatSelection extends React.Component {
 
   checktrue(row) {
     return this.state.seatSelected.indexOf(row) === -1;
+  }
+
+  updateRows(newRows) {
+    this.setState({ Rows: newRows }, () => {
+      localStorage.setItem('reservedSeats', JSON.stringify(this.state.seatSelected));
+    });
   }
 
   handleSubmited() {
@@ -99,11 +94,14 @@ class SeatSelection extends React.Component {
       }
       return createData(`${seat} / ${category}`, count, seat, price * count);
     });
-    this.setState(prevState => ({
-      seatSelected: [...prevState.seatSelected, ...prevState.seatReserved],
+
+    const updatedRows = [...this.state.Rows, ...newRows];
+    this.setState({
+      seatSelected: [...this.state.seatSelected, ...this.state.seatReserved],
       seatReserved: [],
-      Rows: [...prevState.Rows, ...newRows]
-    }));
+    }, () => {
+      this.updateRows(updatedRows);
+    });
   }
 
   handleChange = (event) => {
@@ -114,9 +112,9 @@ class SeatSelection extends React.Component {
   };
 
   render() {
-    // Calculate the total amount
     const totalAmount = this.state.Rows.reduce((total, row) => total + row.amount, 0);
-
+    const filteredRows = this.state.Rows.filter(row => !this.state.seatReserved.includes(row.seats));
+  
     return (
       <div>
         <h1>Select your seats..</h1>
@@ -129,7 +127,6 @@ class SeatSelection extends React.Component {
           checktrue={this.checktrue.bind(this)}
           handleSubmited={this.handleSubmited.bind(this)}
         />
-        {/* Table */}
         <TableContainer component={Paper} sx={{ width: '80%', margin: 'auto', marginTop: '30px', marginBottom: '80px'}}>
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <TableHead>
@@ -142,152 +139,148 @@ class SeatSelection extends React.Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.state.Rows.map((row, index) => (
+              {filteredRows.map((row, index) => (
                 <TableRow
-                  key={index}
-                  sx={{ '&:last-child td, &:last-child th': { border: 2 } }}
-                >
-                  <TableCell align="center" component="th" scope="row">{row.ticket}</TableCell>
-                  <TableCell align="center">{row.amount / row.count}</TableCell>
-                  <TableCell align="center">
-                    <input
-                      type="number"
-                      value={row.count}
-                      onChange={this.handleChange}
-                      style={{ width: 60, textAlign: 'center' }}
-                    />
-                  </TableCell>
-                  <TableCell align="center">{row.seats}</TableCell>
-                  <TableCell align="center">{row.amount}</TableCell>
+                  key={
+                    index}
+                    sx={{ '&:last-child td, &:last-child th': { border: 2 } }}
+                  >
+                    <TableCell align="center" component="th" scope="row">{row.ticket}</TableCell>
+                    <TableCell align="center">{row.amount / row.count}</TableCell>
+                    <TableCell align="center">
+                      <input
+                        type="number"
+                        value={row.count}
+                        onChange={this.handleChange}
+                        style={{ width: 60, textAlign: 'center' }}
+                      />
+                    </TableCell>
+                    <TableCell align="center">{row.seats}</TableCell>
+                    <TableCell align="center">{row.amount}</TableCell>
+                  </TableRow>
+                ))}
+                <TableRow>
+                  <TableCell align="center" colSpan={4} sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>TOTAL AMOUNT</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>{totalAmount}</TableCell>
                 </TableRow>
-              ))}
-              <TableRow>
-                <TableCell align="center" colSpan={4} sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>TOTAL AMOUNT</TableCell>
-                <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>{totalAmount}</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
-    );
-  }
-}
-
-class DrawGrid extends React.Component {
-  onClickSeat(seat) {
-    this.props.onClickData(seat);
-  }
-
-  render() {
-    const { seat, selected, reserved, checktrue } = this.props;
-    const seatsPerRow = 10;
-
-    // Split seats into rows based on seatsPerRow
-    const rows = [];
-    for (let i = 0; i < seat.length; i += seatsPerRow) {
-      rows.push(seat.slice(i, i + seatsPerRow));
-    }
-
-    // Split rows into two sides
-    const middleIndex = Math.ceil(rows.length / 2);
-    const leftSideRows = rows.slice(0, middleIndex);
-    const rightSideRows = rows.slice(middleIndex);
-
-    return (
-      <Grid container justifyContent="center"> {/* Center the grid */}
-        {/* Left Side */}
-        <Grid item xs={5}> {/* Adjusted width */}
-          <table className="grid">
-            <tbody>
-              {leftSideRows.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                  {row.map((seatLabel, columnIndex) => (
-                    <td
-                      className={
-                        selected.indexOf(seatLabel) > -1
-                          ? "reserved"
-                          : reserved.indexOf(seatLabel) > -1
-                          ? "selected"
-                          : seatLabel.startsWith('C') || seatLabel.startsWith('J')
-                          ? "premium"
-                          : seatLabel.startsWith('F') || seatLabel.startsWith('M')
-                          ? "silver"
-                          : "available"
-                      }
-                      key={columnIndex}
-                      onClick={checktrue(seatLabel) ? () => this.onClickSeat(seatLabel) : null}
-                      style={{ paddingRight: "20px" }} // Increase space between columns
-                    >
-                      {seatLabel}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Grid>
-        {/* Right Side */}
-        <Grid item xs={6}> {/* Adjusted width */}
-          <table className="grid">
-            <tbody>
-              {rightSideRows.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                  {row.map((seatLabel, columnIndex) => (
-                    <td
-                      className={
-                        selected.indexOf(seatLabel) > -1
-                          ? "reserved"
-                          : reserved.indexOf(seatLabel) > -1
-                          ? "selected"
-                          : seatLabel.startsWith('C') || seatLabel.startsWith('J')
-                          ? "premium"
-                          : seatLabel.startsWith('F') || seatLabel.startsWith('M')
-                          ? "silver"
-                          : "available"
-                      }
-                      key={columnIndex}
-                      onClick={checktrue(seatLabel) ? () => this.onClickSeat(seatLabel) : null}
-                      style={{ paddingRight: "20px" }} // Increase space between columns
-                    >
-                      {seatLabel}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Grid>
-
-        <div style={{ position: 'absolute', top: '270px', right: '18px' }}>
-          <Paper elevation={4} sx={{ width: '150px', textAlign: 'center', p: 2 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'column' }}>
-              <SquareIcon sx={{ color: 'red', fontSize: '20px' }} />
-              <p>Reserved</p>
-              <SquareIcon sx={{ color: 'blue', fontSize: '20px' }} />
-              <p>Your Selection</p>
-              <SquareIcon sx={{ color: 'transparent', border: '4px solid black', fontSize: '17px' }} />
-              <p>Available</p>
-              <SquareIcon sx={{ color: 'gold', fontSize: '20px' }} />
-              <p>Premium</p>
-              <SquareIcon sx={{ color: 'silver', fontSize: '20px' }} />
-              <p>Silver</p>
-            </div>
-          </Paper>
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
-
-        {/* Confirm Booking Button */}
-        <Grid item xs={12}>
-          <button
-            type="button"
-            className="btn-success btnmargin"
-            onClick={() => this.props.handleSubmited()}
-          >
-            Confirm Booking
-          </button>
+      );
+    }
+  }  
+    
+  class DrawGrid extends React.Component {
+    onClickSeat(seat) {
+      this.props.onClickData(seat);
+    }
+  
+    render() {
+      const { seat, selected, reserved, checktrue } = this.props;
+      const seatsPerRow = 10;
+  
+      const rows = [];
+      for (let i = 0; i < seat.length; i += seatsPerRow) {
+        rows.push(seat.slice(i, i + seatsPerRow));
+      }
+  
+      const middleIndex = Math.ceil(rows.length / 2);
+      const leftSideRows = rows.slice(0, middleIndex);
+      const rightSideRows = rows.slice(middleIndex);
+  
+      return (
+        <Grid container justifyContent="center">
+          <Grid item xs={5}>
+            <table className="grid">
+              <tbody>
+                {leftSideRows.map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {row.map((seatLabel, columnIndex) => (
+                      <td
+                        className={
+                          selected.indexOf(seatLabel) > -1
+                            ? "reserved"
+                            : reserved.indexOf(seatLabel) > -1
+                            ? "selected"
+                            : seatLabel.startsWith('C') || seatLabel.startsWith('J')
+                            ? "premium"
+                            : seatLabel.startsWith('F') || seatLabel.startsWith('M')
+                            ? "silver"
+                            : "available"
+                        }
+                        key={columnIndex}
+                        onClick={checktrue(seatLabel) ? () => this.onClickSeat(seatLabel) : null}
+                        style={{ paddingRight: "20px" }}
+                      >
+                        {seatLabel}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Grid>
+          <Grid item xs={6}>
+            <table className="grid">
+              <tbody>
+                {rightSideRows.map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {row.map((seatLabel, columnIndex) => (
+                      <td
+                        className={
+                          selected.indexOf(seatLabel) > -1
+                            ? "reserved"
+                            : reserved.indexOf(seatLabel) > -1
+                            ? "selected"
+                            : seatLabel.startsWith('C') || seatLabel.startsWith('J')
+                            ? "premium"
+                            : seatLabel.startsWith('F') || seatLabel.startsWith('M')
+                            ? "silver"
+                            : "available"
+                        }
+                        key={columnIndex}
+                        onClick={checktrue(seatLabel) ? () => this.onClickSeat(seatLabel) : null}
+                        style={{ paddingRight: "20px" }}
+                      >
+                        {seatLabel}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Grid>
+  
+          <div style={{ position: 'absolute', top: '270px', right: '18px' }}>
+            <Paper elevation={4} sx={{ width: '150px', textAlign: 'center', p: 2 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'column' }}>
+                <SquareIcon sx={{ color: 'red', fontSize: '20px' }} />
+                <p>Reserved</p>
+                <SquareIcon sx={{ color: 'blue', fontSize: '20px' }} />
+                <p>Your Selection</p>
+                <SquareIcon sx={{ color: 'transparent', border: '4px solid black', fontSize: '17px' }} />
+                <p>Available</p>
+                <SquareIcon sx={{ color: 'gold', fontSize: '20px' }} />
+                <p>Premium</p>
+                <SquareIcon sx={{ color: 'silver', fontSize: '20px' }} />
+                <p>Silver</p>
+              </div>
+            </Paper>
+          </div>
+  
+          <Grid item xs={12}>
+            <button
+              type="button"
+              className="btn-success btnmargin"
+              onClick={() => this.props.handleSubmited()}
+            >
+              Confirm Booking
+            </button>
+          </Grid>
         </Grid>
-      </Grid>
-    );
+      );
+    }
   }
-}
-
-export default SeatSelection;
+  
+  export default SeatSelection;
