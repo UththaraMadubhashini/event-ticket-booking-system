@@ -24,6 +24,10 @@ import ManageUser from "../Pages/Admin/Dashboard/ManageUser/ManageUser"
 import BookingDetails from "../Pages/Admin/BookingDetails";
 import Home from "../Pages/Home";
 import Payment from "../Pages/Payment/Payment";
+import AddEvent from "../Pages/Admin/EventTicketCrud/AddEvent";
+import DeleteEvent from "../Pages/Admin/EventTicketCrud/DeleteEvent";
+import UpdateEvent from "../Pages/Admin/EventTicketCrud/UpdateEvent";
+import ViewEvent from "../Pages/Admin/EventTicketCrud/ViewEvent";
 
 const Routers = () => {
   return (
@@ -54,6 +58,10 @@ const Routers = () => {
       <Route path="manage-events" element={<ManageEvents />} />
       <Route path="manage-tickets" element={<ManageTickets />} /> 
       <Route path="manage-user" element={<ManageUser />} /> 
+      <Route path="add-event" element={<AddEvent />} /> 
+      <Route path="delete-event" element={<DeleteEvent />} /> 
+      <Route path="update-event" element={<UpdateEvent />} /> 
+      <Route path="view-event" element={<ViewEvent />} /> 
       <Route path="booking-details" element={<BookingDetails />} /> 
      </Route>
     
