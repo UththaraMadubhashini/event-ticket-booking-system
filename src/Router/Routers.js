@@ -63,6 +63,7 @@ const Routers = () => {
       <Route path="update-event" element={<UpdateEvent />} /> 
       <Route path="view-event" element={<ViewEvent />} /> 
       <Route path="booking-details" element={<BookingDetails />} /> 
+      
      </Route>
     
     </Routes>

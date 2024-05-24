@@ -1,6 +1,7 @@
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getDatabase, ref } from "firebase/database";
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getDatabase, ref, set, get, child } from 'firebase/database';
+import { getStorage } from 'firebase/storage';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,6 +16,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const authDatabase = getAuth(app);
-export const database = getDatabase(app);
-export const dbRef = ref(database, 'EventCards');
+const auth = getAuth(app);
+const database = getDatabase(app);
+const storage = getStorage(app);
+
+export { auth, database, ref, set, get, child, storage };
