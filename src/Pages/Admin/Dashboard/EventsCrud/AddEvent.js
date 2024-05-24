@@ -3,9 +3,10 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { database, ref, set, get, child } from '../../../firebase-config';
+import MenuItem from '@mui/material/MenuItem'; // Import MenuItem for dropdown menu
+import { database, ref, set, get, child } from '../../../../firebase-config';
 import { uploadBytesResumable, getDownloadURL, ref as storageRef } from "firebase/storage";
-import { storage } from '../../../firebase-config'; // Assuming you have configured Firebase storage
+import { storage } from '../../../../firebase-config';
 
 const AddEvents = () => {
   const [eventData, setEventData] = useState({
@@ -16,16 +17,18 @@ const AddEvents = () => {
     time: '',
     location: '',
     priceRange: '',
-    availability: ''
+    availability: '',
+    category: '' // Add category to the state
   });
   const [success, setSuccess] = useState('');
   const [eventNameExists, setEventNameExists] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
 
+  // Function to sanitize event name
   const sanitizeEventName = (name) => {
     return name.replace(/[.#$/[\]]/g, '');
   };
 
+  // Function to check if event name exists
   const checkEventNameExists = useCallback(async (name) => {
     const sanitizedEventName = sanitizeEventName(name);
     const dbRef = ref(database);
@@ -33,21 +36,20 @@ const AddEvents = () => {
     setEventNameExists(snapshot.exists());
   }, []);
 
+  // useEffect to check if event name exists whenever the event name changes
   useEffect(() => {
     if (eventData.name) {
       checkEventNameExists(eventData.name);
     }
   }, [eventData.name, checkEventNameExists]);
 
+  // Function to handle form field changes
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === 'eventImage') {
-      setEventData({ ...eventData, [name]: files[0] });
-    } else {
-      setEventData({ ...eventData, [name]: value });
-    }
+    const { name, value } = e.target; // Remove 'files' from destructuring
+    setEventData({ ...eventData, [name]: value });
   };
 
+  // Function to handle image upload
   const handleImageUpload = async () => {
     if (eventData.eventImage) {
       const imageRef = storageRef(storage, `events/${sanitizeEventName(eventData.name)}/image`);
@@ -74,6 +76,7 @@ const AddEvents = () => {
     return null;
   };
 
+  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const sanitizedEventName = sanitizeEventName(eventData.name);
@@ -92,7 +95,7 @@ const AddEvents = () => {
 
       await set(ref(database, 'events/' + sanitizedEventName), newEventData);
       setSuccess(`Event "${eventData.name}" created successfully`);
-      setEventData({ eventID: '', name: '', eventImage: null, date: '', time: '', location: '', priceRange: '', availability: '' });
+      setEventData({ eventID: '', name: '', eventImage: null, date: '', time: '', location: '', priceRange: '', availability: '', category: '' });
     } catch (error) {
       console.error('Error:', error);
       setSuccess('Error occurred while creating the event.');
@@ -104,6 +107,7 @@ const AddEvents = () => {
       <Paper elevation={4} sx={{ padding: '20px', width: '400px', textAlign: 'center' }}>
         <h2>Create Event</h2>
         <form onSubmit={handleSubmit}>
+          {/* Event ID */}
           <TextField
             label="Event ID"
             name="eventID"
@@ -114,6 +118,7 @@ const AddEvents = () => {
             margin="normal"
             required
           />
+          {/* Event Name */}
           <TextField
             label="Event Name"
             name="name"
@@ -124,6 +129,7 @@ const AddEvents = () => {
             margin="normal"
             required
           />
+          {/* Event Image */}
           <TextField
             label="Event Image"
             name="eventImage"
@@ -134,6 +140,7 @@ const AddEvents = () => {
             margin="normal"
             required
           />
+          {/* Event Date */}
           <TextField
             label="Event Date"
             name="date"
@@ -146,6 +153,7 @@ const AddEvents = () => {
             required
             InputLabelProps={{ shrink: true }}
           />
+          {/* Event Time */}
           <TextField
             label="Event Time"
             name="time"
@@ -158,6 +166,7 @@ const AddEvents = () => {
             required
             InputLabelProps={{ shrink: true }}
           />
+          {/* Location */}
           <TextField
             label="Location"
             name="location"
@@ -168,6 +177,7 @@ const AddEvents = () => {
             margin="normal"
             required
           />
+          {/* Price Range */}
           <TextField
             label="Price Range"
             name="priceRange"
@@ -178,6 +188,7 @@ const AddEvents = () => {
             margin="normal"
             required
           />
+          {/* Availability */}
           <TextField
             label="Availability"
             name="availability"
@@ -188,10 +199,29 @@ const AddEvents = () => {
             margin="normal"
             required
           />
+          {/* Category dropdown menu */}
+          <TextField
+            select
+            label="Category"
+            name="category"
+            value={eventData.category}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            required
+          >
+            <MenuItem value="Musical">Musical</MenuItem>
+            <MenuItem value="Dancing">Dancing</MenuItem>
+            <MenuItem value="Stage Drama">Stage Drama</MenuItem>
+            <MenuItem value="Food festivals">Food festivals</MenuItem>
+          </TextField>
+          {/* Submit button */}
           <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
             Create Event
           </Button>
         </form>
+        {/* Success message */}
         {success && <p>{success}</p>}
       </Paper>
     </Box>

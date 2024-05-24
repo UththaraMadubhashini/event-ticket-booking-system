@@ -1,6 +1,6 @@
 import React from 'react';
-import SideBar from './AdminComponents/SideBar/SideBar';
-import NavBar from './AdminComponents/NavBar/NavBar';
+import SideBar from '../../AdminComponents/SideBar/SideBar';
+import NavBar from '../../AdminComponents/NavBar/NavBar';
 import Box from '@mui/material/Box';
 
 const BookingDetails = () => {

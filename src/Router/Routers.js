@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import Home from "../Pages/Home";
 import DancingEvents from "../Pages/DancingEvents";
 import FoodFestival from "../Pages/FoodFestival";
 import MusicalEvents from "../Pages/MusicalEvents";
@@ -18,16 +19,17 @@ import HanthanetaPayana from "../Pages/HanthanetaPayana";
 import BassEnigma from "../Pages/BassEnigma";
 import About from "../Pages/About";
 import Booking from "../Pages/Booking";
-import ManageEvents from "../Pages/Admin/ManageEvents";
-import ManageTickets from "../Pages/Admin/ManageTickets";
 import ManageUser from "../Pages/Admin/Dashboard/ManageUser/ManageUser"
-import BookingDetails from "../Pages/Admin/BookingDetails";
-import Home from "../Pages/Home";
+import BookingDetails from "../Pages/Admin/Dashboard/BookingDetails/BookingDetails";
 import Payment from "../Pages/Payment/Payment";
-import AddEvent from "../Pages/Admin/EventTicketCrud/AddEvent";
-import DeleteEvent from "../Pages/Admin/EventTicketCrud/DeleteEvent";
-import UpdateEvent from "../Pages/Admin/EventTicketCrud/UpdateEvent";
-import ViewEvent from "../Pages/Admin/EventTicketCrud/ViewEvent";
+import AddEvent from "../Pages/Admin/Dashboard/EventsCrud/AddEvent";
+import ManageTickets from "../Pages/Admin/Dashboard/TicketsCrud/ManageTickets";
+import ManageEvents from "../Pages/Admin/Dashboard/EventsCrud/ManageEvents";
+import AddTicket from "../Pages/Admin/Dashboard/TicketsCrud/AddTicket";
+import ViewBooking from "../Pages/Organizer/ViewBooking";
+import ViewTicket from "../Pages/Organizer/ViewTicket";
+import ViewEvent from "../Pages/Organizer/ViewEvent";
+
 
 const Routers = () => {
   return (
@@ -56,13 +58,16 @@ const Routers = () => {
       <Route path="/admin" element={<AdminLayout/>}>
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="manage-events" element={<ManageEvents />} />
-      <Route path="manage-tickets" element={<ManageTickets />} /> 
-      <Route path="manage-user" element={<ManageUser />} /> 
       <Route path="add-event" element={<AddEvent />} /> 
-      <Route path="delete-event" element={<DeleteEvent />} /> 
-      <Route path="update-event" element={<UpdateEvent />} /> 
-      <Route path="view-event" element={<ViewEvent />} /> 
+      <Route path="manage-tickets" element={<ManageTickets />} />
+      <Route path="add-ticket" element={<AddTicket />} /> 
+      <Route path="manage-user" element={<ManageUser />} /> 
       <Route path="booking-details" element={<BookingDetails />} /> 
+      
+
+      <Route path="view-event" element={<ViewEvent />} />
+      <Route path="view-ticket" element={<ViewTicket />} /> 
+      <Route path="view-booking" element={<ViewBooking />} /> 
       
      </Route>
     

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const UpdateEvent = () => {
+const ViewTicket = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const UpdateEvent = () => {
   )
 }
 
-export default UpdateEvent
+export default ViewTicket
