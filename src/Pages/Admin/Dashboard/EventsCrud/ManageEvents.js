@@ -4,7 +4,7 @@ import NavBar from '../../AdminComponents/NavBar/NavBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { database, ref, get, remove, set, storage, uploadBytes, getDownloadURL } from '../../../../firebase-config';
+import { database, ref, get, remove, set } from '../../../../firebase-config';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, MenuItem } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -22,9 +22,8 @@ const ManageEvents = () => {
     location: '',
     priceRange: '',
     availability: '',
-    category: '' // Added category in the state
+    category: ''
   });
-  const [imageFile, setImageFile] = useState(null); // State for storing image file
   const [categories, setCategories] = useState([]); // State for categories
 
   useEffect(() => {
@@ -35,7 +34,7 @@ const ManageEvents = () => {
         if (snapshot.exists()) {
           const eventData = snapshot.val();
           setEvents(eventData);
-
+          
           // Fetch categories
           const categoriesArray = Object.values(eventData).reduce((acc, curr) => {
             if (curr.category && !acc.includes(curr.category)) {
@@ -66,7 +65,6 @@ const ManageEvents = () => {
   const handleClose = () => {
     setOpen(false);
     setSelectedEventId(null);
-    // Reset the event data when the dialog closes
     setEventData({
       name: '',
       eventImage: '',
@@ -75,9 +73,8 @@ const ManageEvents = () => {
       location: '',
       priceRange: '',
       availability: '',
-      category: '' // Reset category too
+      category: ''
     });
-    setImageFile(null); // Reset the image file state
   };
 
   const handleDeleteDialogOpen = (eventId) => {
@@ -93,7 +90,7 @@ const ManageEvents = () => {
   const handleDelete = async () => {
     try {
       if (selectedEventId) {
-        await remove(ref(database, `events/${selectedEventId}`)); // Use remove function
+        await remove(ref(database, `events/${selectedEventId}`));
         setEvents((prevEvents) => {
           const updatedEvents = { ...prevEvents };
           delete updatedEvents[selectedEventId];
@@ -110,13 +107,7 @@ const ManageEvents = () => {
   const handleUpdate = async () => {
     try {
       if (selectedEventId) {
-        if (imageFile) {
-          const imageRef = ref(storage, `events/${selectedEventId}/${imageFile.name}`);
-          await uploadBytes(imageRef, imageFile);
-          const imageURL = await getDownloadURL(imageRef);
-          eventData.eventImage = imageURL;
-        }
-        await set(ref(database, `events/${selectedEventId}`), eventData); // Update event data
+        await set(ref(database, `events/${selectedEventId}`), eventData);
         console.log(`Event with ID ${selectedEventId} updated successfully`);
         handleClose();
       }
@@ -128,11 +119,7 @@ const ManageEvents = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEventData({ ...eventData, [name]: value });
-  };
-
-  const handleImageChange = (e) => {
-    setImageFile(e.target.files[0]);
-  };
+  };   
 
   return (
     <>
@@ -156,7 +143,7 @@ const ManageEvents = () => {
                   <TableCell align="center">Location</TableCell>
                   <TableCell align="center">Price Range</TableCell>
                   <TableCell align="center">Availability</TableCell>
-                  <TableCell align="center">Category</TableCell> {/* New column for category */}
+                  <TableCell align="center">Category</TableCell>
                   <TableCell align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -173,7 +160,7 @@ const ManageEvents = () => {
                     <TableCell align="center">{events[id].location}</TableCell>
                     <TableCell align="center">{events[id].priceRange}</TableCell>
                     <TableCell align="center">{events[id].availability}</TableCell>
-                    <TableCell align="center">{events[id].category}</TableCell> {/* Display category */}
+                    <TableCell align="center">{events[id].category}</TableCell>
                     <TableCell align="center">
                       <IconButton color="primary" onClick={() => handleOpen(id)}>
                         <EditIcon />
@@ -188,7 +175,6 @@ const ManageEvents = () => {
             </Table>
           </TableContainer>
 
-          {/* Edit Dialog */}
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Edit Event</DialogTitle>
             <DialogContent>
@@ -205,13 +191,14 @@ const ManageEvents = () => {
                 onChange={handleChange}
               />
               <TextField
-                margin="dense"
-                label="Event Image"
-                type="file"
-                fullWidth
-                name="eventImage"
-                onChange={handleImageChange}
-              />
+                  margin="dense"
+                  label="Event Image"
+                  type="text"
+                  fullWidth
+                  name="eventImage"
+                  value={eventData.eventImage}
+                  onChange={handleChange}
+                />
               <TextField
                 margin="dense"
                 label="Date"

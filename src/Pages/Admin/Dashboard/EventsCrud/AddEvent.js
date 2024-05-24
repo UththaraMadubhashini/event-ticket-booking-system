@@ -45,8 +45,12 @@ const AddEvents = () => {
 
   // Function to handle form field changes
   const handleChange = (e) => {
-    const { name, value } = e.target; // Remove 'files' from destructuring
-    setEventData({ ...eventData, [name]: value });
+    const { name, value, files } = e.target;
+    if (name === 'eventImage') {
+      setEventData({ ...eventData, [name]: files[0] });
+    } else {
+      setEventData({ ...eventData, [name]: value });
+    }
   };
 
   // Function to handle image upload
