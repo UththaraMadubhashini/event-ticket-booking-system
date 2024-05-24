@@ -4,7 +4,7 @@ import NavBar from '../../AdminComponents/NavBar/NavBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { database, ref, get, remove, set } from '../../../../firebase-config';
+import { database, ref, get, remove, set, storage, uploadBytes, getDownloadURL } from '../../../../firebase-config';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, MenuItem } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -12,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 const ManageEvents = () => {
   const [events, setEvents] = useState({});
   const [open, setOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
   const [eventData, setEventData] = useState({
     name: '',
@@ -23,8 +24,9 @@ const ManageEvents = () => {
     availability: '',
     category: '' // Added category in the state
   });
+  const [imageFile, setImageFile] = useState(null); // State for storing image file
   const [categories, setCategories] = useState([]); // State for categories
-  
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -33,7 +35,7 @@ const ManageEvents = () => {
         if (snapshot.exists()) {
           const eventData = snapshot.val();
           setEvents(eventData);
-          
+
           // Fetch categories
           const categoriesArray = Object.values(eventData).reduce((acc, curr) => {
             if (curr.category && !acc.includes(curr.category)) {
@@ -75,6 +77,17 @@ const ManageEvents = () => {
       availability: '',
       category: '' // Reset category too
     });
+    setImageFile(null); // Reset the image file state
+  };
+
+  const handleDeleteDialogOpen = (eventId) => {
+    setSelectedEventId(eventId);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteDialogClose = () => {
+    setDeleteDialogOpen(false);
+    setSelectedEventId(null);
   };
 
   const handleDelete = async () => {
@@ -87,7 +100,7 @@ const ManageEvents = () => {
           return updatedEvents;
         });
         console.log(`Event with ID ${selectedEventId} deleted successfully`);
-        handleClose();
+        handleDeleteDialogClose();
       }
     } catch (error) {
       console.error('Error deleting event:', error);
@@ -97,6 +110,12 @@ const ManageEvents = () => {
   const handleUpdate = async () => {
     try {
       if (selectedEventId) {
+        if (imageFile) {
+          const imageRef = ref(storage, `events/${selectedEventId}/${imageFile.name}`);
+          await uploadBytes(imageRef, imageFile);
+          const imageURL = await getDownloadURL(imageRef);
+          eventData.eventImage = imageURL;
+        }
         await set(ref(database, `events/${selectedEventId}`), eventData); // Update event data
         console.log(`Event with ID ${selectedEventId} updated successfully`);
         handleClose();
@@ -107,9 +126,13 @@ const ManageEvents = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target; // Remove 'files' from destructuring
+    const { name, value } = e.target;
     setEventData({ ...eventData, [name]: value });
-  };   
+  };
+
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
 
   return (
     <>
@@ -155,7 +178,7 @@ const ManageEvents = () => {
                       <IconButton color="primary" onClick={() => handleOpen(id)}>
                         <EditIcon />
                       </IconButton>
-                      <IconButton color="secondary" onClick={() => handleDelete(id)}>
+                      <IconButton color="secondary" onClick={() => handleDeleteDialogOpen(id)}>
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
@@ -164,6 +187,8 @@ const ManageEvents = () => {
               </TableBody>
             </Table>
           </TableContainer>
+
+          {/* Edit Dialog */}
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Edit Event</DialogTitle>
             <DialogContent>
@@ -182,11 +207,10 @@ const ManageEvents = () => {
               <TextField
                 margin="dense"
                 label="Event Image"
-                type="text"
+                type="file"
                 fullWidth
                 name="eventImage"
-                value={eventData.eventImage}
-                onChange={handleChange}
+                onChange={handleImageChange}
               />
               <TextField
                 margin="dense"
@@ -208,70 +232,84 @@ const ManageEvents = () => {
               />
               <TextField
                 margin="dense"
+                label="Location"
+                type="text"
+                fullWidth
+                name="location"
+                value={eventData.location}
+                onChange={handleChange}
+              />
+              <TextField
+                margin="dense"
+                label="Price Range"
+                type="text"
+                fullWidth
+                name="priceRange"
+                value={eventData.priceRange}
+                onChange={handleChange}
+              />
+              <TextField
+                margin="dense"
+                label="Availability"
+                type="text"
+                fullWidth
+                name="availability"
+                value={eventData.availability}
+                onChange={handleChange}
+              />
+              <TextField
+                select
+                label="Category"
+                name="category"
+                value={eventData.category}
+                onChange={handleChange}
+                fullWidth
+                margin="dense"
+              >
+                <MenuItem value="Musical">Musical</MenuItem>
+                <MenuItem value="Dancing">Dancing</MenuItem>
+                <MenuItem value="Stage Drama">Stage Drama</MenuItem>
+                <MenuItem value="Food festivals">Food festivals</MenuItem>
+                {categories
+                  .filter(category => category !== eventData.category) // Filter out the currently selected category
+                  .map((category) => (
+                    <MenuItem key={category} value={category}>
+                      {category}
+                    </MenuItem>
+                  ))}
+              </TextField>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleUpdate} color="primary">
+                Update
+              </Button>
+            </DialogActions>
+          </Dialog>
 
-                                 label="Location"
-                                 type="text"
-                                 fullWidth
-                                 name="location"
-                                 value={eventData.location}
-                                 onChange={handleChange}
-                               />
-                  <TextField
-                                 margin="dense"
-                                 label="Price Range"
-                                 type="text"
-                                 fullWidth
-                                 name="priceRange"
-                                 value={eventData.priceRange}
-                                 onChange={handleChange}
-                               />
-                  <TextField
-                                 margin="dense"
-                                 label="Availability"
-                                 type="text"
-                                 fullWidth
-                                 name="availability"
-                                 value={eventData.availability}
-                                 onChange={handleChange}
-                               />
-                  <TextField
-  select
-  label="Category"
-  name="category"
-  value={eventData.category}
-  onChange={handleChange}
-  fullWidth
-  margin="dense"
->
-<MenuItem value="Musical">Musical</MenuItem>
-<MenuItem value="Dancing">Dancing</MenuItem>
-<MenuItem value="Stage Drama">Stage Drama</MenuItem>
-<MenuItem value="Food festivals">Food festivals</MenuItem>
+          {/* Delete Confirmation Dialog */}
+          <Dialog open={deleteDialogOpen} onClose={handleDeleteDialogClose}>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to delete this event?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDeleteDialogClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleDelete} color="secondary">
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      </Box>
+    </>
+  );
+};
 
-  {categories
-    .filter(category => category !== eventData.category) // Filter out the currently selected category
-    .map((category) => (
-      <MenuItem key={category} value={category}>
-        {category}
-      </MenuItem>
-    ))}
-</TextField>
-
-
-                  </DialogContent>
-                  <DialogActions>
-                  <Button onClick={handleClose} color="primary">
-                  Cancel
-                  </Button>
-                  <Button onClick={handleUpdate} color="primary">
-                  Update
-                  </Button>
-                  </DialogActions>
-                  </Dialog>
-                  </div>
-                  </Box>
-                  </>
-                  );
-                  };
-                  
-                  export default ManageEvents;
+export default ManageEvents;
