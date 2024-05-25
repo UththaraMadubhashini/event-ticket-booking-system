@@ -1,4 +1,3 @@
-// SignUp.js
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -15,9 +14,16 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Button from '@mui/material/Button';
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import Alert from '@mui/material/Alert';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase-config'; // Import auth from firebase-config
+import { auth, database, ref, set, get } from '../firebase-config'; 
 
 const isEmail = (email) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email);
 
@@ -32,16 +38,43 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = useState(false);
   const [contactNumberError, setContactNumberError] = useState(false);
   const [formValid, setFormValid] = useState('');
+  const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
   const [success, setSuccess] = useState('');
   const navigate = useNavigate(); 
+  const [selectedRole, setSelectedRole] = useState('');
+
+  const handleSuccessDialogClose = () => {
+    setOpenSuccessDialog(false);
+  };  
+
+  const handleRoleChange = (event) => {
+    setSelectedRole(event.target.value);
+  };
 
   const handleUsername = () => {
     setUsernameError(!usernameInput);
   };
 
-  const handleEmail = () => {
+  const handleEmail = async () => {
     setEmailError(!isEmail(emailInput));
+    const role = await fetchUserRoleByEmail(emailInput);
+    setSelectedRole(role);
   };
+
+const fetchUserRoleByEmail = async (email) => {
+  try {
+    const rolesByEmail = {
+      'admin23@gmail.com': 'admin',
+      'org123@gmail.com': 'organizer',
+    };
+
+    const role = rolesByEmail[email] || 'customer';
+    return role;
+  } catch (error) {
+    console.error('Error fetching user role by email:', error);
+    return 'customer'; 
+  }
+};
 
   const handlePassword = () => {
     setPasswordError(!passwordInput || passwordInput.length < 5 || passwordInput.length > 20);
@@ -55,6 +88,7 @@ export default function SignUp() {
     e.preventDefault();
     setFormValid('');
     setSuccess('');
+    setOpenSuccessDialog(true);
 
     if (!usernameInput) {
       setUsernameError(true);
@@ -78,12 +112,36 @@ export default function SignUp() {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, emailInput, passwordInput);
-      setSuccess("Registration Successful");
-      navigate("/login");
-    } catch (error) {
-      setFormValid(error.message);
-    }
+      // Read current counter value
+      const counterRef = ref(database, 'users_counter');
+      const counterSnapshot = await get(counterRef);
+      let currentCounter = counterSnapshot.exists() ? counterSnapshot.val() : 0;
+      
+      // Increment counter
+      const newCounter = currentCounter + 1;
+      const newUid = String(newCounter).padStart(3, '0');  // Generate UID with leading zeros, e.g., 001, 002
+
+      // Create user in auth
+      const userCredential = await createUserWithEmailAndPassword(auth, emailInput, passwordInput);
+      const user = userCredential.user;
+
+      // Store user data in database with new UID
+      await set(ref(database, `users/${newUid}`), {
+        uid: user.uid,
+        username: usernameInput,
+        email: emailInput,
+        role: selectedRole,
+        contactNumber: contactNumberInput,
+      });
+
+      // Update counter value in database
+      await set(counterRef, newCounter);
+  
+      setSuccess(`Registration Successful. Welcome, ${usernameInput}!`);
+    navigate("/login");
+  } catch (error) {
+    setFormValid(error.message);
+  }
   };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -93,10 +151,27 @@ export default function SignUp() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '30px' }}>
-      <Paper elevation={4} sx={{ background: '#CBEDD5', border: '3px solid #003C43', width: '350px', textAlign: 'center', p: 2 }}>
+      <Paper elevation={4} sx={{ background: '#CBEDD5', border: '3px solid #003C43', width: '350px', textAlign: 'center', p: 2 }}> 
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Chip icon={<FaceIcon />} label="Sign Up" color="primary" variant="outlined" sx={{ color: '#003C43', borderColor: '#135D66' }} />
         </Box>
+
+        <FormControl variant="standard" sx={{ width: '100%', marginBottom: '10px', '& label': { color: '#1C1678' } }}>
+      <InputLabel id="role-label">Role *</InputLabel>
+      <Select
+        labelId="role-label"
+        id="role-select"
+        value={selectedRole}
+        onChange={handleRoleChange}
+        required
+        fullWidth
+      >
+        <MenuItem value="customer">Customer</MenuItem>
+        <MenuItem value="admin">Admin</MenuItem>
+        <MenuItem value="organizer">Organizer</MenuItem>
+      </Select>
+    </FormControl>
+
         <TextField
           id="standard-basic"
           error={usernameError}
@@ -163,10 +238,29 @@ export default function SignUp() {
           fullWidth
           variant="contained"
           startIcon={<LoginOutlinedIcon />}
-          sx={{ borderRadius: '40px', background: '#439A97', border: '3.5px solid #135D66', boxShadow: '#62B6B7', color: 'white', height: '45px', padding: '0 30px', marginTop: '10px', '&:hover': { background: '#135D66' } }}
+          sx={{ borderRadius: '40px', 
+          background: '#439A97', 
+          border: '3.5px solid #135D66', 
+          boxShadow: '#62B6B7', 
+          color: 'white', 
+          height: '45px', 
+          padding: '0 30px', 
+          marginTop: '10px', '&:hover': { background: '#135D66' } }}
         >
           SIGN UP
         </Button>
+
+        <Dialog open={openSuccessDialog} onClose={handleSuccessDialogClose}>
+          <DialogTitle>Success</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+            Registration Successful. Welcome, {usernameInput}!
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+          </DialogActions>
+        </Dialog>
+
         {formValid && <Alert severity="error">{formValid}</Alert>}
         {success && <Alert severity="success">{success}</Alert>}
         <p>
