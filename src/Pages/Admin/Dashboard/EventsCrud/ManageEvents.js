@@ -191,14 +191,15 @@ const ManageEvents = () => {
                 onChange={handleChange}
               />
               <TextField
-                  margin="dense"
-                  label="Event Image"
-                  type="text"
-                  fullWidth
-                  name="eventImage"
-                  value={eventData.eventImage}
-                  onChange={handleChange}
-                />
+            label="Event Image"
+            name="eventImage"
+            type="file"
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            required
+          />
               <TextField
                 margin="dense"
                 label="Date"

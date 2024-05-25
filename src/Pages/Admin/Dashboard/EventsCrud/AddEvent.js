@@ -3,7 +3,10 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem'; // Import MenuItem for dropdown menu
+import MenuItem from '@mui/material/MenuItem';
+import InputAdornment from '@mui/material/InputAdornment';
+import { Link } from 'react-router-dom';
+import Alert from '@mui/material/Alert'; // Import Alert
 import { database, ref, set, get, child } from '../../../../firebase-config';
 import { uploadBytesResumable, getDownloadURL, ref as storageRef } from "firebase/storage";
 import { storage } from '../../../../firebase-config';
@@ -18,10 +21,11 @@ const AddEvents = () => {
     location: '',
     priceRange: '',
     availability: '',
-    category: '' // Add category to the state
+    category: ''
   });
   const [success, setSuccess] = useState('');
   const [eventNameExists, setEventNameExists] = useState(false);
+  const [error, setError] = useState(''); // Add state for error messages
 
   // Function to sanitize event name
   const sanitizeEventName = (name) => {
@@ -83,10 +87,11 @@ const AddEvents = () => {
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     const sanitizedEventName = sanitizeEventName(eventData.name);
 
     if (eventNameExists) {
-      setSuccess('Event name already exists. Please choose a different name.');
+      setError('Event name already exists. Please choose a different name.');
       return;
     }
 
@@ -99,10 +104,29 @@ const AddEvents = () => {
 
       await set(ref(database, 'events/' + sanitizedEventName), newEventData);
       setSuccess(`Event "${eventData.name}" created successfully`);
-      setEventData({ eventID: '', name: '', eventImage: null, date: '', time: '', location: '', priceRange: '', availability: '', category: '' });
-    } catch (error) {
-      console.error('Error:', error);
-      setSuccess('Error occurred while creating the event.');
+      setEventData({ eventID: '', name: '', eventImage: null, date: '', time: '', location: '', 
+                      priceRange: '', availability: '', category: '' });
+
+    const emptyFields = Object.entries(eventData).filter(([key, value]) => !String(value).trim());
+    if (emptyFields.length > 0) {
+      // Display alert message for empty fields
+      setError(`Please fill in the following fields: ${emptyFields.map(([key]) => key).join(', ')}`);
+    } else {
+      // All fields are filled, proceed with form submission
+      alert('Form submitted successfully!');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    setError('Error occurred while creating the event.');
+  }
+  };
+
+  const handleNumberInput = (e) => {
+    const { name, value } = e.target;
+    if (/^\d*$/.test(value)) {
+      setEventData({ ...eventData, [name]: value });
+    } else {
+      setError(`${name === 'priceRange' ? 'Price Range' : 'Availability'} must be a number.`);
     }
   };
 
@@ -143,6 +167,7 @@ const AddEvents = () => {
             fullWidth
             margin="normal"
             required
+            InputLabelProps={{ shrink: true }}
           />
           {/* Event Date */}
           <TextField
@@ -191,13 +216,16 @@ const AddEvents = () => {
             fullWidth
             margin="normal"
             required
+            InputProps={{
+              startAdornment: <InputAdornment position="start">Rs.</InputAdornment>
+            }}
           />
           {/* Availability */}
           <TextField
             label="Availability"
             name="availability"
             value={eventData.availability}
-            onChange={handleChange}
+            onChange={handleNumberInput}
             variant="outlined"
             fullWidth
             margin="normal"
@@ -221,15 +249,18 @@ const AddEvents = () => {
             <MenuItem value="Food festivals">Food festivals</MenuItem>
           </TextField>
           {/* Submit button */}
-          <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-            Create Event
+          <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+          <Link to='/admin/manage-events'> Create Event </Link>
           </Button>
         </form>
         {/* Success message */}
-        {success && <p>{success}</p>}
+        {success && <Alert severity="success" sx={{ mt: 2 }}>{success}</Alert>}
+        {/* Error message */}
+        {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
       </Paper>
     </Box>
   );
 };
 
 export default AddEvents;
+
