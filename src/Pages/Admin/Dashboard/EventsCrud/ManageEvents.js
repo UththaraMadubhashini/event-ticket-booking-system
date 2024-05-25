@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { database, ref, get, remove, set } from '../../../../firebase-config';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, MenuItem } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, MenuItem, Alert } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -24,7 +24,8 @@ const ManageEvents = () => {
     availability: '',
     category: ''
   });
-  const [categories, setCategories] = useState([]); // State for categories
+  const [categories, setCategories] = useState([]);
+  const [success, setSuccess] = useState('');
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -110,6 +111,7 @@ const ManageEvents = () => {
         await set(ref(database, `events/${selectedEventId}`), eventData);
         console.log(`Event with ID ${selectedEventId} updated successfully`);
         handleClose();
+        setSuccess('Event updated successfully');
       }
     } catch (error) {
       console.error('Error updating event:', error);
@@ -198,6 +200,7 @@ const ManageEvents = () => {
             variant="outlined"
             fullWidth
             margin="normal"
+            InputLabelProps={{ shrink: true }}
             required
           />
               <TextField
@@ -218,7 +221,8 @@ const ManageEvents = () => {
                 value={eventData.time}
                 onChange={handleChange}
               />
-              <TextField
+              <
+              TextField
                 margin="dense"
                 label="Location"
                 type="text"
@@ -294,6 +298,9 @@ const ManageEvents = () => {
               </Button>
             </DialogActions>
           </Dialog>
+
+          {/* Success message */}
+          {success && <Alert severity="success" sx={{ mt: 2 }}>{success}</Alert>}
         </div>
       </Box>
     </>

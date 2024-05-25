@@ -5,8 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import InputAdornment from '@mui/material/InputAdornment';
-import { Link } from 'react-router-dom';
-import Alert from '@mui/material/Alert'; // Import Alert
+import Alert from '@mui/material/Alert';
 import { database, ref, set, get, child } from '../../../../firebase-config';
 import { uploadBytesResumable, getDownloadURL, ref as storageRef } from "firebase/storage";
 import { storage } from '../../../../firebase-config';
@@ -40,12 +39,31 @@ const AddEvents = () => {
     setEventNameExists(snapshot.exists());
   }, []);
 
+  // Function to generate the next event ID
+  const generateNextEventID = useCallback(async () => {
+    const dbRef = ref(database, 'events');
+    const snapshot = await get(dbRef);
+    if (snapshot.exists()) {
+      const events = snapshot.val();
+      const eventCount = Object.keys(events).length;
+      const nextEventID = eventCount + 1;
+      setEventData(prevData => ({ ...prevData, eventID: nextEventID.toString() }));
+    } else {
+      setEventData(prevData => ({ ...prevData, eventID: '1' }));
+    }
+  }, []);
+
   // useEffect to check if event name exists whenever the event name changes
   useEffect(() => {
     if (eventData.name) {
       checkEventNameExists(eventData.name);
     }
   }, [eventData.name, checkEventNameExists]);
+
+  // useEffect to generate the next event ID when the component mounts
+  useEffect(() => {
+    generateNextEventID();
+  }, [generateNextEventID]);
 
   // Function to handle form field changes
   const handleChange = (e) => {
@@ -106,19 +124,20 @@ const AddEvents = () => {
       setSuccess(`Event "${eventData.name}" created successfully`);
       setEventData({ eventID: '', name: '', eventImage: null, date: '', time: '', location: '', 
                       priceRange: '', availability: '', category: '' });
+      generateNextEventID();
 
-    const emptyFields = Object.entries(eventData).filter(([key, value]) => !String(value).trim());
-    if (emptyFields.length > 0) {
-      // Display alert message for empty fields
-      setError(`Please fill in the following fields: ${emptyFields.map(([key]) => key).join(', ')}`);
-    } else {
-      // All fields are filled, proceed with form submission
-      alert('Form submitted successfully!');
+      const emptyFields = Object.entries(eventData).filter(([key, value]) => !String(value).trim());
+      if (emptyFields.length > 0) {
+        // Display alert message for empty fields
+        setError(`Please fill in the following fields: ${emptyFields.map(([key]) => key).join(', ')}`);
+      } else {
+        // All fields are filled, proceed with form submission
+        alert('Form submitted successfully!');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setError('Error occurred while creating the event.');
     }
-  } catch (error) {
-    console.error('Error:', error);
-    setError('Error occurred while creating the event.');
-  }
   };
 
   const handleNumberInput = (e) => {
@@ -145,6 +164,7 @@ const AddEvents = () => {
             fullWidth
             margin="normal"
             required
+            disabled
           />
           {/* Event Name */}
           <TextField
@@ -250,7 +270,7 @@ const AddEvents = () => {
           </TextField>
           {/* Submit button */}
           <Button type="submit" variant="contained" sx={{ mt: 2 }}>
-          <Link to='/admin/manage-events'> Create Event </Link>
+           Create Event 
           </Button>
         </form>
         {/* Success message */}
@@ -263,4 +283,3 @@ const AddEvents = () => {
 };
 
 export default AddEvents;
-
