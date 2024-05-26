@@ -10,7 +10,7 @@ import { database, ref, set, get, child } from '../../../../firebase-config';
 import { uploadBytesResumable, getDownloadURL, ref as storageRef } from "firebase/storage";
 import { storage } from '../../../../firebase-config';
 
-const AddEvents = () => {
+const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
   const [eventData, setEventData] = useState({
     eventID: '',
     name: '',
@@ -105,7 +105,7 @@ const AddEvents = () => {
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+  
     const sanitizedEventName = sanitizeEventName(eventData.name);
 
     if (eventNameExists) {
@@ -126,14 +126,10 @@ const AddEvents = () => {
                       priceRange: '', availability: '', category: '' });
       generateNextEventID();
 
-      const emptyFields = Object.entries(eventData).filter(([key, value]) => !String(value).trim());
-      if (emptyFields.length > 0) {
-        // Display alert message for empty fields
-        setError(`Please fill in the following fields: ${emptyFields.map(([key]) => key).join(', ')}`);
-      } else {
-        // All fields are filled, proceed with form submission
-        alert('Form submitted successfully!');
-      }
+      // Notify the parent component about the addition of a new event
+      onEventAdded(newEventData);
+      setError('');
+      
     } catch (error) {
       console.error('Error:', error);
       setError('Error occurred while creating the event.');
@@ -204,7 +200,8 @@ const AddEvents = () => {
           />
           {/* Event Time */}
           <TextField
-            label="Event Time"
+            label="Event Time
+            "
             name="time"
             type="time"
             value={eventData.time}
@@ -270,7 +267,7 @@ const AddEvents = () => {
           </TextField>
           {/* Submit button */}
           <Button type="submit" variant="contained" sx={{ mt: 2 }}>
-           Create Event 
+            Create Event 
           </Button>
         </form>
         {/* Success message */}
