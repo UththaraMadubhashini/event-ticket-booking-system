@@ -3,11 +3,14 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { database, ref, set, get, child } from '../../../firebase-config';
+import MenuItem from '@mui/material/MenuItem';
+import InputAdornment from '@mui/material/InputAdornment';
+import Alert from '@mui/material/Alert';
+import { database, ref, set, get, child } from '../../../../firebase-config';
 import { uploadBytesResumable, getDownloadURL, ref as storageRef } from "firebase/storage";
-import { storage } from '../../../firebase-config'; // Assuming you have configured Firebase storage
+import { storage } from '../../../../firebase-config';
 
-const AddEvents = () => {
+const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
   const [eventData, setEventData] = useState({
     eventID: '',
     name: '',
@@ -16,16 +19,19 @@ const AddEvents = () => {
     time: '',
     location: '',
     priceRange: '',
-    availability: ''
+    availability: '',
+    category: ''
   });
   const [success, setSuccess] = useState('');
   const [eventNameExists, setEventNameExists] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
+  const [error, setError] = useState(''); // Add state for error messages
 
+  // Function to sanitize event name
   const sanitizeEventName = (name) => {
     return name.replace(/[.#$/[\]]/g, '');
   };
 
+  // Function to check if event name exists
   const checkEventNameExists = useCallback(async (name) => {
     const sanitizedEventName = sanitizeEventName(name);
     const dbRef = ref(database);
@@ -33,12 +39,33 @@ const AddEvents = () => {
     setEventNameExists(snapshot.exists());
   }, []);
 
+  // Function to generate the next event ID
+  const generateNextEventID = useCallback(async () => {
+    const dbRef = ref(database, 'events');
+    const snapshot = await get(dbRef);
+    if (snapshot.exists()) {
+      const events = snapshot.val();
+      const eventCount = Object.keys(events).length;
+      const nextEventID = eventCount + 1;
+      setEventData(prevData => ({ ...prevData, eventID: nextEventID.toString() }));
+    } else {
+      setEventData(prevData => ({ ...prevData, eventID: '1' }));
+    }
+  }, []);
+
+  // useEffect to check if event name exists whenever the event name changes
   useEffect(() => {
     if (eventData.name) {
       checkEventNameExists(eventData.name);
     }
   }, [eventData.name, checkEventNameExists]);
 
+  // useEffect to generate the next event ID when the component mounts
+  useEffect(() => {
+    generateNextEventID();
+  }, [generateNextEventID]);
+
+  // Function to handle form field changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'eventImage') {
@@ -48,6 +75,7 @@ const AddEvents = () => {
     }
   };
 
+  // Function to handle image upload
   const handleImageUpload = async () => {
     if (eventData.eventImage) {
       const imageRef = storageRef(storage, `events/${sanitizeEventName(eventData.name)}/image`);
@@ -74,12 +102,14 @@ const AddEvents = () => {
     return null;
   };
 
+  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     const sanitizedEventName = sanitizeEventName(eventData.name);
 
     if (eventNameExists) {
-      setSuccess('Event name already exists. Please choose a different name.');
+      setError('Event name already exists. Please choose a different name.');
       return;
     }
 
@@ -92,10 +122,26 @@ const AddEvents = () => {
 
       await set(ref(database, 'events/' + sanitizedEventName), newEventData);
       setSuccess(`Event "${eventData.name}" created successfully`);
-      setEventData({ eventID: '', name: '', eventImage: null, date: '', time: '', location: '', priceRange: '', availability: '' });
+      setEventData({ eventID: '', name: '', eventImage: null, date: '', time: '', location: '', 
+                      priceRange: '', availability: '', category: '' });
+      generateNextEventID();
+
+      // Notify the parent component about the addition of a new event
+      onEventAdded(newEventData);
+      setError('');
+      
     } catch (error) {
       console.error('Error:', error);
-      setSuccess('Error occurred while creating the event.');
+      setError('Error occurred while creating the event.');
+    }
+  };
+
+  const handleNumberInput = (e) => {
+    const { name, value } = e.target;
+    if (/^\d*$/.test(value)) {
+      setEventData({ ...eventData, [name]: value });
+    } else {
+      setError(`${name === 'priceRange' ? 'Price Range' : 'Availability'} must be a number.`);
     }
   };
 
@@ -104,6 +150,7 @@ const AddEvents = () => {
       <Paper elevation={4} sx={{ padding: '20px', width: '400px', textAlign: 'center' }}>
         <h2>Create Event</h2>
         <form onSubmit={handleSubmit}>
+          {/* Event ID */}
           <TextField
             label="Event ID"
             name="eventID"
@@ -113,7 +160,9 @@ const AddEvents = () => {
             fullWidth
             margin="normal"
             required
+            disabled
           />
+          {/* Event Name */}
           <TextField
             label="Event Name"
             name="name"
@@ -124,6 +173,7 @@ const AddEvents = () => {
             margin="normal"
             required
           />
+          {/* Event Image */}
           <TextField
             label="Event Image"
             name="eventImage"
@@ -133,7 +183,9 @@ const AddEvents = () => {
             fullWidth
             margin="normal"
             required
+            InputLabelProps={{ shrink: true }}
           />
+          {/* Event Date */}
           <TextField
             label="Event Date"
             name="date"
@@ -146,8 +198,10 @@ const AddEvents = () => {
             required
             InputLabelProps={{ shrink: true }}
           />
+          {/* Event Time */}
           <TextField
-            label="Event Time"
+            label="Event Time
+            "
             name="time"
             type="time"
             value={eventData.time}
@@ -158,6 +212,7 @@ const AddEvents = () => {
             required
             InputLabelProps={{ shrink: true }}
           />
+          {/* Location */}
           <TextField
             label="Location"
             name="location"
@@ -168,6 +223,7 @@ const AddEvents = () => {
             margin="normal"
             required
           />
+          {/* Price Range */}
           <TextField
             label="Price Range"
             name="priceRange"
@@ -177,22 +233,47 @@ const AddEvents = () => {
             fullWidth
             margin="normal"
             required
+            InputProps={{
+              startAdornment: <InputAdornment position="start">Rs.</InputAdornment>
+            }}
           />
+          {/* Availability */}
           <TextField
             label="Availability"
             name="availability"
             value={eventData.availability}
-            onChange={handleChange}
+            onChange={handleNumberInput}
             variant="outlined"
             fullWidth
             margin="normal"
             required
           />
-          <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-            Create Event
+          {/* Category dropdown menu */}
+          <TextField
+            select
+            label="Category"
+            name="category"
+            value={eventData.category}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            required
+          >
+            <MenuItem value="Musical">Musical</MenuItem>
+            <MenuItem value="Dancing">Dancing</MenuItem>
+            <MenuItem value="Stage Drama">Stage Drama</MenuItem>
+            <MenuItem value="Food festivals">Food festivals</MenuItem>
+          </TextField>
+          {/* Submit button */}
+          <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+            Create Event 
           </Button>
         </form>
-        {success && <p>{success}</p>}
+        {/* Success message */}
+        {success && <Alert severity="success" sx={{ mt: 2 }}>{success}</Alert>}
+        {/* Error message */}
+        {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
       </Paper>
     </Box>
   );

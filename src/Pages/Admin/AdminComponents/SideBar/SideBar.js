@@ -12,7 +12,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import PeopleIcon from '@mui/icons-material/People';
 import DateRangeIcon from '@mui/icons-material/DateRange';
-import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { useNavigate } from 'react-router-dom';
@@ -151,34 +151,7 @@ export default function SideBar() {
               >
                 <DateRangeIcon sx={{ color: '#135D66' }} />
               </ListItemIcon>
-              <ListItemText primary="Events Manage" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem disablePadding 
-            sx={{ display: 'block', backgroundColor: selectedItem === "manage-tickets" ? '#E3FEF7' : 'transparent' }} 
-            onClick={() => handleNavigation("/admin/manage-tickets", "manage-tickets")}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-                '&:hover': {
-                  backgroundColor: '#E3FEF7',
-                },
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                }}
-              >
-                <ConfirmationNumberIcon sx={{ color: '#135D66' }} />
-              </ListItemIcon>
-              <ListItemText primary="Tickets Manage" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary="Events/Tickets Manage" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
 
@@ -206,6 +179,33 @@ export default function SideBar() {
                 <StickyNote2Icon sx={{ color: '#135D66' }} />
               </ListItemIcon>
               <ListItemText primary="Manage Book Tickets" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding 
+            sx={{ display: 'block', backgroundColor: selectedItem === "sent-mails" ? '#E3FEF7' : 'transparent' }} 
+            onClick={() => handleNavigation("/admin/sent-mails", "sent-mails")}
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+                '&:hover': {
+                  backgroundColor: '#E3FEF7',
+                },
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <ContactMailIcon sx={{ color: '#135D66' }} />
+              </ListItemIcon>
+              <ListItemText primary="Sent Mail" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
 

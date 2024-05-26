@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DeleteEvent = () => {
+const ViewBooking = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const DeleteEvent = () => {
   )
 }
 
-export default DeleteEvent
+export default ViewBooking

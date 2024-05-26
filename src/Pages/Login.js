@@ -15,10 +15,13 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Button from '@mui/material/Button';
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import Alert from '@mui/material/Alert';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase-config'; // Import auth from firebase-config
+import { auth } from '../firebase-config'; 
+
 
 const isEmail = (email) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email);
 
@@ -31,10 +34,34 @@ export default function Login() {
   const [passwordError, setPasswordError] = useState(false);
   const [formValid, setFormValid] = useState('');
   const [success, setSuccess] = useState('');
-  const navigate = useNavigate(); // Use useNavigate
+  const navigate = useNavigate();
+  const [selectedRole, setSelectedRole] = useState('');
+
+  const handleRoleChange = (event) => {
+    setSelectedRole(event.target.value);
+  };
+
+const fetchUserRoleByEmail = async (email) => {
+  try {
+    // Define email-role mappings
+    const rolesByEmail = {
+      'admin23@gmail.com': 'admin',
+      'org123@gmail.com': 'organizer',
+    };
+
+    const role = rolesByEmail[email] || 'customer';
+    return role;
+  } catch (error) {
+    console.error('Error fetching user role by email:', error);
+    return 'customer';
+  }
+};
 
   const handleEmail = () => {
     setEmailError(!isEmail(emailInput));
+    fetchUserRoleByEmail(emailInput).then((role) => {
+      setSelectedRole(role);
+    });
   };
 
   const handlePassword = () => {
@@ -76,6 +103,23 @@ export default function Login() {
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Chip icon={<LockOutlinedIcon />} label="Login" color="primary" variant="outlined" sx={{ color: '#003C43', borderColor: '#135D66' }} />
         </Box>
+
+        <FormControl variant="standard" sx={{ width: '100%', marginBottom: '10px', '& label': { color: '#1C1678' } }}>
+      <InputLabel id="role-label">Role *</InputLabel>
+      <Select
+        labelId="role-label"
+        id="role-select"
+        value={selectedRole}
+        onChange={handleRoleChange}
+        required
+        fullWidth
+      >
+        <MenuItem value="customer">Customer</MenuItem>
+        <MenuItem value="admin">Admin</MenuItem>
+        <MenuItem value="organizer">Organizer</MenuItem>
+      </Select>
+      </FormControl>
+
         <TextField
           id="standard-basic"
           name="email"
