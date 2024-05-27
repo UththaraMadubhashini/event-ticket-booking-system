@@ -1,55 +1,43 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Button, TextField } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import { Grid } from "@mui/material";
+import EventCard from "./EventCard";
+import axios from "axios";
 
-const EventCard = ({
-  title,
-  image,
-  date,
-  time,
-  location,
-  priceRange,
-  availability,
-  editable,
-  onFieldChange,
-  onUpdate,
-}) => {
-  const handleChange = (field, value) => {
-    onFieldChange(field, value);
-  };
+const EventCards = () => {
+  const [eventsArray, setEventsArray] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/admin/manage-events')
+      .then(res => {
+        setEventsArray(res.data); // Assuming res.data is an array of events
+      })
+      .catch(err => {
+        console.error("Error fetching events:", err);
+      });
+  }, []);
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: '20px', marginBottom: '20px' }}>
-      <img src={image} alt={title} style={{ width: '100%' }} />
-      <TextField
-        label="Title"
-        value={title}
-        onChange={(e) => handleChange('title', e.target.value)}
-        fullWidth
-        style={{ marginBottom: '10px' }}
-        disabled={!editable}
-      />
-      {/* Add other editable fields here */}
-      {editable && (
-        <Button variant="contained" color="primary" onClick={onUpdate}>
-          Save Changes
-        </Button>
-      )}
-    </div>
+    <>
+      <Grid container spacing={2}>
+        {eventsArray.map((event) => (
+          <Grid item key={event.id} xs={12} sm={6} md={4}>
+            <EventCard
+              title={event.name}
+              image={event.eventImage}
+              date={event.date}
+              time={event.time}
+              location={event.location}
+              priceRange={event.priceRange}
+              availability={event.availability}
+              ticketImage="src/Assets/Images/ticketIcon.png"
+              priceTagImage="src/Assets/Images/priceTag.png"
+              editable={false} // Assuming regular users should not be able to edit
+            />
+          </Grid>
+        ))}
+      </Grid>
+    </>
   );
-};
+}
 
-EventCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
-  time: PropTypes.string.isRequired,
-  location: PropTypes.string.isRequired,
-  priceRange: PropTypes.string.isRequired,
-  availability: PropTypes.string.isRequired,
-  editable: PropTypes.bool.isRequired,
-  onFieldChange: PropTypes.func.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-};
-
-export default EventCard;
+export default EventCards;

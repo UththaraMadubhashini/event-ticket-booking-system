@@ -136,7 +136,7 @@ const fetchUserRoleByEmail = async (email) => {
 
       // Update counter value in database
       await set(counterRef, newCounter);
-  
+      
       setSuccess(`Registration Successful. Welcome, ${usernameInput}!`);
     navigate("/login");
   } catch (error) {

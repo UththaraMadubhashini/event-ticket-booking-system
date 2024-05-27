@@ -51,6 +51,9 @@ const Routers = () => {
         <Route path="/hanthanete-payana" element={<HanthanetaPayana/>} />
         <Route path="/bass-enigma" element={<BassEnigma/>} />
         <Route path="/cd-payment" element={<Payment />} />
+
+        {/* <Route path="/events" element={<EventCards events={events} />} /> */}
+
       </Route>
 
       <Route path="/admin" element={<AdminLayout/>}>
