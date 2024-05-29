@@ -187,12 +187,12 @@ const ViewHome = () => {
       </div>
 
   {/* Cards */}
-
   <Box sx={{ flexGrow: 4, p: 4 }}>
       <Grid container spacing={0} justifyContent="center">
         {events.map((event) => (
           <Grid item key={event.id} xs={12} sm={6} md={4} lg={3}>
             <EventCard
+              event={event}
               title={event.name}
               image={event.eventImage}
               date={event.date}

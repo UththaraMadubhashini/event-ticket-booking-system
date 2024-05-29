@@ -77,7 +77,7 @@ const fetchUserRoleByEmail = async (email) => {
 };
 
   const handlePassword = () => {
-    setPasswordError(!passwordInput || passwordInput.length < 5 || passwordInput.length > 20);
+    setPasswordError(!passwordInput || passwordInput.length < 5 || passwordInput.length > 8);
   };
 
   const handleContactNumber = () => {
@@ -88,7 +88,6 @@ const fetchUserRoleByEmail = async (email) => {
     e.preventDefault();
     setFormValid('');
     setSuccess('');
-    setOpenSuccessDialog(true);
 
     if (!usernameInput) {
       setUsernameError(true);
@@ -102,7 +101,7 @@ const fetchUserRoleByEmail = async (email) => {
     }
 
     if (passwordError || !passwordInput) {
-      setFormValid("Password is set to 5 - 20 characters. Please Re-Enter");
+      setFormValid("Password is set to 5 - 8 characters. Please Re-Enter");
       return;
     }
 
@@ -138,11 +137,12 @@ const fetchUserRoleByEmail = async (email) => {
       await set(counterRef, newCounter);
       
       setSuccess(`Registration Successful. Welcome, ${usernameInput}!`);
-    navigate("/login");
-  } catch (error) {
-    setFormValid(error.message);
-  }
-  };
+      setOpenSuccessDialog(true);
+      navigate("/login");
+          } catch (error) {
+            setFormValid(error.message);
+          }
+          };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
@@ -232,6 +232,7 @@ const fetchUserRoleByEmail = async (email) => {
             sx={{ '& .MuiInputBase-input': { color: '#003C43' } }}
           />
         </FormControl>
+        
         <Button
           onClick={handleSubmit}
           size="medium"
@@ -258,11 +259,17 @@ const fetchUserRoleByEmail = async (email) => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
+
+          <Button onClick={handleSuccessDialogClose} color="primary">
+            Close
+          </Button>
           </DialogActions>
         </Dialog>
-
+      <p>
         {formValid && <Alert severity="error">{formValid}</Alert>}
         {success && <Alert severity="success">{success}</Alert>}
+        </p>
+
         <p>
           <h4>Already have an account? <Link to="/login" style={{ color: '#135D66', textDecoration: 'none' }}>Login</Link></h4>
         </p>

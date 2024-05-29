@@ -177,10 +177,6 @@ export default function Booking() {
         </DialogActions>
       </Dialog>
     </React.Fragment>
-
-
-
-
       </div>
     </Typography>
   );

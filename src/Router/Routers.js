@@ -47,7 +47,7 @@ const Routers = () => {
         <Route path="/dancing" element={<DancingEvents/>} />
         <Route path="/stage-drama" element={<StageDrama/>} />
         <Route path="/food-festival" element={<FoodFestival/>} />
-        <Route path="/buy-tickets/:eventTitle" element={<BuyTickets />} />
+        <Route path="/buy-tickets/:title" element={<BuyTickets />} />
         <Route path="/hanthanete-payana" element={<HanthanetaPayana/>} />
         <Route path="/bass-enigma" element={<BassEnigma/>} />
         <Route path="/cd-payment" element={<Payment />} />
