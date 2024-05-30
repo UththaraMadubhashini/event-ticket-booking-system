@@ -12,7 +12,6 @@ import { Table, TableBody, TableCell, TableContainer,
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TablePagination from '@mui/material/TablePagination';
-import Snackbar from '@mui/material/Snackbar';
 
 const ManageEvents = () => {
   const [page, setPage] = useState(0);
@@ -35,11 +34,6 @@ const ManageEvents = () => {
   const [categories, setCategories] = useState([]);
   const [success, setSuccess] = useState('');
   const [editMode, setEditMode] = useState({}); 
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -87,10 +81,7 @@ const ManageEvents = () => {
     setEventData(events[eventId]);
   };
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+  const handleClose = () => {
     setOpen(false);
     setSelectedEventId(null);
     setEventData({
@@ -141,7 +132,7 @@ const ManageEvents = () => {
         console.log(`Event with ID ${eventId} updated successfully`);
         setEditMode((prevEditMode) => ({ ...prevEditMode, [eventId]: false }));
         handleClose();
-        // setSuccess('Event updated successfully');
+        setSuccess('Event updated successfully');
       }
     } catch (error) {
       console.error('Error updating event:', error);

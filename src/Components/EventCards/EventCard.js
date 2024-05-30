@@ -11,6 +11,8 @@ import RoomIcon from '@mui/icons-material/Room';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { Link, useNavigate  } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { selectEvent } from '../../reducers/ticketReducer';
 
 const buttonColor = {
   background: '#439A97',
@@ -24,8 +26,10 @@ const buttonColor = {
 
 const EventCard = ({ event, title, image, date, time, location, priceRange, availability, ticketImage, priceTagImage }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   
   const handleBuyTickets = () => {
+    dispatch(selectEvent(event));
     navigate(`/buy-tickets/${event.id}`, { state: { event } });
   };
 

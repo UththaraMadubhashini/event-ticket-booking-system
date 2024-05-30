@@ -116,7 +116,7 @@ const fetchUserRoleByEmail = async (email) => {
       >
         <MenuItem value="customer">Customer</MenuItem>
         <MenuItem value="admin">Admin</MenuItem>
-        <MenuItem value="organizer">Organizer</MenuItem>
+        {/* <MenuItem value="organizer">Organizer</MenuItem> */}
       </Select>
       </FormControl>
 
