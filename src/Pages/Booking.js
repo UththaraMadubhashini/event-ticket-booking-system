@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
@@ -10,13 +13,15 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import AutoModeIcon from '@mui/icons-material/AutoMode';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useNavigate } from 'react-router-dom';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 
 const buttonColor = {
   background: '#439A97',
@@ -29,46 +34,57 @@ const buttonColor = {
   marginTop: '10px',
 };
 
-function handleClick(event) {
-  event.preventDefault();
-  console.info('You clicked a breadcrumb.');
-}
-
-function createData(name, price, count, seats, amount) {
-  return { name, price, count, seats, amount };
-}
-
-const rows = [
-  createData(),
-];
-
 export default function Booking() {
-  const [count, setCount] = React.useState(rows[0].count);
+  const selectedEvent = useSelector((state) => state.ticket.selectedEvent);
+  const [count, setCount] = React.useState(0);
+  const [seats, setSeats] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [open, setOpen] = React.useState(false);
+  const [selectedTicket, setSelectedTicket] = React.useState(false);
+  const navigate = useNavigate();
+
 
   const handleChange = (event) => {
     const newCount = parseInt(event.target.value);
-    if (!isNaN(newCount) && newCount >= 1) {
+    if (!isNaN(newCount) && newCount >= 0) {
       setCount(newCount);
+      setSeats(newCount);
+      // calculation
+      const newAmount = newCount === 1 ? selectedEvent.priceRange : newCount * selectedEvent.priceRange;
+      setAmount(newAmount);
+      setSelectedTicket(true);
     }
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClick = () => {
+    if (!selectedTicket) {
+      setOpen(true); // Open the Snackbar if no ticket is selected
+    } else {
+      // Proceed with booking logic
+      handleBookingConfirm();
+    }
   };
 
-  const handleClose = () => {
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
     setOpen(false);
   };
 
-  const navigate = useNavigate();
 
   const handleBookingConfirm = () => {
     setOpen(true);
     navigate('/payment');
   };
 
+  if (!selectedEvent) {
+    return <div>No event selected.</div>;
+  }
+  
+
   return (
+    
     <Typography style={{ fontFamily: 'YourCreativeFont, sans-serif' }}>
       <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
         <div role="presentation" onClick={handleClick}>
@@ -83,7 +99,7 @@ export default function Booking() {
           </Breadcrumbs>
 
           <Typography variant="h6" gutterBottom sx={{ fontWeight: '700', textAlign: 'center' }}>
-            Select Your Seats
+            Select Your Tickets
           </Typography>
         </div>
 
@@ -100,29 +116,27 @@ export default function Booking() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 2 } }}>
-                    <TableCell align="center" component="th" scope="row">{row.name}</TableCell>
-                    <TableCell align="center">{row.price}</TableCell>
-                    <TableCell align="center">
-                      <input
-                        type="number"
-                        value={count}
-                        onChange={handleChange}
-                        style={{ width: 60, textAlign: 'center' }}
-                        min="1"
-                      />
-                    </TableCell>
-                    <TableCell align="center">{row.seats}</TableCell>
-                    <TableCell align="center">{row.amount}</TableCell>
-                  </TableRow>
-                ))}
+                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 2 } }}>
+                  <TableCell align="center">{selectedEvent.name}</TableCell>
+                  <TableCell align="center">{selectedEvent.priceRange}</TableCell>
+                  <TableCell align="center">
+                    <input
+                      type="number"
+                      value={count}
+                      onChange={handleChange}
+                      style={{ width: 60, textAlign: 'center' }}
+                      min="1"
+                    />
+                  </TableCell>
+                  <TableCell align="center">{seats}</TableCell>
+                  <TableCell align="center">{amount}</TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
         </div>
         <Typography variant="h6" gutterBottom sx={{ fontWeight: '700', textAlign: 'center' }}>
-          Pick Your Seats
+          Pick Your Tickets
         </Typography>
 
         <React.Fragment>
@@ -138,13 +152,21 @@ export default function Booking() {
               }
             }}
             variant="contained"
-            onClick={handleBookingConfirm}
-            startIcon={<ThumbUpAltIcon />}
+            onClick={handleClick}
+            startIcon={<AutoModeIcon />}
+            disabled={!selectedEvent}
           >
-            Booking Confirm
+            Proceed
           </Button>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}  anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+        <Alert onClose={handleClose} severity="error" variant="filled" sx={{ width: '100%', justifyContent: 'center' }}>
+          Please select a ticket before proceeding.
+        </Alert>
+      </Snackbar>
 
-          <Dialog
+
+
+          {/* <Dialog
             open={open}
             onClose={handleClose}
             aria-labelledby="alert-dialog-title"
@@ -168,7 +190,8 @@ export default function Booking() {
                 NEXT
               </Button>
             </DialogActions>
-          </Dialog>
+          </Dialog> */}
+
         </React.Fragment>
       </div>
     </Typography>
