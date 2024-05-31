@@ -18,8 +18,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useNavigate } from 'react-router-dom';
 
-
-//button color
 const buttonColor = {
   background: '#439A97',
   border: '3.5px solid #135D66',
@@ -31,13 +29,11 @@ const buttonColor = {
   marginTop: '10px',
 };
 
-// Breadcrumbs
 function handleClick(event) {
   event.preventDefault();
   console.info('You clicked a breadcrumb.');
 }
 
-// Create table
 function createData(name, price, count, seats, amount) {
   return { name, price, count, seats, amount };
 }
@@ -75,17 +71,12 @@ export default function Booking() {
   return (
     <Typography style={{ fontFamily: 'YourCreativeFont, sans-serif' }}>
       <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-        {/* Breadcrumb */}
         <div role="presentation" onClick={handleClick}>
           <Breadcrumbs aria-label="breadcrumb">
             <Link underline="hover" color="inherit" href="#">
               Home
             </Link>
-            <Link
-              underline="hover"
-              color="inherit"
-              href="#"
-            >
+            <Link underline="hover" color="inherit" href="#">
               Buy Ticket
             </Link>
             <Typography color="text.primary">Ticket Bookings</Typography>
@@ -96,9 +87,8 @@ export default function Booking() {
           </Typography>
         </div>
 
-        {/* Table */}
         <div>
-          <TableContainer component={Paper} sx={{ width: '80%', margin: 'auto', marginTop: '30px', marginBottom: '80px'}}>
+          <TableContainer component={Paper} sx={{ width: '80%', margin: 'auto', marginTop: '30px', marginBottom: '80px' }}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
@@ -111,10 +101,7 @@ export default function Booking() {
               </TableHead>
               <TableBody>
                 {rows.map((row) => (
-                  <TableRow
-                    key={row.name}
-                    sx={{ '&:last-child td, &:last-child th': { border: 2 } }}
-                  >
+                  <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 2 } }}>
                     <TableCell align="center" component="th" scope="row">{row.name}</TableCell>
                     <TableCell align="center">{row.price}</TableCell>
                     <TableCell align="center">
@@ -123,6 +110,7 @@ export default function Booking() {
                         value={count}
                         onChange={handleChange}
                         style={{ width: 60, textAlign: 'center' }}
+                        min="1"
                       />
                     </TableCell>
                     <TableCell align="center">{row.seats}</TableCell>
@@ -134,67 +122,54 @@ export default function Booking() {
           </TableContainer>
         </div>
         <Typography variant="h6" gutterBottom sx={{ fontWeight: '700', textAlign: 'center' }}>
-            Pick Your Seats
+          Pick Your Seats
         </Typography>
 
-        {/* Confrim popup */}
         <React.Fragment>
-        <Button
-        sx={{
-        width: '250px',
-        height: '40px',
-        mx: 'auto', // horizontally center the button
-        ...buttonColor,
-        borderRadius: '40px',
-        '&:hover': {
-          background: '#135D66', // Change hover background color
-        }}}
-        variant="contained"
-        onClick={handleBookingConfirm}
-        startIcon={<ThumbUpAltIcon />}
-      >
-        Booking Confirm
-        </Button>
-
-
-
-
-
-
-
-
-
-
-
-        <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description" 
-      >
-        <DialogTitle id="alert-dialog-title">
-        <Typography variant="h6" component="div" fontWeight="bold">
-            Your Booking Confirmations
-        </Typography>
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Your Booking Total Amount
-            <Typography variant="subtitle1" color="textPrimary" textAlign="center">
-                <br/> RS.__ {}
-            </Typography>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} 
-          sx={{...buttonColor,
+          <Button
+            sx={{
+              width: '250px',
+              height: '40px',
+              mx: 'auto',
+              ...buttonColor,
               borderRadius: '40px',
               '&:hover': {
-              background: '#135D66', // Change hover background color
-        }}}> NEXT</Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+                background: '#135D66',
+              }
+            }}
+            variant="contained"
+            onClick={handleBookingConfirm}
+            startIcon={<ThumbUpAltIcon />}
+          >
+            Booking Confirm
+          </Button>
+
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              <Typography variant="h6" component="div" fontWeight="bold">
+                Your Booking Confirmations
+              </Typography>
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Your Booking Total Amount
+                <Typography variant="subtitle1" color="textPrimary" textAlign="center">
+                  <br /> RS.__ {}
+                </Typography>
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} sx={{ ...buttonColor, borderRadius: '40px', '&:hover': { background: '#135D66' } }}>
+                NEXT
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </React.Fragment>
       </div>
     </Typography>
   );

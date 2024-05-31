@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { Link, useNavigate  } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { selectEvent } from '../../reducers/ticketReducer';
+import { selectEvent } from '../../redux/slices/ticketSlice';
 
 const buttonColor = {
   background: '#439A97',

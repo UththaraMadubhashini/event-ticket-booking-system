@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { SELECT_EVENT } from '../constants';
 
 const ticketSlice = createSlice({
   name: 'ticket',
@@ -6,7 +7,7 @@ const ticketSlice = createSlice({
     selectedEvent: null,
   },
   reducers: {
-    selectEvent: (state, action) => {
+    [SELECT_EVENT]: (state, action) => {
       state.selectedEvent = action.payload;
     },
   },
