@@ -12,11 +12,8 @@ import Layout from "../Components/Layouts/Layout";
 import AdminLayout from '../Components/Layouts/AdminLayOut';
 import SignUp from "../Pages/SignUp";
 import Login from "../Pages/Login";
-import EventCards from "../Components/EventCards/EventCards";
 import AllEvents from "../Pages/AllEvents";
 import BuyTickets from "../Pages/BuyTickets";
-import HanthanetaPayana from "../Pages/HanthanetaPayana";
-import BassEnigma from "../Pages/BassEnigma";
 import About from "../Pages/About";
 import Booking from "../Pages/Booking";
 import ManageUser from "../Pages/Admin/Dashboard/ManageUser/ManageUser"
@@ -41,18 +38,14 @@ const Routers = () => {
         <Route path="/bookings" element={<Booking/>} />
         <Route path="/signup" element={<SignUp/>} /> 
         <Route path="/login" element={<Login/>} />
-        <Route path="/card" element={<EventCards/>} />
         <Route path="/all-events" element={<AllEvents/>} />
         <Route path="/musical" element={<MusicalEvents/>} />
         <Route path="/dancing" element={<DancingEvents/>} />
         <Route path="/stage-drama" element={<StageDrama/>} />
         <Route path="/food-festival" element={<FoodFestival/>} />
         <Route path="/buy-tickets/:title" element={<BuyTickets />} />
-        <Route path="/hanthanete-payana" element={<HanthanetaPayana/>} />
-        <Route path="/bass-enigma" element={<BassEnigma/>} />
-        <Route path="/cd-payment" element={<Payment />} />
+        <Route path="/payment" element={<Payment />} />
 
-        {/* <Route path="/events" element={<EventCards events={events} />} /> */}
 
       </Route>
 
@@ -63,8 +56,6 @@ const Routers = () => {
       <Route path="manage-user" element={<ManageUser />} /> 
       <Route path="booking-details" element={<BookingDetails />} /> 
       <Route path="sent-mails" element={<SentMail />} />
-      
-
       <Route path="view-event" element={<ViewEvent />} />
       <Route path="view-booking" element={<ViewBooking />} /> 
       

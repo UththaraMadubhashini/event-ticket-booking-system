@@ -16,6 +16,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useNavigate } from 'react-router-dom';
+
 
 //button color
 const buttonColor = {
@@ -41,20 +43,19 @@ function createData(name, price, count, seats, amount) {
 }
 
 const rows = [
-  createData('Event Name', 100, 1, 24, 100), // Default count is set to 1
+  createData(),
 ];
 
 export default function Booking() {
-  const [count, setCount] = React.useState(rows[0].count); // State for the selected count
+  const [count, setCount] = React.useState(rows[0].count);
+  const [open, setOpen] = React.useState(false);
 
   const handleChange = (event) => {
     const newCount = parseInt(event.target.value);
-    if (!isNaN(newCount)) {
+    if (!isNaN(newCount) && newCount >= 1) {
       setCount(newCount);
     }
   };
-
-  const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -62,6 +63,13 @@ export default function Booking() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const navigate = useNavigate();
+
+  const handleBookingConfirm = () => {
+    setOpen(true);
+    navigate('/payment');
   };
 
   return (
@@ -94,7 +102,7 @@ export default function Booking() {
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>TICKET</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>EVENT NAME</TableCell>
                   <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>PRICE</TableCell>
                   <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>COUNT OF TICKETS</TableCell>
                   <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>SEATS</TableCell>
@@ -142,11 +150,21 @@ export default function Booking() {
           background: '#135D66', // Change hover background color
         }}}
         variant="contained"
-        onClick={handleClickOpen}
+        onClick={handleBookingConfirm}
         startIcon={<ThumbUpAltIcon />}
       >
         Booking Confirm
         </Button>
+
+
+
+
+
+
+
+
+
+
 
         <Dialog
         open={open}
