@@ -106,38 +106,55 @@ class Payment extends React.Component {
 };
 
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const { errors } = this.state;
+handleSubmit = (e) => {
+  e.preventDefault();
+  const { errors } = this.state;
 
-    if (this.validateForm(errors)) {
-      this.setState({
-        snackbar: {
-          open: true,
-          message: 'You have finished payment!',
-          severity: 'success',
-        },
-      });
-      this.form.reset();
-      this.setState({
-        number: '',
-        name: '',
-        expiry: '',
-        cvc: '',
-        issuer: '',
-        focused: '',
-        formData: null,
-      });
-    } else {
-      this.setState({
-        snackbar: {
-          open: true,
-          message: 'Please fill out the form correctly.',
-          severity: 'error',
-        },
-      });
-    }
-  };
+  // Check if there are any errors
+  if (!this.validateForm(errors)) {
+    this.setState({
+      snackbar: {
+        open: true,
+        message: 'Please fill out the form correctly.',
+        severity: 'error',
+      },
+    });
+    return; // Exit the function without further execution
+  }
+
+  // Check if any of the fields are empty
+  const { name, number, expiry, cvc } = this.state;
+  if (!name || !number || !expiry || !cvc) {
+    this.setState({
+      snackbar: {
+        open: true,
+        message: 'Please fill out all the fields.',
+        severity: 'error',
+      },
+    });
+    return; // Exit the function without further execution
+  }
+
+  // If no errors and all fields are filled, show success message
+  this.setState({
+    snackbar: {
+      open: true,
+      message: 'You have finished payment!',
+      severity: 'success',
+    },
+  });
+
+  this.form.reset();
+  this.setState({
+    number: '',
+    name: '',
+    expiry: '',
+    cvc: '',
+    issuer: '',
+    focused: '',
+    formData: null,
+  });
+};
 
   validateForm = (errors) => {
     let valid = true;
@@ -226,21 +243,20 @@ class Payment extends React.Component {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-  <TextField
-    variant="outlined"
-    required
-    fullWidth
-    id="expiry"
-    label="MM/YY"
-    name="expiry"
-    autoComplete="cc-exp"
-    onChange={this.handleInputChange}
-    onFocus={this.handleInputFocus}
-    error={errors.expiry.length > 0}
-    helperText={errors.expiry.length > 0 ? errors.expiry :''}
-  />
-</Grid>
-
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="expiry"
+                    label="MM/YY"
+                    name="expiry"
+                    autoComplete="cc-exp"
+                    onChange={this.handleInputChange}
+                    onFocus={this.handleInputFocus}
+                    error={errors.expiry.length > 0}
+                    helperText={errors.expiry}
+                  />
+                </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     variant="outlined"

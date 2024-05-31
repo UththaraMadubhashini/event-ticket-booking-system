@@ -24,7 +24,7 @@ const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
   });
   const [success, setSuccess] = useState('');
   const [eventNameExists, setEventNameExists] = useState(false);
-  const [error, setError] = useState(''); // Add state for error messages
+  const [error, setError] = useState(''); 
 
   // Function to sanitize event name
   const sanitizeEventName = (name) => {
@@ -120,6 +120,17 @@ const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
         eventImage: imageUrl,
       };
 
+      // Read current counter value
+      const counterRef = ref(database, 'events_counter');
+      const counterSnapshot = await get(counterRef);
+      let currentCounter = counterSnapshot.exists() ? counterSnapshot.val() : 0;
+
+      // Increment counter
+      const newCounter = currentCounter + 1;
+
+      // Update counter value in database
+      await set(counterRef, newCounter);
+
       await set(ref(database, 'events/' + sanitizedEventName), newEventData);
       setSuccess(`Event "${eventData.name}" created successfully`);
       setEventData({ eventID: '', name: '', eventImage: null, date: '', time: '', location: '', 
@@ -132,7 +143,7 @@ const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
       
     } catch (error) {
       console.error('Error:', error);
-      setError('Error occurred while creating the event.');
+      // setError('Error occurred while creating the event.');
     }
   };
 

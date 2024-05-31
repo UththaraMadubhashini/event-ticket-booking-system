@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
@@ -10,14 +13,16 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import AutoModeIcon from '@mui/icons-material/AutoMode';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
-//button color
+
 const buttonColor = {
   background: '#439A97',
   border: '3.5px solid #135D66',
@@ -29,72 +34,81 @@ const buttonColor = {
   marginTop: '10px',
 };
 
-// Breadcrumbs
-function handleClick(event) {
-  event.preventDefault();
-  console.info('You clicked a breadcrumb.');
-}
-
-// Create table
-function createData(name, price, count, seats, amount) {
-  return { name, price, count, seats, amount };
-}
-
-const rows = [
-  createData('Event Name', 100, 1, 24, 100), // Default count is set to 1
-];
-
 export default function Booking() {
-  const [count, setCount] = React.useState(rows[0].count); // State for the selected count
+  const selectedEvent = useSelector((state) => state.ticket.selectedEvent);
+  const [count, setCount] = React.useState(0);
+  const [seats, setSeats] = useState(0);
+  const [amount, setAmount] = useState(0);
+  const [open, setOpen] = React.useState(false);
+  const [selectedTicket, setSelectedTicket] = React.useState(false);
+  const navigate = useNavigate();
+
 
   const handleChange = (event) => {
     const newCount = parseInt(event.target.value);
-    if (!isNaN(newCount)) {
+    if (!isNaN(newCount) && newCount >= 0) {
       setCount(newCount);
+      setSeats(newCount);
+      // calculation
+      const newAmount = newCount === 1 ? selectedEvent.priceRange : newCount * selectedEvent.priceRange;
+      setAmount(newAmount);
+      setSelectedTicket(true);
     }
   };
 
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClick = () => {
+    if (!selectedTicket) {
+      setOpen(true); // Open the Snackbar if no ticket is selected
+    } else {
+      // Proceed with booking logic
+      handleBookingConfirm();
+    }
   };
 
-  const handleClose = () => {
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
     setOpen(false);
   };
 
+
+  const handleBookingConfirm = () => {
+    setOpen(true);
+    navigate('/payment');
+  };
+
+  if (!selectedEvent) {
+    return <div>No event selected.</div>;
+  }
+  
+
   return (
+    
     <Typography style={{ fontFamily: 'YourCreativeFont, sans-serif' }}>
       <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-        {/* Breadcrumb */}
         <div role="presentation" onClick={handleClick}>
           <Breadcrumbs aria-label="breadcrumb">
             <Link underline="hover" color="inherit" href="#">
               Home
             </Link>
-            <Link
-              underline="hover"
-              color="inherit"
-              href="#"
-            >
+            <Link underline="hover" color="inherit" href="#">
               Buy Ticket
             </Link>
             <Typography color="text.primary">Ticket Bookings</Typography>
           </Breadcrumbs>
 
           <Typography variant="h6" gutterBottom sx={{ fontWeight: '700', textAlign: 'center' }}>
-            Select Your Seats
+            Select Your Tickets
           </Typography>
         </div>
 
-        {/* Table */}
         <div>
-          <TableContainer component={Paper} sx={{ width: '80%', margin: 'auto', marginTop: '30px', marginBottom: '80px'}}>
+          <TableContainer component={Paper} sx={{ width: '80%', margin: 'auto', marginTop: '30px', marginBottom: '80px' }}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>TICKET</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>EVENT NAME</TableCell>
                   <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>PRICE</TableCell>
                   <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>COUNT OF TICKETS</TableCell>
                   <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: '14px', bgcolor: '#E3FEF7' }}>SEATS</TableCell>
@@ -102,85 +116,83 @@ export default function Booking() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.name}
-                    sx={{ '&:last-child td, &:last-child th': { border: 2 } }}
-                  >
-                    <TableCell align="center" component="th" scope="row">{row.name}</TableCell>
-                    <TableCell align="center">{row.price}</TableCell>
-                    <TableCell align="center">
-                      <input
-                        type="number"
-                        value={count}
-                        onChange={handleChange}
-                        style={{ width: 60, textAlign: 'center' }}
-                      />
-                    </TableCell>
-                    <TableCell align="center">{row.seats}</TableCell>
-                    <TableCell align="center">{row.amount}</TableCell>
-                  </TableRow>
-                ))}
+                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 2 } }}>
+                  <TableCell align="center">{selectedEvent.name}</TableCell>
+                  <TableCell align="center">{selectedEvent.priceRange}</TableCell>
+                  <TableCell align="center">
+                    <input
+                      type="number"
+                      value={count}
+                      onChange={handleChange}
+                      style={{ width: 60, textAlign: 'center' }}
+                      min="1"
+                    />
+                  </TableCell>
+                  <TableCell align="center">{seats}</TableCell>
+                  <TableCell align="center">{amount}</TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
         </div>
         <Typography variant="h6" gutterBottom sx={{ fontWeight: '700', textAlign: 'center' }}>
-            Pick Your Seats
+          Pick Your Tickets
         </Typography>
 
-        {/* Confrim popup */}
         <React.Fragment>
-        <Button
-        sx={{
-        width: '250px',
-        height: '40px',
-        mx: 'auto', // horizontally center the button
-        ...buttonColor,
-        borderRadius: '40px',
-        '&:hover': {
-          background: '#135D66', // Change hover background color
-        }}}
-        variant="contained"
-        onClick={handleClickOpen}
-        startIcon={<ThumbUpAltIcon />}
-      >
-        Booking Confirm
-        </Button>
-
-        <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description" 
-      >
-        <DialogTitle id="alert-dialog-title">
-        <Typography variant="h6" component="div" fontWeight="bold">
-            Your Booking Confirmations
-        </Typography>
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Your Booking Total Amount
-            <Typography variant="subtitle1" color="textPrimary" textAlign="center">
-                <br/> RS.__ {}
-            </Typography>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} 
-          sx={{...buttonColor,
+          <Button
+            sx={{
+              width: '250px',
+              height: '40px',
+              mx: 'auto',
+              ...buttonColor,
               borderRadius: '40px',
               '&:hover': {
-              background: '#135D66', // Change hover background color
-        }}}> NEXT</Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+                background: '#135D66',
+              }
+            }}
+            variant="contained"
+            onClick={handleClick}
+            startIcon={<AutoModeIcon />}
+            disabled={!selectedEvent}
+          >
+            Proceed
+          </Button>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}  anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+        <Alert onClose={handleClose} severity="error" variant="filled" sx={{ width: '100%', justifyContent: 'center' }}>
+          Please select a ticket before proceeding.
+        </Alert>
+      </Snackbar>
 
 
 
+          {/* <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              <Typography variant="h6" component="div" fontWeight="bold">
+                Your Booking Confirmations
+              </Typography>
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Your Booking Total Amount
+                <Typography variant="subtitle1" color="textPrimary" textAlign="center">
+                  <br /> RS.__ {}
+                </Typography>
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} sx={{ ...buttonColor, borderRadius: '40px', '&:hover': { background: '#135D66' } }}>
+                NEXT
+              </Button>
+            </DialogActions>
+          </Dialog> */}
 
+        </React.Fragment>
       </div>
     </Typography>
   );

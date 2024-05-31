@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import ImageSlider from '../Components/ImageSlider/ImageSlider';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -8,9 +8,10 @@ import ImageBtn1 from '../Assets/Images/music.jpg'
 import ImageBtn2 from '../Assets/Images/dance.jpg'
 import ImageBtn3 from '../Assets/Images/stageDrama.jpg'
 import ImageBtn4 from '../Assets/Images/foodFestival.jpg'
+import EventCard from '../Components/EventCards/EventCard';
 import Grid from '@mui/material/Grid';
-import EventCard from '../Components/EventCards/EventCards';
 import { Link } from 'react-router-dom';
+import { getDatabase, ref, get } from '../firebase-config';
 
 //set image buttons
 const images = [
@@ -107,43 +108,35 @@ const ImageMarked = styled('span')(({ theme }) => ({
   transition: theme.transitions.create('opacity'),
 }));
 
-// set card
-const eventsData = [
-  {
-    title: 'BASS ENIGMA',
-    image: require('../Assets/Images/01.BASS Cham_cd.jpg'),
-    date: 'SAT APR 27',
-    time: '03.00 PM',
-    location: 'Taprobane - Rajagiriya',
-    availability: '150',
-    priceRange: 'Rs. 1000 - Rs. 5000',
-    ticketImage: require('../Assets/Images/ticketIcon.png'),
-    priceTagImage: require('../Assets/Images/priceTag.png')
-  },
-  {
-    title: 'Hanthaneta payana',
-    image: require('../Assets/Images/Hanthanata-Payana-sanda_ cd.jpg'),
-    date: 'SUN APR 28',
-    time: '02.00 PM',
-    location: 'Colombo',
-    priceRange: 'Rs. 1500 - Rs. 6000',
-    ticketImage: require('../Assets/Images/ticketIcon.png'),
-    priceTagImage: require('../Assets/Images/priceTag.png')
-  },
-  {
-    title: 'Hanthaneta payana',
-    image: require('..'),
-    date: 'SUN APR 28',
-    time: '02.00 PM',
-    location: 'Colombo',
-    priceRange: 'Rs. 1500 - Rs. 6000',
-    ticketImage: require('../Assets/Images/ticketIcon.png'),
-    priceTagImage: require('../Assets/Images/priceTag.png')
-  },
-  // Add more event data objects as needed
-];
-
 const ViewHome = () => {
+
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const database = getDatabase();
+        const eventsRef = ref(database, 'events');
+        const snapshot = await get(eventsRef);
+
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          const eventData = Object.keys(data).map(key => ({
+            id: key,
+            ...data[key]
+          }));
+          setEvents(eventData);
+        } else {
+          console.log('No events found');
+        }
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
   return (
     <>
       <ImageSlider />
@@ -194,28 +187,26 @@ const ViewHome = () => {
       </div>
 
   {/* Cards */}
-  <Grid container spacing={3} justifyContent="center">
-      {eventsData.map((event, index) => (
-        <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
- <Link
-  key={index}
-  to={{ pathname: '/buy-tickets', state: { event: event } }}
-  style={{ textDecoration: 'none', color: 'inherit' }}>
-  <EventCard
-    title={event.title}
-    image={event.image}
-    date={event.date}
-    time={event.time}
-    location={event.location}
-    priceRange={event.priceRange}
-    ticketImage={event.ticketImage}
-    priceTagImage={event.priceTagImage}
-    availability={event.availability}
-  />
-</Link>
-        </Grid>
-      ))}
-    </Grid>
+  <Box sx={{ flexGrow: 4, p: 4 }}>
+      <Grid container spacing={0} justifyContent="center">
+        {events.map((event) => (
+          <Grid item key={event.id} xs={12} sm={6} md={4} lg={3}>
+            <EventCard
+              event={event}
+              title={event.name}
+              image={event.eventImage}
+              date={event.date}
+              time={event.time}
+              location={event.location}
+              priceRange={event.priceRange}
+              availability={event.availability}
+              ticketImage={require('../Assets/Images/ticketIcon.png')}
+              priceTagImage={require('../Assets/Images/priceTag.png')}
+            />
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
     </>
   );
 }

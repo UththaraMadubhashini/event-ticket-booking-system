@@ -4,15 +4,14 @@ import NavBar from '../../AdminComponents/NavBar/NavBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { database, ref, get, remove, set } from '../../../../firebase-config';
+import { getDatabase,database, ref, get, remove, set } from '../../../../firebase-config';
 import { Table, TableBody, TableCell, TableContainer, 
   TableHead, TableRow, Paper, Typography, Divider, IconButton, 
   Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, 
-  TextField, MenuItem, Alert, Grid } from '@mui/material';
+  TextField, MenuItem, Alert, } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TablePagination from '@mui/material/TablePagination';
-import EventCard from '../../../../Components/EventCards/EventCards';
 
 const ManageEvents = () => {
   const [page, setPage] = useState(0);
@@ -34,13 +33,15 @@ const ManageEvents = () => {
   });
   const [categories, setCategories] = useState([]);
   const [success, setSuccess] = useState('');
-  const [editMode, setEditMode] = useState({});
+  const [editMode, setEditMode] = useState({}); 
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
+        const database = getDatabase();
         const eventsRef = ref(database, 'events');
         const snapshot = await get(eventsRef);
+
         if (snapshot.exists()) {
           const data = snapshot.val();
           const eventData = Object.keys(data).map(key => ({
@@ -48,6 +49,7 @@ const ManageEvents = () => {
             ...data[key]
           }));
           setRows(eventData);
+          setEvents(data);
 
           // Fetch categories
           const categoriesArray = eventData.reduce((acc, curr) => {
@@ -125,8 +127,8 @@ const ManageEvents = () => {
   const handleUpdate = async (eventId) => {
     try {
       if (eventId) {
-        await set(ref(database, `events/${eventId}`), eventData); // Update the event data in the database
-        setEvents((prevEvents) => ({ ...prevEvents, [eventId]: eventData })); // Update the event data in the state
+        await set(ref(database, `events/${eventId}`), eventData);
+        setEvents((prevEvents) => ({ ...prevEvents, [eventId]: eventData })); 
         console.log(`Event with ID ${eventId} updated successfully`);
         setEditMode((prevEditMode) => ({ ...prevEditMode, [eventId]: false }));
         handleClose();
@@ -135,17 +137,7 @@ const ManageEvents = () => {
     } catch (error) {
       console.error('Error updating event:', error);
     }
-  };
-  
-  const handleFieldChange = (eventId, field, value) => {
-    setEvents((prevEvents) => ({
-      ...prevEvents,
-      [eventId]: {
-        ...prevEvents[eventId],
-        [field]: value,
-      },
-    }));
-  };  
+  }; 
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -181,7 +173,6 @@ const ManageEvents = () => {
               Events & Tickets Management
             </Typography>
             <Divider />
-          
           
           <Link to="/admin/add-event">
             <Button variant="contained" color="primary" style={{ marginBottom: "20px" }}>Add Event</Button>
@@ -234,7 +225,7 @@ const ManageEvents = () => {
           </TableContainer>
 
           <TablePagination
-              rowsPerPageOptions={[5, 25, 100]}
+              rowsPerPageOptions={[5, 10, 15, 100]}
               component="div"
               count={rows.length}
               rowsPerPage={rowsPerPage}
@@ -372,5 +363,6 @@ const ManageEvents = () => {
     </>
   );
 };
+
 
 export default ManageEvents;
