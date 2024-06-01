@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,9 +11,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
 // import logo from '../../Assets/Images/Logo.png';
-import logo2 from '../../Assets/Images/Logo2.png'
+import logo2 from '../../Assets/Images/Logo2.png';
 
-const pages = ['Home', 'Events', 'About', 'SignUp', 'Login'];
+const pages = ['Home', 'Events', 'About', 'SignUp', 'Login', 'SignOut'];
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -56,22 +56,33 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [selectedPage, setSelectedPage] = React.useState('Home');
-  
+  const navigate = useNavigate();
+
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
   const handlePageClick = (page) => {
-    setSelectedPage(page); 
-    handleCloseNavMenu(); 
+    setSelectedPage(page);
+    handleCloseNavMenu();
+  };
+
+  const handleSignOut = () => {
+    
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userData');
+
+    console.log('Signing out...');
+    setSelectedPage('SignOut');
+    navigate('/login');
   };
 
   return (
     <AppBar position="static" sx={{ backgroundColor: '#135D66' }}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ marginTop: 1.5,  alignItems: 'center', marginLeft:5 }}>
+        <Toolbar disableGutters sx={{ marginTop: 1.5, alignItems: 'center', marginLeft: 5 }}>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <img src={logo2} alt="Logo" style={{ height: 80, width: 95, borderRadius: '50%'}} />
+            <img src={logo2} alt="Logo" style={{ height: 80, width: 95, borderRadius: '50%' }} />
           </Typography>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -105,21 +116,37 @@ function Header() {
                     </Menu>
                   </React.Fragment>
                 ) : (
-                  <Button
-                    key={page}
-                    component={Link}
-                    to={`/${page.toLowerCase().replace(' ', '')}`}
-                    onClick={() => handlePageClick(page)} 
-                    sx={{
-                      mx: 4,
-                      color: 'white',
-                      textDecoration: 'none',
-                      backgroundColor: selectedPage === page ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
-                      fontFamily: 'sans-serif', // Change the font family here
-                    }}
-                  >
-                    {page}
-                  </Button>
+                  page === 'SignOut' ? (
+                    <Button
+                      key={page}
+                      onClick={handleSignOut}
+                      sx={{
+                        mx: 4,
+                        color: 'white',
+                        textDecoration: 'none',
+                        backgroundColor: selectedPage === page ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
+                        fontFamily: 'sans-serif',
+                      }}
+                    >
+                      {page}
+                    </Button>
+                  ) : (
+                    <Button
+                      key={page}
+                      component={Link}
+                      to={`/${page.toLowerCase().replace(' ', '')}`}
+                      onClick={() => handlePageClick(page)}
+                      sx={{
+                        mx: 4,
+                        color: 'white',
+                        textDecoration: 'none',
+                        backgroundColor: selectedPage === page ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
+                        fontFamily: 'sans-serif',
+                      }}
+                    >
+                      {page}
+                    </Button>
+                  )
                 )}
               </React.Fragment>
             ))}

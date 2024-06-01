@@ -14,11 +14,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
@@ -163,35 +158,6 @@ export default function Booking() {
           Please select a ticket before proceeding.
         </Alert>
       </Snackbar>
-
-
-
-          {/* <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              <Typography variant="h6" component="div" fontWeight="bold">
-                Your Booking Confirmations
-              </Typography>
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                Your Booking Total Amount
-                <Typography variant="subtitle1" color="textPrimary" textAlign="center">
-                  <br /> RS.__ {}
-                </Typography>
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} sx={{ ...buttonColor, borderRadius: '40px', '&:hover': { background: '#135D66' } }}>
-                NEXT
-              </Button>
-            </DialogActions>
-          </Dialog> */}
-
         </React.Fragment>
       </div>
     </Typography>

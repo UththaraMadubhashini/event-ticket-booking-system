@@ -304,13 +304,22 @@ class Payment extends React.Component {
                       helperText={errors.cvc}
                     />
                   </Grid>
-                </Grid>
-                <input type="hidden" name="issuer" value={issuer} />
+                </Grid><br/>
+                <input type="hidden" name="issuer" value={issuer} /> 
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+              sx={{
+                ...buttonColor,
+                borderRadius: '40px',
+                '&:hover': { background: '#135D66' },
+                width: "210px",
+                margin: 'auto',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
                 >
                   Checkout
                 </Button>
@@ -419,11 +428,11 @@ class Payment extends React.Component {
           sx={{...buttonColor,
               borderRadius: '40px',
               '&:hover': {
-              background: '#135D66', // Change hover background color
+              background: '#135D66',
         }}}> Pay </Button>
         </DialogActions>
       </Dialog>
-      
+
       <Dialog
   open={this.state.successMessageOpen}
   onClose={this.handleSuccessMessageClose}
