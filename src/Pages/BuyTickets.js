@@ -48,6 +48,7 @@ const BuyTickets = () => {
             <span style={{ color: 'blue' }}>04. ප්‍රසංගයේ සංවිධාන කටයුතු වල සිදුවන අපහසුතාවයන් සඳහා Ticketify කිසිදු වගකීමක් දරනු නොලැබේ.</span></p>
         </Typography>
       </Grid>
+      
       <Grid item xs={12} sm={6}>
         <Box sx={{ textAlign: 'center', padding: '20px' }}>
           <Paper elevation={3} 
