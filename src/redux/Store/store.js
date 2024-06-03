@@ -1,8 +1,14 @@
+// store.js
 import { configureStore } from '@reduxjs/toolkit';
-import rootReducer from '../index';
+import customerReducer from '../customerDetailsSlice';
+import ticketReducer from '../ticketReducer';
 
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    customer: customerReducer,
+    ticket: ticketReducer,
+    // Add other reducers if any
+  },
 });
 
 export default store;

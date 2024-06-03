@@ -157,7 +157,7 @@ export default function SideBar() {
 
           <ListItem disablePadding 
             sx={{ display: 'block', backgroundColor: selectedItem === "booking-details" ? '#E3FEF7' : 'transparent' }} 
-            onClick={() => handleNavigation("/admin/booking-details", "booking-details")}
+            onClick={() => handleNavigation("/admin/manage-booking", "booking-details")}
           >
             <ListItemButton
               sx={{

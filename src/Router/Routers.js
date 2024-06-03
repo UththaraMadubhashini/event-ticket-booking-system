@@ -17,13 +17,14 @@ import BuyTickets from "../Pages/BuyTickets";
 import About from "../Pages/About";
 import Booking from "../Pages/Booking";
 import ManageUser from "../Pages/Admin/Dashboard/ManageUser/ManageUser"
-import BookingDetails from "../Pages/Admin/Dashboard/BookingDetails/BookingDetails";
 import Payment from "../Pages/Payment/Payment";
 import AddEvent from "../Pages/Admin/Dashboard/EventsCrud/AddEvent";
 import ManageEvents from "../Pages/Admin/Dashboard/EventsCrud/ManageEvents";
 import ViewBooking from "../Pages/Organizer/ViewBooking";
 import ViewEvent from "../Pages/Organizer/ViewEvent";
 import SentMail from "../Pages/Payment/SentMail/SentMail";
+import BillSummary from "../Pages/Payment/BillSummary";
+import ManageBooking from "../Pages/Admin/Dashboard/BookingDetails/ManageBooking";
 
 
 const Routers = () => {
@@ -45,6 +46,7 @@ const Routers = () => {
         <Route path="/food-festival" element={<FoodFestival/>} />
         <Route path="/buy-tickets/:title" element={<BuyTickets />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/bill-sammary" element={<BillSummary />} />
 
 
       </Route>
@@ -54,7 +56,7 @@ const Routers = () => {
       <Route path="manage-events" element={<ManageEvents />} />
       <Route path="add-event" element={<AddEvent />} />  
       <Route path="manage-user" element={<ManageUser />} /> 
-      <Route path="booking-details" element={<BookingDetails />} /> 
+      <Route path="manage-booking" element={<ManageBooking />} /> 
       <Route path="sent-mails" element={<SentMail />} />
       <Route path="view-event" element={<ViewEvent />} />
       <Route path="view-booking" element={<ViewBooking />} /> 

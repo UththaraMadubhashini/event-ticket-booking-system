@@ -15,7 +15,8 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
 import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+import { Alert, TextField, Box  } from '@mui/material';
+
 
 
 const buttonColor = {
@@ -36,10 +37,39 @@ export default function Booking() {
   const [amount, setAmount] = useState(0);
   const [open, setOpen] = React.useState(false);
   const [selectedTicket, setSelectedTicket] = React.useState(false);
+  const [formValues, setFormValues] = useState({
+    customerId: '',
+    customerName: '',
+    email: '',
+    contactNumber: ''
+  });
+  const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
 
 
-  const handleChange = (event) => {
+const validateForm = () => {
+    const errors = {};
+    if (!formValues.customerName) errors.customerName = "Customer Name is required";
+    if (!formValues.email) {
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
+      errors.email = "Email address is invalid";
+    }
+    if (!formValues.contactNumber) {
+      errors.contactNumber = "Contact Number is required";
+    } else if (!/^\d{10}$/.test(formValues.contactNumber)) {
+      errors.contactNumber = "Contact Number is invalid";
+    }
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleFormChange = (event) => {
+    const { name, value } = event.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
+  const handleTicketChange = (event) => {
     const newCount = parseInt(event.target.value);
     if (!isNaN(newCount) && newCount >= 0) {
       setCount(newCount);
@@ -52,10 +82,11 @@ export default function Booking() {
   };
 
   const handleClick = () => {
-    if (!selectedTicket) {
-      setOpen(true); // Open the Snackbar if no ticket is selected
+    if (!validateForm()) {
+      setOpen(true);
+    } else if (!selectedTicket) {
+      setOpen(true);
     } else {
-      // Proceed with booking logic
       handleBookingConfirm();
     }
   };
@@ -69,10 +100,19 @@ export default function Booking() {
 
 
   const handleBookingConfirm = () => {
+    const bookingDetails = {
+      customerId: formValues.customerId,
+      customerName: formValues.customerName,
+      email: formValues.email,
+      contactNumber: formValues.contactNumber,
+      eventName: selectedEvent.name,
+      ticketCount: count,
+      totalAmount: amount
+    };
+    navigate('/payment', { state: { bookingDetails } });
     setOpen(true);
-    navigate('/payment');
   };
-
+    
   if (!selectedEvent) {
     return <div>No event selected.</div>;
   }
@@ -82,7 +122,7 @@ export default function Booking() {
     
     <Typography style={{ fontFamily: 'YourCreativeFont, sans-serif' }}>
       <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-        <div role="presentation" onClick={handleClick}>
+        {/* <div role="presentation" onClick={handleClick}> */}
           <Breadcrumbs aria-label="breadcrumb">
             <Link underline="hover" color="inherit" href="#">
               Home
@@ -92,6 +132,77 @@ export default function Booking() {
             </Link>
             <Typography color="text.primary">Ticket Bookings</Typography>
           </Breadcrumbs>
+
+
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', p: 2 }}>
+          <Paper elevation={2} sx={{ padding: '20px', width: '300px', textAlign: 'center' }}>
+            <h2>Fill Your Details</h2>
+            <form>
+              <TextField
+                label="CustomerID"
+                name="customerId"
+                value={formValues.customerId}
+                onChange={handleFormChange}
+                variant="outlined"
+                margin="normal"
+                required
+                disabled
+              />
+              <TextField
+                label="Customer Name"
+                name="customerName"
+                value={formValues.customerName}
+                onChange={handleFormChange}
+                variant="outlined"
+                margin="normal"
+                required
+                error={!!formErrors.customerName}
+                helperText={formErrors.customerName}
+              />
+              <TextField
+                label="Email"
+                name="email"
+                value={formValues.email}
+                onChange={handleFormChange}
+                variant="outlined"
+                margin="normal"
+                required
+                error={!!formErrors.email}
+                helperText={formErrors.email}
+              />
+              <TextField
+                label="Contact Number"
+                name="contactNumber"
+                value={formValues.contactNumber}
+                onChange={handleFormChange}
+                variant="outlined"
+                margin="normal"
+                required
+                error={!!formErrors.contactNumber}
+                helperText={formErrors.contactNumber}
+              />
+            </form>
+
+            <Button
+              sx={{
+                width: '100px',
+                height: '40px',
+                mx: 'auto',
+                ...buttonColor,
+                borderRadius: '40px',
+                '&:hover': {
+                  background: '#135D66',
+                }
+              }}
+              variant="contained"
+              onClick={handleClick}
+              startIcon={<AutoModeIcon />}
+              disabled={!selectedEvent}
+            >
+              OK
+            </Button>
+          </Paper>
+        </Box>
 
           <Typography variant="h6" gutterBottom sx={{ fontWeight: '700', textAlign: 'center' }}>
             Select Your Tickets
@@ -118,7 +229,7 @@ export default function Booking() {
                     <input
                       type="number"
                       value={count}
-                      onChange={handleChange}
+                      onChange={handleTicketChange}
                       style={{ width: 60, textAlign: 'center' }}
                       min="1"
                     />
@@ -159,7 +270,7 @@ export default function Booking() {
         </Alert>
       </Snackbar>
         </React.Fragment>
-      </div>
+      {/* </div> */}
     </Typography>
   );
 }

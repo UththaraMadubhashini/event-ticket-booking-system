@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+  selectedEvent: null,
+};
+
 const ticketSlice = createSlice({
   name: 'ticket',
-  initialState: {
-    selectedEvent: null,
-  },
+  initialState,
   reducers: {
     selectEvent: (state, action) => {
       state.selectedEvent = action.payload;
@@ -13,4 +15,5 @@ const ticketSlice = createSlice({
 });
 
 export const { selectEvent } = ticketSlice.actions;
+
 export default ticketSlice.reducer;
