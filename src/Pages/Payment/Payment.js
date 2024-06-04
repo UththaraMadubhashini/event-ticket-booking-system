@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import emailjs from 'emailjs-com';
+import { jsPDF } from "jspdf";
+import html2canvas from 'html2canvas';
 import Card from 'react-credit-cards';
 import {
   formatCreditCardNumber,
@@ -27,6 +30,7 @@ import {
 } from '@mui/material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import SendPdf from '../Payment/SendPdf/SendPdf';
 
 const theme = createTheme();
 
@@ -39,7 +43,10 @@ const buttonColor = {
 };
 
 const Payment = () => {
+  const pdfRef = useRef();
   const location = useLocation();
+  const navigate = useNavigate();
+  const textFeild = useRef();
   const [state, setState] = useState({
     number: '',
     name: '',
@@ -70,16 +77,30 @@ const Payment = () => {
   };
 
   const handleClose = () => {
-    setState({ ...state, dialogOpen: false });
-    handleSuccessMessageOpen();
+    setState((prevState) => ({
+      ...prevState,
+      dialogOpen: false,
+      successMessageOpen: !prevState.successMessageOpen,
+    }));
   };
 
-  const handleSuccessMessageOpen = () => {
-    setState({ ...state, successMessageOpen: true });
+  const handleClose2 = () => {
+    setState({
+      ...state,
+      dialogOpen: false,
+      successMessageOpen: false,
+    });
   };
+  
+
+  // const handleSuccessMessageOpen = () => {
+  //   setState({ ...state, successMessageOpen: true });
+  // };
 
   const handleSuccessMessageClose = () => {
+    sendEmail();
     setState({ ...state, successMessageOpen: false });
+    navigate("/home");
   };
 
   const handleCallback = ({ issuer }, isValid) => {
@@ -193,6 +214,43 @@ const Payment = () => {
     });
   };
 
+
+
+  const sendEmail = () => {
+  const bookingDetails = location.state && location.state.bookingDetails;
+  const emailData = {
+    to_name: bookingDetails.customerName,
+    event_name: bookingDetails.eventName,
+    ticket_count: bookingDetails.ticketCount,
+    total_amount: bookingDetails.totalAmount,
+    customer_name: bookingDetails.customerName,
+    contact_number: bookingDetails.contactNumber,
+
+    from_name: "Team Ticketify", // Change this to the sender's name
+    message: `\nThank you for your booking!\n\nEvent Name: ${bookingDetails.eventName}
+      Tickets Counts: ${bookingDetails.ticketCount}\nTotal Amount: ${bookingDetails.totalAmount}\nYour Name: ${bookingDetails.customerName}`,
+  };
+
+    // emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', emailData, 'PUBLICK_KEY')
+    emailjs.send('service_66yj6al', 'template_e5izx5t', emailData, 'nahRi-I21XB8YHHtc')
+    .then((response) => {
+      console.log('Email sent successfully!', response.status, response.text);
+    })
+    .catch((error) => {
+      console.error('Failed to send email. Error: ', error);
+    });
+};
+
+const handleDownloadPdf = () => {
+  const input = pdfRef.current;
+  html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, 'PNG', 0, 0);
+      pdf.save('invoice.pdf');
+  });
+};
+
   const validateForm = (errors) => {
     let valid = true;
     Object.values(errors).forEach((error) => {
@@ -257,11 +315,11 @@ const Payment = () => {
                       required
                       fullWidth
                       id="name"
-                      label                      ="Name on card"
+                      label ="Name on card"
                       name="name"
                       autoComplete="cc-name"
-                      onChange={handleInputChange} // Corrected function reference
-                      onFocus={handleInputFocus} // Corrected function reference
+                      onChange={handleInputChange} 
+                      onFocus={handleInputFocus} 
                       error={errors.name.length > 0}
                       helperText={errors.name}
                     />
@@ -275,8 +333,8 @@ const Payment = () => {
                       label="Card Number"
                       name="number"
                       autoComplete="cc-number"
-                      onChange={handleInputChange} // Corrected function reference
-                      onFocus={handleInputFocus} // Corrected function reference
+                      onChange={handleInputChange} 
+                      onFocus={handleInputFocus} 
                       error={errors.number.length > 0}
                       helperText={errors.number}
                     />
@@ -290,8 +348,8 @@ const Payment = () => {
                       label="MM/YY"
                       name="expiry"
                       autoComplete="cc-exp"
-                      onChange={handleInputChange} // Corrected function reference
-                      onFocus={handleInputFocus} // Corrected function reference
+                      onChange={handleInputChange} 
+                      onFocus={handleInputFocus} 
                       error={errors.expiry.length > 0}
                       helperText={errors.expiry}
                     />
@@ -305,8 +363,8 @@ const Payment = () => {
                       label="CVC"
                       name="cvc"
                       autoComplete="cc-csc"
-                      onChange={handleInputChange} // Corrected function reference
-                      onFocus={handleInputFocus} // Corrected function reference
+                      onChange={handleInputChange} 
+                      onFocus={handleInputFocus} 
                       error={errors.cvc.length > 0}
                       helperText={errors.cvc}
                     />
@@ -321,7 +379,7 @@ const Payment = () => {
                     ...buttonColor,
                     borderRadius: '40px',
                     '&:hover': { background: '#135D66' },
-                    width: "210px",
+                    width: "150px",
                     margin: 'auto',
                     display: 'flex',
                     justifyContent: 'center',
@@ -349,28 +407,21 @@ const Payment = () => {
                   <b><u>Bill Summary</u></b>
                 </Typography>
                 <div style={{ display: 'flex' }}>
-                  {bookingDetails && (
-                    <div style={{ marginRight: '80px' }}>
-                      <Typography variant="body1">
-                        Customer ID:
-                      </Typography>
-                    </div>
-                  )}
-                  <Typography variant="body1">
-                    Customer Name: {bookingDetails && bookingDetails.customerName}
+                  <Typography variant="body1" ref={textFeild} onSubmit={sendEmail}>
+                    <b>Customer Name:</b> &nbsp; {bookingDetails && bookingDetails.customerName}
                   </Typography>
                 </div>
-                <Typography variant="body1">
-                  Email: {bookingDetails && bookingDetails.email}
+                <Typography variant="body1" ref={textFeild} onSubmit={sendEmail}>
+                  <b>Email:</b> &nbsp; {bookingDetails && bookingDetails.email}
                 </Typography>
-                <Typography variant="body1">
-                  Contact Number: {bookingDetails && bookingDetails.contactNumber}
+                <Typography variant="body1" ref={textFeild} onSubmit={sendEmail}>
+                  <b>Contact Number:</b> &nbsp; {bookingDetails && bookingDetails.contactNumber}
                 </Typography>
-                <Typography variant="body1">
-                  Book Event Name: {bookingDetails && bookingDetails.eventName}
+                <Typography variant="body1" ref={textFeild} onSubmit={sendEmail}>
+                  <b>Book Event Name:</b> &nbsp; {bookingDetails && bookingDetails.eventName}
                 </Typography>
-                <Typography variant="body1">
-                  Counts of Tickets: {bookingDetails && bookingDetails.ticketCount}
+                <Typography variant="body1" ref={textFeild} onSubmit={sendEmail}>
+                  <b>Counts of Tickets:</b> &nbsp; {bookingDetails && bookingDetails.ticketCount}
                 </Typography> 
                 <br/>
                 <Divider variant="middle" component="li" sx={{ border: '2px solid' }} />  
@@ -389,32 +440,32 @@ const Payment = () => {
                     marginBottom: '10px'
                   }}
                 >
-                  <Typography variant="body1">
-                    Total Amount: Rs. {bookingDetails && bookingDetails.totalAmount}
+                  <Typography variant="body1" ref={textFeild} onSubmit={sendEmail}>
+                    <b>Total Amount: Rs.</b> &nbsp; {bookingDetails && bookingDetails.totalAmount}
                   </Typography>
                 </Box>
 
                 <Button
                   variant="contained"
                   startIcon={<TaskAltIcon />}
-                  onClick={handleClickOpen} // Corrected function reference
+                  onClick={handleClickOpen}
                   sx={{
                     ...buttonColor,
                     borderRadius: '40px',
                     '&:hover': { background: '#135D66' },
-                    width: "210px",
+                    width: "150px",
                     margin: 'auto',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
                 >
-                  Cash Payment
+                 Pay Now
                 </Button>
 
                 <Dialog
-                  open={dialogOpen} // Corrected state reference
-                  onClose={handleClose} // Corrected function reference
+                  open={dialogOpen} 
+                  onClose={handleClose} 
                   aria-labelledby="alert-dialog-title"
                   aria-describedby="alert-dialog-description" 
                 >
@@ -427,25 +478,25 @@ const Payment = () => {
                     <DialogContentText id="alert-dialog-description">
                       Ticket Booking Total Amount
                       <Typography variant="subtitle1" color="textPrimary" textAlign="center">
-                        <br/> RS.__ {}
+                        <br/> RS. &nbsp; {bookingDetails && bookingDetails.totalAmount}
                       </Typography>
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={handleClose} 
-                      sx={{
-                        ...buttonColor,
-                        borderRadius: '40px',
-                        '&:hover': {
-                          background: '#135D66',
-                        }
-                      }}> Pay </Button>
+                    
+                      <Button onClick={handleClose}> 
+                      Pay 
+                      </Button>
+                    
+                    <Button onClick={handleClose2} color="primary">
+                      Cancel
+                    </Button>
                   </DialogActions>
                 </Dialog>
 
                 <Dialog
-                  open={successMessageOpen} // Corrected state reference
-                  onClose={handleSuccessMessageClose} // Corrected function reference
+                  open={successMessageOpen} 
+                  onClose={handleClose}
                   aria-labelledby="success-dialog-title"
                   aria-describedby="success-dialog-description"
                 >
@@ -456,21 +507,40 @@ const Payment = () => {
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={handleSuccessMessageClose} color="primary" autoFocus>
+                  <Button onClick={handleClose} color="primary" marginBottom = "30">
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        handleSuccessMessageClose();
+                      }}
+                      color="primary"
+                      autoFocus
+                    >
                       OK
                     </Button>
+                    
                   </DialogActions>
+                  <div ref={pdfRef} id="pdfContent">
+                    <SendPdf bookingDetails={bookingDetails} />
+                  </div>
+                    <Button
+                      onClick={() => handleDownloadPdf(bookingDetails)}
+                      color="primary"
+                      autoFocus
+                    >
+                      Download PDF
+                    </Button>
                 </Dialog>
               </Paper>
             </Box>
           </Grid>
         </Grid>
       </Container>
-
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
-        onClose={handleCloseSnackbar} // Corrected function reference
+        onClose={handleCloseSnackbar} 
       >
         <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
           {snackbar.message}

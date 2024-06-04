@@ -17,8 +17,6 @@ import AutoModeIcon from '@mui/icons-material/AutoMode';
 import Snackbar from '@mui/material/Snackbar';
 import { Alert, TextField, Box  } from '@mui/material';
 
-
-
 const buttonColor = {
   background: '#439A97',
   border: '3.5px solid #135D66',
@@ -101,7 +99,6 @@ const validateForm = () => {
 
   const handleBookingConfirm = () => {
     const bookingDetails = {
-      customerId: formValues.customerId,
       customerName: formValues.customerName,
       email: formValues.email,
       contactNumber: formValues.contactNumber,
@@ -122,8 +119,7 @@ const validateForm = () => {
     
     <Typography style={{ fontFamily: 'YourCreativeFont, sans-serif' }}>
       <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-        {/* <div role="presentation" onClick={handleClick}> */}
-          <Breadcrumbs aria-label="breadcrumb">
+        <Breadcrumbs aria-label="breadcrumb">
             <Link underline="hover" color="inherit" href="#">
               Home
             </Link>
@@ -138,16 +134,6 @@ const validateForm = () => {
           <Paper elevation={2} sx={{ padding: '20px', width: '300px', textAlign: 'center' }}>
             <h2>Fill Your Details</h2>
             <form>
-              <TextField
-                label="CustomerID"
-                name="customerId"
-                value={formValues.customerId}
-                onChange={handleFormChange}
-                variant="outlined"
-                margin="normal"
-                required
-                disabled
-              />
               <TextField
                 label="Customer Name"
                 name="customerName"
@@ -210,7 +196,7 @@ const validateForm = () => {
         </div>
 
         <div>
-          <TableContainer component={Paper} sx={{ width: '80%', margin: 'auto', marginTop: '30px', marginBottom: '80px' }}>
+          <TableContainer component={Paper} sx={{ width: '80%', margin: 'auto', marginTop: '10px', marginBottom: '80px' }}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
@@ -248,9 +234,13 @@ const validateForm = () => {
         <React.Fragment>
           <Button
             sx={{
-              width: '250px',
+              
               height: '40px',
-              mx: 'auto',
+              width: "190px",
+              margin: 'auto',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
               ...buttonColor,
               borderRadius: '40px',
               '&:hover': {
@@ -270,7 +260,6 @@ const validateForm = () => {
         </Alert>
       </Snackbar>
         </React.Fragment>
-      {/* </div> */}
     </Typography>
   );
 }

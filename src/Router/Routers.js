@@ -23,8 +23,8 @@ import ManageEvents from "../Pages/Admin/Dashboard/EventsCrud/ManageEvents";
 import ViewBooking from "../Pages/Organizer/ViewBooking";
 import ViewEvent from "../Pages/Organizer/ViewEvent";
 import SentMail from "../Pages/Payment/SentMail/SentMail";
-import BillSummary from "../Pages/Payment/BillSummary";
 import ManageBooking from "../Pages/Admin/Dashboard/BookingDetails/ManageBooking";
+import SendPdf from "../Pages/Payment/SendPdf/SendPdf";
 
 
 const Routers = () => {
@@ -46,7 +46,7 @@ const Routers = () => {
         <Route path="/food-festival" element={<FoodFestival/>} />
         <Route path="/buy-tickets/:title" element={<BuyTickets />} />
         <Route path="/payment" element={<Payment />} />
-        <Route path="/bill-sammary" element={<BillSummary />} />
+        <Route path="/send-pdf" element={<SendPdf />} />
 
 
       </Route>

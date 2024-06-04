@@ -24,8 +24,6 @@ import DialogActions from '@mui/material/DialogActions';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, database, ref, set, get } from '../firebase-config'; 
-import { useDispatch } from 'react-redux';
-
 
 const isEmail = (email) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email);
 
@@ -86,7 +84,6 @@ const handleContactNumber = () => {
   const handlePassword = () => {
     setPasswordError(!passwordInput || passwordInput.length < 5 || passwordInput.length > 8);
   };
-  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
