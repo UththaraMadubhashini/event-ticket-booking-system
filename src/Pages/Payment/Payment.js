@@ -94,7 +94,7 @@ const Payment = () => {
   };
   
   const handleSuccessMessageClose = () => {
-    // sendEmail();
+    sendEmail();
     saveBookingData();
     setState({ ...state, successMessageOpen: false });
     navigate("/home");
@@ -105,7 +105,6 @@ const Payment = () => {
     const bookingDetails = location.state && location.state.bookingDetails;
     if (bookingDetails) {
         try {
-            // Set booking details directly under "bookings" node
             await set(ref(database, 'bookings/'), {
                 bookingDetails: {
                     "Customer Name": bookingDetails.customerName,
@@ -235,8 +234,6 @@ const Payment = () => {
       formData: null,
     });
   };
-
-
 
   const sendEmail = () => {
   const bookingDetails = location.state && location.state.bookingDetails;

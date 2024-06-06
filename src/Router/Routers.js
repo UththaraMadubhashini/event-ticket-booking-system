@@ -12,7 +12,7 @@ import Layout from "../Components/Layouts/Layout";
 import AdminLayout from '../Components/Layouts/AdminLayOut';
 import SignUp from "../Pages/SignUp";
 import Login from "../Pages/Login";
-import AllEvents from "../Pages/AllEvents";
+// import AllEvents from "../Pages/AllEvents";
 import BuyTickets from "../Pages/BuyTickets";
 import About from "../Pages/About";
 import Booking from "../Pages/Booking";
@@ -39,7 +39,7 @@ const Routers = () => {
         <Route path="/bookings" element={<Booking/>} />
         <Route path="/signup" element={<SignUp/>} /> 
         <Route path="/login" element={<Login/>} />
-        <Route path="/all-events" element={<AllEvents/>} />
+        {/* <Route path="/all-events" element={<AllEvents/>} /> */}
         <Route path="/musical" element={<MusicalEvents/>} />
         <Route path="/dancing" element={<DancingEvents/>} />
         <Route path="/stage-drama" element={<StageDrama/>} />

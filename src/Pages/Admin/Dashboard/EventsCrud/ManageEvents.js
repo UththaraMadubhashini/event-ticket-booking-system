@@ -35,6 +35,7 @@ const ManageEvents = () => {
   const [success, setSuccess] = useState('');
   const [editMode, setEditMode] = useState({}); 
 
+  // connect to the databse
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -51,7 +52,6 @@ const ManageEvents = () => {
           setRows(eventData);
           setEvents(data);
 
-          // Fetch categories
           const categoriesArray = eventData.reduce((acc, curr) => {
             if (curr.category && !acc.includes(curr.category)) {
               acc.push(curr.category);
@@ -127,8 +127,8 @@ const ManageEvents = () => {
   const handleUpdate = async (eventId) => {
     try {
       if (eventId) {
-        await set(ref(database, `events/${eventId}`), eventData); // Update the event data in the database
-        setEvents((prevEvents) => ({ ...prevEvents, [eventId]: eventData })); // Update the event data in the state
+        await set(ref(database, `events/${eventId}`), eventData); 
+        setEvents((prevEvents) => ({ ...prevEvents, [eventId]: eventData })); 
         console.log(`Event with ID ${eventId} updated successfully`);
         setEditMode((prevEditMode) => ({ ...prevEditMode, [eventId]: false }));
         handleClose();

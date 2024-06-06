@@ -45,6 +45,7 @@ export default function SignUp() {
 
   const handleSuccessDialogClose = () => {
     setOpenSuccessDialog(false);
+    navigate("/login");
   };  
 
   const handleRoleChange = (event) => {
@@ -137,9 +138,9 @@ const handleContactNumber = () => {
       // Update counter value in database
       await set(counterRef, newCounter);
       
-      setSuccess(`Registration Successful. Welcome, ${usernameInput}!`);
+      // setSuccess(`Registration Successful. Welcome, ${usernameInput}!`);
       setOpenSuccessDialog(true);
-      navigate("/login");
+      
           } catch (error) {
             setFormValid(error.message);
           }

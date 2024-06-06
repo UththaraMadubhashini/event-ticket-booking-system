@@ -16,21 +16,18 @@ import { database, ref, get } from "../../../../firebase-config";
 
 export default function ManageBooking() {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
   const [selectedBooking, setSelectedBooking] = useState(null);
- 
 
-
-//manage booking table show ---> Customer Name	Email	Contact Number	Book Event Name	Counts of Tickets	Total Amount--> from database
 useEffect(() => {
   const fetchBookings = async () => {
-    const bookingsRef = ref(database, 'bookings'); 
+    const bookingsRef = ref(database, 'bookings');
     try {
       const snapshot = await get(bookingsRef);
       if (snapshot.exists()) {
         const data = snapshot.val();
-        const formattedData = Object.values(data);
+        const formattedData = Object.keys(data).map(key => data[key]);
         setRows(formattedData);
       } else {
         console.log("No data available");
@@ -102,7 +99,10 @@ useEffect(() => {
                   {rows
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                      <TableRow hover role="checkbox" 
+                      tabIndex={-1} 
+                      key={index} 
+                      onClick={() => handleRowClick(row)}>
                         <TableCell align="center">{row["Customer Name"]}</TableCell>
                         <TableCell align="center">{row["Email"]}</TableCell>
                         <TableCell align="center">{row["Contact Number"]}</TableCell>
@@ -116,7 +116,7 @@ useEffect(() => {
               </Table>
             </TableContainer>
             <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
+              rowsPerPageOptions={[5, 10, 25, 100]}
               component="div"
               count={rows.length}
               rowsPerPage={rowsPerPage}

@@ -56,13 +56,13 @@ const Dashboard = () => {
               <Stack spacing={2} direction="row" sx={{ padding: '10px', marginTop: "-420px", }}>
               <Card sx={{ width: '243px', height: '203px', backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
               <CardContent>
-                <RealtimeCount icon={<AddReactionIcon />} number={0} target={2510} text='Our Customers' />
+                <RealtimeCount icon={<AddReactionIcon />} number={0} target={2} text='Our Customers' />
               </CardContent>
             </Card>
 
             <Card sx={{ width: '243px', height: '203px', backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
               <CardContent>
-                <RealtimeCount icon={<ReceiptIcon />} number={0} target={1805} text='Sold Tickets' />
+                <RealtimeCount icon={<ReceiptIcon />} number={0} target={1} text='Sold Tickets' />
               </CardContent>
             </Card>
               </Stack>
@@ -72,13 +72,13 @@ const Dashboard = () => {
               <Stack spacing={2} direction="row" sx={{ padding: '10px' }}>
               <Card sx={{ width: '243px', height: '203px', backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
               <CardContent>
-                <RealtimeCount icon={<CameraRollIcon />} number={0} target={900} text='All Events' />
+                <RealtimeCount icon={<CameraRollIcon />} number={0} target={5} text='All Events' />
               </CardContent>
             </Card>
 
             <Card sx={{ width: '243px', height: '203px', backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
               <CardContent>
-                <RealtimeCount icon={<ClassIcon />} number={0} target={754} text='Events availability' />
+                <RealtimeCount icon={<ClassIcon />} number={0} target={5} text='Events availability' />
               </CardContent>
             </Card>
               </Stack>

@@ -45,7 +45,7 @@ export default function Login() {
       // Define email-role mappings
       const rolesByEmail = {
         'admin23@gmail.com': 'admin',
-        'org123@gmail.com': 'organizer',
+        // 'org123@gmail.com': 'organizer',
       };
 
       const role = rolesByEmail[email] || 'customer';
@@ -92,6 +92,7 @@ export default function Login() {
       } else {
         navigate("/home");
       }
+      setSuccess("Login Successful");
     } catch (error) {
       setFormValid(error.message);
     }

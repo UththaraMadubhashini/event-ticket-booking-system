@@ -130,7 +130,7 @@ const validateForm = () => {
 
 
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', p: 2 }}>
-          <Paper elevation={2} sx={{ padding: '20px', width: '300px', textAlign: 'center' }}>
+          <Paper elevation={2} sx={{ padding: '20px', width: '300px', textAlign: 'center', bgcolor: '#E3FEF7' }}>
             <h2>Fill Your Details</h2>
             <form>
               <TextField
@@ -143,6 +143,7 @@ const validateForm = () => {
                 required
                 error={!!formErrors.customerName}
                 helperText={formErrors.customerName}
+                sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
               />
               <TextField
                 label="Email"
@@ -154,6 +155,7 @@ const validateForm = () => {
                 required
                 error={!!formErrors.email}
                 helperText={formErrors.email}
+                sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
               />
               <TextField
                 label="Contact Number"
@@ -165,6 +167,7 @@ const validateForm = () => {
                 required
                 error={!!formErrors.contactNumber}
                 helperText={formErrors.contactNumber}
+                sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
               />
             </form>
 
