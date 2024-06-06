@@ -59,7 +59,7 @@ export default function ManageUser() {
       <Box sx={{ display: 'flex' }}>
         <SideBar />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+          <Paper sx={{ width: '1000px', overflow: 'hidden' }}>
             <Typography
               gutterBottom
               variant="h5"
@@ -86,10 +86,6 @@ export default function ManageUser() {
                       Email
                     </TableCell>
                     <TableCell align="left" style={{ minWidth: "100px" }}>
-                      {/* - It hash display in table */}
-                      Password  
-                    </TableCell>
-                    <TableCell align="left" style={{ minWidth: "100px" }}>
                       Contact Number
                     </TableCell>
                   </TableRow>
@@ -104,7 +100,6 @@ export default function ManageUser() {
                           <TableCell align="left">{row.username}</TableCell>
                           <TableCell align="left">{row.role}</TableCell>
                           <TableCell align="left">{row.email}</TableCell>
-                          <TableCell align="left">{row.Password}</TableCell>
                           <TableCell align="left">{row.contactNumber}</TableCell> 
 
                         </TableRow>

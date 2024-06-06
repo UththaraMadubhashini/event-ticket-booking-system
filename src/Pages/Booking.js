@@ -56,7 +56,7 @@ const validateForm = () => {
     if (!formValues.contactNumber) {
       errors.contactNumber = "Contact Number is required";
     } else if (!/^\d{10}$/.test(formValues.contactNumber)) {
-      errors.contactNumber = "Contact Number is invalid";
+      errors.contactNumber = "Contact number must be exactly 10 digits and contain only numerical characters.";
     }
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -113,7 +113,6 @@ const validateForm = () => {
   if (!selectedEvent) {
     return <div>No event selected.</div>;
   }
-  
 
   return (
     

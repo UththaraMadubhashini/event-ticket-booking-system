@@ -10,7 +10,7 @@ import { database, ref, set, get, child } from '../../../../firebase-config';
 import { uploadBytesResumable, getDownloadURL, ref as storageRef } from "firebase/storage";
 import { storage } from '../../../../firebase-config';
 
-const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
+const AddEvents = ({ onEventAdded }) => {
   const [eventData, setEventData] = useState({
     eventID: '',
     name: '',
@@ -25,6 +25,7 @@ const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
   const [success, setSuccess] = useState('');
   const [eventNameExists, setEventNameExists] = useState(false);
   const [error, setError] = useState(''); 
+  const [errors, setErrors] = useState({});
 
   // Function to sanitize event name
   const sanitizeEventName = (name) => {
@@ -68,11 +69,31 @@ const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
   // Function to handle form field changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+    setErrors({ ...errors, [name]: '' });
     if (name === 'eventImage') {
       setEventData({ ...eventData, [name]: files[0] });
     } else {
       setEventData({ ...eventData, [name]: value });
     }
+  };
+
+  // Function to handle form field blur (when field loses focus)
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    validateField(name, value);
+  };
+
+  // Function to validate a specific field
+  const validateField = (name, value) => {
+    let newErrors = { ...errors };
+
+    if (!value) {
+      newErrors[name] = `${name[0].toUpperCase() + name.slice(1)} is required`;
+    } else {
+      delete newErrors[name];
+    }
+
+    setErrors(newErrors);
   };
 
   // Function to handle image upload
@@ -107,6 +128,25 @@ const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
     e.preventDefault();
   
     const sanitizedEventName = sanitizeEventName(eventData.name);
+
+    const newErrors = {};
+    Object.keys(eventData).forEach(key => {
+      if (!eventData[key]) {
+        newErrors[key] = `${key[0].toUpperCase() + key.slice(1)} is required`;
+      }
+    });
+
+    if (!eventData.name) newErrors.name = 'Event name is required';
+    if (!eventData.eventImage) newErrors.eventImage = 'Event image is required';
+    if (!eventData.date) newErrors.date = 'Event date is required';
+    if (!eventData.time) newErrors.time = 'Event time is required';
+    if (!eventData.location) newErrors.location = 'Location is required';
+    if (!eventData.priceRange) newErrors.priceRange = 'Price range is required';
+    if (!eventData.availability) newErrors.availability = 'Availability is required';
+    if (!eventData.category) newErrors.category = 'Category is required';
+
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
 
     if (eventNameExists) {
       setError('Event name already exists. Please choose a different name.');
@@ -151,8 +191,11 @@ const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
     const { name, value } = e.target;
     if (/^\d*$/.test(value)) {
       setEventData({ ...eventData, [name]: value });
+      setErrors({ ...errors, [name]: '' });
+      setError('');
     } else {
-      setError(`${name === 'priceRange' ? 'Price Range' : 'Availability'} must be a number.`);
+      // setError('Price Range must be an integer.');
+      setErrors({ ...errors, [name]: 'This field must be a number' });
     }
   };
 
@@ -179,10 +222,13 @@ const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
             name="name"
             value={eventData.name}
             onChange={handleChange}
+            onBlur={handleBlur}
             variant="outlined"
             fullWidth
             margin="normal"
             required
+            error={!!errors.name || eventNameExists}
+            helperText={errors.name || (eventNameExists ? "Event name already exists." : "")}
           />
           {/* Event Image */}
           <TextField
@@ -190,11 +236,14 @@ const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
             name="eventImage"
             type="file"
             onChange={handleChange}
+            onBlur={handleBlur}
             variant="outlined"
             fullWidth
             margin="normal"
             required
             InputLabelProps={{ shrink: true }}
+            error={!!errors.eventImage}
+            helperText={errors.eventImage}
           />
           {/* Event Date */}
           <TextField
@@ -203,25 +252,30 @@ const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
             type="date"
             value={eventData.date}
             onChange={handleChange}
+            onBlur={handleBlur}
             variant="outlined"
             fullWidth
             margin="normal"
             required
             InputLabelProps={{ shrink: true }}
+            error={!!errors.date}
+            helperText={errors.date}
           />
           {/* Event Time */}
           <TextField
-            label="Event Time
-            "
+            label="Event Time"
             name="time"
             type="time"
             value={eventData.time}
             onChange={handleChange}
+            onBlur={handleBlur}
             variant="outlined"
             fullWidth
             margin="normal"
             required
             InputLabelProps={{ shrink: true }}
+            error={!!errors.time}
+            helperText={errors.time}
           />
           {/* Location */}
           <TextField
@@ -229,24 +283,29 @@ const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
             name="location"
             value={eventData.location}
             onChange={handleChange}
+            onBlur={handleBlur}
             variant="outlined"
             fullWidth
             margin="normal"
             required
+            error={!!errors.location}
+            helperText={errors.location}
           />
           {/* Price Range */}
           <TextField
             label="Price Range"
             name="priceRange"
             value={eventData.priceRange}
-            onChange={handleChange}
+            onChange={handleNumberInput}
+            onBlur={handleBlur}
             variant="outlined"
             fullWidth
             margin="normal"
             required
             InputProps={{
-              startAdornment: <InputAdornment position="start">Rs.</InputAdornment>
-            }}
+              startAdornment: <InputAdornment position="start">Rs.</InputAdornment>}}
+            error={!!errors.priceRange}
+            helperText={errors.priceRange}
           />
           {/* Availability */}
           <TextField
@@ -254,10 +313,13 @@ const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
             name="availability"
             value={eventData.availability}
             onChange={handleNumberInput}
+            onBlur={handleBlur}
             variant="outlined"
             fullWidth
             margin="normal"
             required
+            error={!!errors.availability}
+            helperText={errors.availability}
           />
           {/* Category dropdown menu */}
           <TextField
@@ -266,10 +328,13 @@ const AddEvents = ({ onEventAdded }) => { // Receive callback function as props
             name="category"
             value={eventData.category}
             onChange={handleChange}
+            onBlur={handleBlur}
             variant="outlined"
             fullWidth
             margin="normal"
             required
+            error={!!errors.category}
+            helperText={errors.category}
           >
             <MenuItem value="Musical">Musical</MenuItem>
             <MenuItem value="Dancing">Dancing</MenuItem>

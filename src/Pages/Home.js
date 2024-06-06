@@ -10,6 +10,7 @@ import ImageBtn3 from '../Assets/Images/stageDrama.jpg'
 import ImageBtn4 from '../Assets/Images/foodFestival.jpg'
 import EventCard from '../Components/EventCards/EventCard';
 import Grid from '@mui/material/Grid';
+import Chatbot from '../ChatBot/Chatbot';
 import { Link } from 'react-router-dom';
 import { getDatabase, ref, get } from '../firebase-config';
 
@@ -140,6 +141,7 @@ const Home = () => {
   return (
     <>
       <ImageSlider />
+      <Chatbot />
 
       {/* Image buttons */}
         <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>

@@ -31,6 +31,7 @@ import {
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import SendPdf from '../Payment/SendPdf/SendPdf';
+import { database, ref, set } from "../../firebase-config";
 
 const theme = createTheme();
 
@@ -92,16 +93,37 @@ const Payment = () => {
     });
   };
   
-
-  // const handleSuccessMessageOpen = () => {
-  //   setState({ ...state, successMessageOpen: true });
-  // };
-
   const handleSuccessMessageClose = () => {
-    sendEmail();
+    // sendEmail();
+    saveBookingData();
     setState({ ...state, successMessageOpen: false });
     navigate("/home");
   };
+
+
+  const saveBookingData = async () => {
+    const bookingDetails = location.state && location.state.bookingDetails;
+    if (bookingDetails) {
+        try {
+            // Set booking details directly under "bookings" node
+            await set(ref(database, 'bookings/'), {
+                bookingDetails: {
+                    "Customer Name": bookingDetails.customerName,
+                    "Email": bookingDetails.email,
+                    "Contact Number": bookingDetails.contactNumber,
+                    "Book Event Name": bookingDetails.eventName,
+                    "Counts of Tickets": bookingDetails.ticketCount,
+                    "Total Amount": bookingDetails.totalAmount,
+                }
+            });
+    
+            console.log('Booking details saved successfully');
+        } catch (error) {
+            console.error('Error saving booking details:', error);
+        }
+    }
+};
+  
 
   const handleCallback = ({ issuer }, isValid) => {
     if (isValid) {

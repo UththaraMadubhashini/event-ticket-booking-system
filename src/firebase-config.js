@@ -1,5 +1,4 @@
 import { initializeApp } from 'firebase/app';
-
 import { getAuth } from 'firebase/auth';
 import { getDatabase, ref, set, get, child, remove, onValue } from 'firebase/database';
 import { getStorage } from 'firebase/storage';
@@ -23,4 +22,3 @@ const storage = getStorage(app);
 
 
 export { auth, database, ref, set, get, child, storage, remove, getDatabase, onValue };
-export default app;
