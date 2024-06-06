@@ -69,32 +69,32 @@ useEffect(() => {
               gutterBottom
               variant="h5"
               component="div"
-              sx={{ padding: "20px" }}
+              sx={{ padding: "20px", bgcolor: '#E3FEF7' }}
             >
-              Bookings Management
+              <b>Bookings Management</b>
             </Typography>
             <Divider />
             <TableContainer sx={{ maxHeight: 440 }}>
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
-                    <TableCell align="left" style={{ minWidth: "100px" }}>
-                      Customer Name
+                    <TableCell align="center" style={{ minWidth: "100px" }}>
+                      <b>Customer Name</b>
                     </TableCell>
-                    <TableCell align="left" style={{ minWidth: "100px" }}>
-                      Email
+                    <TableCell align="center" style={{ minWidth: "100px" }}>
+                      <b>Email</b>
                     </TableCell>
-                    <TableCell align="left" style={{ minWidth: "100px" }}>
-                      Contact Number
+                    <TableCell align="center" style={{ minWidth: "100px" }}>
+                      <b>Contact Number</b>
                     </TableCell>
-                    <TableCell align="left" style={{ minWidth: "100px" }}>
-                      Book Event Name
+                    <TableCell align="center" style={{ minWidth: "100px" }}>
+                      <b>Book Event Name</b>
                     </TableCell>
-                    <TableCell align="left" style={{ minWidth: "100px" }}>
-                      Counts of Tickets
+                    <TableCell align="center" style={{ minWidth: "100px" }}>
+                      <b>Counts of Tickets</b>
                     </TableCell>
-                    <TableCell align="left" style={{ minWidth: "100px" }}>
-                      Total Amount
+                    <TableCell align="center" style={{ minWidth: "100px" }}>
+                      <b>Total Amount</b>
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -103,12 +103,12 @@ useEffect(() => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                        <TableCell align="left">{row["Customer Name"]}</TableCell>
-                        <TableCell align="left">{row["Email"]}</TableCell>
-                        <TableCell align="left">{row["Contact Number"]}</TableCell>
-                        <TableCell align="left">{row["Book Event Name"]}</TableCell>
-                        <TableCell align="left">{row["Counts of Tickets"]}</TableCell> 
-                        <TableCell align="left">{row["Total Amount"]}</TableCell> 
+                        <TableCell align="center">{row["Customer Name"]}</TableCell>
+                        <TableCell align="center">{row["Email"]}</TableCell>
+                        <TableCell align="center">{row["Contact Number"]}</TableCell>
+                        <TableCell align="center">{row["Book Event Name"]}</TableCell>
+                        <TableCell align="center">{row["Counts of Tickets"]}</TableCell> 
+                        <TableCell align="center">{row["Total Amount"]}</TableCell> 
                       </TableRow>
                     ))}
                 </TableBody>

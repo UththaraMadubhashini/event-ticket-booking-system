@@ -201,7 +201,7 @@ const AddEvents = ({ onEventAdded }) => {
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', p: 2 }}>
-      <Paper elevation={4} sx={{ padding: '20px', width: '400px', textAlign: 'center' }}>
+      <Paper elevation={4} sx={{ padding: '20px', width: '400px', textAlign: 'center', bgcolor: '#E3FEF7' }}>
         <h2>Create Event</h2>
         <form onSubmit={handleSubmit}>
           {/* Event ID */}
@@ -215,6 +215,7 @@ const AddEvents = ({ onEventAdded }) => {
             margin="normal"
             required
             disabled
+            sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
           />
           {/* Event Name */}
           <TextField
@@ -229,6 +230,7 @@ const AddEvents = ({ onEventAdded }) => {
             required
             error={!!errors.name || eventNameExists}
             helperText={errors.name || (eventNameExists ? "Event name already exists." : "")}
+            sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
           />
           {/* Event Image */}
           <TextField
@@ -244,6 +246,7 @@ const AddEvents = ({ onEventAdded }) => {
             InputLabelProps={{ shrink: true }}
             error={!!errors.eventImage}
             helperText={errors.eventImage}
+            sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
           />
           {/* Event Date */}
           <TextField
@@ -260,6 +263,7 @@ const AddEvents = ({ onEventAdded }) => {
             InputLabelProps={{ shrink: true }}
             error={!!errors.date}
             helperText={errors.date}
+            sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
           />
           {/* Event Time */}
           <TextField
@@ -276,6 +280,7 @@ const AddEvents = ({ onEventAdded }) => {
             InputLabelProps={{ shrink: true }}
             error={!!errors.time}
             helperText={errors.time}
+            sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
           />
           {/* Location */}
           <TextField
@@ -290,6 +295,7 @@ const AddEvents = ({ onEventAdded }) => {
             required
             error={!!errors.location}
             helperText={errors.location}
+            sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
           />
           {/* Price Range */}
           <TextField
@@ -303,9 +309,11 @@ const AddEvents = ({ onEventAdded }) => {
             margin="normal"
             required
             InputProps={{
-              startAdornment: <InputAdornment position="start">Rs.</InputAdornment>}}
+              startAdornment: <InputAdornment position="start" sx={{ color: "#1C1678" }}>Rs.</InputAdornment>
+            }}
             error={!!errors.priceRange}
             helperText={errors.priceRange}
+            sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
           />
           {/* Availability */}
           <TextField
@@ -320,6 +328,7 @@ const AddEvents = ({ onEventAdded }) => {
             required
             error={!!errors.availability}
             helperText={errors.availability}
+            sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
           />
           {/* Category dropdown menu */}
           <TextField
@@ -335,6 +344,7 @@ const AddEvents = ({ onEventAdded }) => {
             required
             error={!!errors.category}
             helperText={errors.category}
+            sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
           >
             <MenuItem value="Musical">Musical</MenuItem>
             <MenuItem value="Dancing">Dancing</MenuItem>
@@ -342,7 +352,7 @@ const AddEvents = ({ onEventAdded }) => {
             <MenuItem value="Food festivals">Food festivals</MenuItem>
           </TextField>
           {/* Submit button */}
-          <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+          <Button type="submit" variant="contained" sx={{ mt: 2, backgroundColor: "#135D66" ,'&:hover': { background: '#1C1678' } }}>
             Create Event 
           </Button>
         </form>

@@ -11,7 +11,6 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import { ref, get } from "firebase/database";
 import { database } from "../../../../firebase-config";
 
@@ -64,29 +63,29 @@ export default function ManageUser() {
               gutterBottom
               variant="h5"
               component="div"
-              sx={{ padding: "20px" }}
+              sx={{ padding: "20px", bgcolor: '#E3FEF7' }}
             >
-              Users Management
+              <b>Users Management</b>
             </Typography>
-            <Divider />
+            {/* <Divider /> */}
             <TableContainer sx={{ maxHeight: 440 }}>
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
-                    <TableCell align="left" style={{ minWidth: "100px" }}>
-                      UID
+                    <TableCell align="center" style={{ minWidth: "100px" }}>
+                      <b>UID</b>
                     </TableCell>
-                    <TableCell align="left" style={{ minWidth: "100px" }}>
-                      User Name
+                    <TableCell align="center" style={{ minWidth: "100px" }}>
+                      <b>User Name</b>
                     </TableCell>
-                    <TableCell align="left" style={{ minWidth: "100px" }}>
-                      Role
+                    <TableCell align="center" style={{ minWidth: "100px" }}>
+                      <b>Role</b>
                     </TableCell>
-                    <TableCell align="left" style={{ minWidth: "100px" }}>
-                      Email
+                    <TableCell align="center" style={{ minWidth: "100px" }}>
+                      <b>Email</b>
                     </TableCell>
-                    <TableCell align="left" style={{ minWidth: "100px" }}>
-                      Contact Number
+                    <TableCell align="center" style={{ minWidth: "100px" }}>
+                      <b>Contact Number</b>
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -96,11 +95,11 @@ export default function ManageUser() {
                     .map((row) => {
                       return (
                         <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                          <TableCell align="left">{row.id}</TableCell>
-                          <TableCell align="left">{row.username}</TableCell>
-                          <TableCell align="left">{row.role}</TableCell>
-                          <TableCell align="left">{row.email}</TableCell>
-                          <TableCell align="left">{row.contactNumber}</TableCell> 
+                          <TableCell align="center">{row.id}</TableCell>
+                          <TableCell align="center">{row.username}</TableCell>
+                          <TableCell align="center">{row.role}</TableCell>
+                          <TableCell align="center">{row.email}</TableCell>
+                          <TableCell align="center">{row.contactNumber}</TableCell> 
 
                         </TableRow>
                       );

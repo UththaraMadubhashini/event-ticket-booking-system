@@ -4,15 +4,15 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 export const data = [
-  ["Months", "Sales", "Expenses"],
-  ["2004", 1000, 400],
-  ["2005", 1170, 460],
-  ["2006", 660, 1120],
-  ["2007", 1030, 540],
+  ["Months", "Sales"],
+  ["June",100],
+  ["May", 580],
+  ["April", 850],
+  ["March", 1050],
 ];
 
 export const options = {
-  title: "Company Performance",
+  title: "Tickets Sales",
   curveType: "function",
   legend: { position: "bottom" },
 };
@@ -24,7 +24,7 @@ export default function LineChart() {
       <Typography variant="h6" align="center" sx={{ mb: -10 }}>
         My Daily Activities
       </Typography>
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', }}>
         <Chart
       chartType="LineChart"
       width="800px"

@@ -141,7 +141,7 @@ const Home = () => {
   return (
     <>
       <ImageSlider />
-      <Chatbot />
+      {/* <Chatbot /> */}
 
       {/* Image buttons */}
         <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
