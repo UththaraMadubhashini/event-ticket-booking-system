@@ -127,8 +127,8 @@ const ManageEvents = () => {
   const handleUpdate = async (eventId) => {
     try {
       if (eventId) {
-        await set(ref(database, `events/${eventId}`), eventData);
-        setEvents((prevEvents) => ({ ...prevEvents, [eventId]: eventData })); 
+        await set(ref(database, `events/${eventId}`), eventData); // Update the event data in the database
+        setEvents((prevEvents) => ({ ...prevEvents, [eventId]: eventData })); // Update the event data in the state
         console.log(`Event with ID ${eventId} updated successfully`);
         setEditMode((prevEditMode) => ({ ...prevEditMode, [eventId]: false }));
         handleClose();
@@ -137,7 +137,7 @@ const ManageEvents = () => {
     } catch (error) {
       console.error('Error updating event:', error);
     }
-  }; 
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -159,7 +159,7 @@ const ManageEvents = () => {
   return (
     <>
       <NavBar />
-      <Box height={50} />
+      <Box height={10} />
       <Box sx={{ display: 'flex' }}>
         <SideBar />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

@@ -2,12 +2,11 @@ import React, { useRef } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import image1 from '../../Assets/Images/SENEHASAKATA ARUTHAK MAIN BANNER.jpg';
-import image2 from '../../Assets/Images/Thamath-Mathakai-943x540.jpg';
-import image3 from '../../Assets/Images/ahuthi main banner- dance.jpg';
-import image4 from '../../Assets/Images/DWATHA MAIM.jpg';
-import image5 from '../../Assets/Images/01.BASS Cham.jpg';
-import image6 from '../../Assets/Images/Hanthanata-Payana-sanda.jpg';
+import image1 from '../../Assets/Images/slide3.jpg';
+import image2 from '../../Assets/Images/slide2.png';
+import image3 from '../../Assets/Images/slide1.jpg';
+import image4 from '../../Assets/Images/slide4.jpg';
+import image5 from '../../Assets/Images/slide5.jpg';
 
 // Arrow icons
 const NextArrowIcon = () => <div className="arrow-icon"></div>;
@@ -34,7 +33,7 @@ const PrevArrow = (props) => {
 }
 
 const ImageSlider = () => {
-  const images = [image1, image2, image3, image4, image5, image6];
+  const images = [image1, image2, image3, image4, image5];
   const sliderRef = useRef();
 
   const settings = {

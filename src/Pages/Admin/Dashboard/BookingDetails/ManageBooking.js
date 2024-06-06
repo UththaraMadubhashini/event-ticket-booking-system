@@ -60,7 +60,7 @@ useEffect(() => {
   return (
     <>
       <NavBar />
-      <Box height={50} />
+      <Box height={15} />
       <Box sx={{ display: 'flex' }}>
         <SideBar />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
