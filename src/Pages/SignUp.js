@@ -45,6 +45,7 @@ export default function SignUp() {
 
   const handleSuccessDialogClose = () => {
     setOpenSuccessDialog(false);
+    navigate("/login");
   };  
 
   const handleRoleChange = (event) => {
@@ -76,12 +77,13 @@ const fetchUserRoleByEmail = async (email) => {
   }
 };
 
+const handleContactNumber = () => {
+  const isValidContactNumber = /^\d{10}$/.test(contactNumberInput);
+  setContactNumberError(!isValidContactNumber);
+};
+
   const handlePassword = () => {
     setPasswordError(!passwordInput || passwordInput.length < 5 || passwordInput.length > 8);
-  };
-
-  const handleContactNumber = () => {
-    setContactNumberError(!contactNumberInput);
   };
 
   const handleSubmit = async (e) => {
@@ -100,13 +102,13 @@ const fetchUserRoleByEmail = async (email) => {
       return;
     }
 
-    if (passwordError || !passwordInput) {
-      setFormValid("Password is set to 5 - 8 characters. Please Re-Enter");
+    if (contactNumberError || !contactNumberInput) {
+      setFormValid("Contact number must be exactly 10 digits and contain only numerical characters.");
       return;
     }
 
-    if (contactNumberError || !contactNumberInput) {
-      setFormValid("Contact number is required");
+    if (passwordError || !passwordInput) {
+      setFormValid("Password is set to 5 - 8 characters. Please Re-Enter");
       return;
     }
 
@@ -136,9 +138,9 @@ const fetchUserRoleByEmail = async (email) => {
       // Update counter value in database
       await set(counterRef, newCounter);
       
-      setSuccess(`Registration Successful. Welcome, ${usernameInput}!`);
+      // setSuccess(`Registration Successful. Welcome, ${usernameInput}!`);
       setOpenSuccessDialog(true);
-      navigate("/login");
+      
           } catch (error) {
             setFormValid(error.message);
           }
@@ -165,6 +167,7 @@ const fetchUserRoleByEmail = async (email) => {
         onChange={handleRoleChange}
         required
         fullWidth
+        disabled
       >
         <MenuItem value="customer">Customer</MenuItem>
         <MenuItem value="admin">Admin</MenuItem>
@@ -200,10 +203,14 @@ const fetchUserRoleByEmail = async (email) => {
         />
         <TextField
           id="standard-basic"
+          name="contactNumber"
           error={contactNumberError}
           label="Contact Number"
           value={contactNumberInput}
-          onChange={(event) => { setContactNumberInput(event.target.value); setContactNumberError(false); }}
+          onChange={(event) => { 
+            setContactNumberInput(event.target.value); 
+            setContactNumberError(false); 
+          }}
           onBlur={handleContactNumber}
           variant="standard"
           fullWidth
@@ -211,6 +218,7 @@ const fetchUserRoleByEmail = async (email) => {
           required
           sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#003C43' } }}
         />
+
         <FormControl sx={{ width: '100%', marginBottom: '10px', '& label': { color: '#1C1678' } }} variant="standard">
           <InputLabel error={passwordError} htmlFor="standard-adornment-password">Password *</InputLabel>
           <Input

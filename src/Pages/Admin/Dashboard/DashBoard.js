@@ -56,13 +56,13 @@ const Dashboard = () => {
               <Stack spacing={2} direction="row" sx={{ padding: '10px', marginTop: "-420px", }}>
               <Card sx={{ width: '243px', height: '203px', backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
               <CardContent>
-                <RealtimeCount icon={<AddReactionIcon />} number={0} target={2510} text='Our Customers' />
+                <RealtimeCount icon={<AddReactionIcon />} number={0} target={2} text='Our Customers' />
               </CardContent>
             </Card>
 
             <Card sx={{ width: '243px', height: '203px', backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
               <CardContent>
-                <RealtimeCount icon={<ReceiptIcon />} number={0} target={1805} text='Sold Tickets' />
+                <RealtimeCount icon={<ReceiptIcon />} number={0} target={1} text='Sold Tickets' />
               </CardContent>
             </Card>
               </Stack>
@@ -72,13 +72,13 @@ const Dashboard = () => {
               <Stack spacing={2} direction="row" sx={{ padding: '10px' }}>
               <Card sx={{ width: '243px', height: '203px', backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
               <CardContent>
-                <RealtimeCount icon={<CameraRollIcon />} number={0} target={900} text='All Events' />
+                <RealtimeCount icon={<CameraRollIcon />} number={0} target={5} text='All Events' />
               </CardContent>
             </Card>
 
             <Card sx={{ width: '243px', height: '203px', backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
               <CardContent>
-                <RealtimeCount icon={<ClassIcon />} number={0} target={754} text='Book Tickets' />
+                <RealtimeCount icon={<ClassIcon />} number={0} target={5} text='Events availability' />
               </CardContent>
             </Card>
               </Stack>
@@ -88,7 +88,8 @@ const Dashboard = () => {
           <Grid container spacing={2}>
             <Grid item xs={8}>
               <Stack spacing={2} direction="row">
-                <Card 
+
+                {/* <Card 
                   sx={{ minWidth: '49%', height: 150, backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
                   <CardContent>
                     <div>
@@ -101,9 +102,9 @@ const Dashboard = () => {
                       Visitors
                     </Typography>
                   </CardContent>
-                </Card>
+                </Card> */}
 
-                <Card sx={{ minWidth: '49%', height: 150, backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
+                {/* <Card sx={{ minWidth: '49%', height: 150, backgroundImage: 'linear-gradient(50deg, #FFF323, #439A97)' }}>
                   <CardContent>
                     <div>
                       <LocalActivityIcon sx={{ color: '#003C43' }}/>
@@ -115,12 +116,12 @@ const Dashboard = () => {
                       Events availability
                     </Typography>
                   </CardContent>
-                </Card>
+                </Card> */}
               </Stack>
             </Grid>
             <Grid item xs={4}>
               <Stack spacing={2}>
-                <Card sx={{ width: 400, backgroundImage: 'linear-gradient(50deg, #439A97, #FFD31D)' }}>
+                {/* <Card sx={{ width: 400, backgroundImage: 'linear-gradient(50deg, #439A97, #FFD31D)' }}>
                   <Stack spacing={2} direction="row" sx={{ padding: '10px' }}>
                     <FamilyRestroomIcon sx={{ marginTop: '20px', marginLeft: '20px', color: '#FFFE9A' }} />
                     <div sx={{ padding: '3px' }}>
@@ -130,8 +131,8 @@ const Dashboard = () => {
                     <Typography>Adult Tickets Sales</Typography>
                     </div>
                   </Stack>
-                </Card>
-                <Card sx={{ width: 400, backgroundImage: 'linear-gradient(50deg, #439A97, #FFD31D)' }}>
+                </Card> */}
+                {/* <Card sx={{ width: 400, backgroundImage: 'linear-gradient(50deg, #439A97, #FFD31D)' }}>
                   <Stack spacing={2} direction="row" sx={{ padding: '10px' }}>
                     <FaceIcon sx={{ marginTop: '20px', marginLeft: '20px', color: '#FFFE9A' }} />
                     <div sx={{ padding: '3px' }}>
@@ -141,12 +142,13 @@ const Dashboard = () => {
                     <Typography>Child Tickets Sales</Typography>
                     </div>
                   </Stack>
-                </Card>
+                </Card> */}
               </Stack>
             </Grid>
           </Grid>
           <Box height={20} />
-          <Grid container spacing={2}>
+          
+          {/* <Grid container spacing={2}>
             <Grid item xs={8}>
               <Card sx={{ height: "60vh" }}>
                 <CardContent>
@@ -161,7 +163,7 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
             </Grid>
-          </Grid>
+          </Grid> */}
 
           
         </Box>

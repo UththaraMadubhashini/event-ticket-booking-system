@@ -22,6 +22,7 @@ const buttonColor = {
   height: 45,
   padding: '0 30px',
   marginTop: '10px',
+  
 };
 
 const EventCard = ({ event, title, image, date, time, location, priceRange, availability, ticketImage, priceTagImage }) => {

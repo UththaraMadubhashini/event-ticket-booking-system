@@ -14,14 +14,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-
+import { Alert, TextField, Box  } from '@mui/material';
 
 const buttonColor = {
   background: '#439A97',
@@ -41,10 +35,39 @@ export default function Booking() {
   const [amount, setAmount] = useState(0);
   const [open, setOpen] = React.useState(false);
   const [selectedTicket, setSelectedTicket] = React.useState(false);
+  const [formValues, setFormValues] = useState({
+    customerId: '',
+    customerName: '',
+    email: '',
+    contactNumber: ''
+  });
+  const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
 
 
-  const handleChange = (event) => {
+const validateForm = () => {
+    const errors = {};
+    if (!formValues.customerName) errors.customerName = "Customer Name is required";
+    if (!formValues.email) {
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
+      errors.email = "Email address is invalid";
+    }
+    if (!formValues.contactNumber) {
+      errors.contactNumber = "Contact Number is required";
+    } else if (!/^\d{10}$/.test(formValues.contactNumber)) {
+      errors.contactNumber = "Contact number must be exactly 10 digits and contain only numerical characters.";
+    }
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleFormChange = (event) => {
+    const { name, value } = event.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
+  const handleTicketChange = (event) => {
     const newCount = parseInt(event.target.value);
     if (!isNaN(newCount) && newCount >= 0) {
       setCount(newCount);
@@ -57,10 +80,11 @@ export default function Booking() {
   };
 
   const handleClick = () => {
-    if (!selectedTicket) {
-      setOpen(true); // Open the Snackbar if no ticket is selected
+    if (!validateForm()) {
+      setOpen(true);
+    } else if (!selectedTicket) {
+      setOpen(true);
     } else {
-      // Proceed with booking logic
       handleBookingConfirm();
     }
   };
@@ -74,21 +98,27 @@ export default function Booking() {
 
 
   const handleBookingConfirm = () => {
+    const bookingDetails = {
+      customerName: formValues.customerName,
+      email: formValues.email,
+      contactNumber: formValues.contactNumber,
+      eventName: selectedEvent.name,
+      ticketCount: count,
+      totalAmount: amount
+    };
+    navigate('/payment', { state: { bookingDetails } });
     setOpen(true);
-    navigate('/payment');
   };
-
+    
   if (!selectedEvent) {
     return <div>No event selected.</div>;
   }
-  
 
   return (
     
     <Typography style={{ fontFamily: 'YourCreativeFont, sans-serif' }}>
       <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-        <div role="presentation" onClick={handleClick}>
-          <Breadcrumbs aria-label="breadcrumb">
+        <Breadcrumbs aria-label="breadcrumb">
             <Link underline="hover" color="inherit" href="#">
               Home
             </Link>
@@ -98,13 +128,77 @@ export default function Booking() {
             <Typography color="text.primary">Ticket Bookings</Typography>
           </Breadcrumbs>
 
+
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', p: 2 }}>
+          <Paper elevation={2} sx={{ padding: '20px', width: '300px', textAlign: 'center', bgcolor: '#E3FEF7' }}>
+            <h2>Fill Your Details</h2>
+            <form>
+              <TextField
+                label="Customer Name"
+                name="customerName"
+                value={formValues.customerName}
+                onChange={handleFormChange}
+                variant="outlined"
+                margin="normal"
+                required
+                error={!!formErrors.customerName}
+                helperText={formErrors.customerName}
+                sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
+              />
+              <TextField
+                label="Email"
+                name="email"
+                value={formValues.email}
+                onChange={handleFormChange}
+                variant="outlined"
+                margin="normal"
+                required
+                error={!!formErrors.email}
+                helperText={formErrors.email}
+                sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
+              />
+              <TextField
+                label="Contact Number"
+                name="contactNumber"
+                value={formValues.contactNumber}
+                onChange={handleFormChange}
+                variant="outlined"
+                margin="normal"
+                required
+                error={!!formErrors.contactNumber}
+                helperText={formErrors.contactNumber}
+                sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
+              />
+            </form>
+
+            <Button
+              sx={{
+                width: '100px',
+                height: '40px',
+                mx: 'auto',
+                ...buttonColor,
+                borderRadius: '40px',
+                '&:hover': {
+                  background: '#135D66',
+                }
+              }}
+              variant="contained"
+              onClick={handleClick}
+              startIcon={<AutoModeIcon />}
+              disabled={!selectedEvent}
+            >
+              OK
+            </Button>
+          </Paper>
+        </Box>
+
           <Typography variant="h6" gutterBottom sx={{ fontWeight: '700', textAlign: 'center' }}>
             Select Your Tickets
           </Typography>
         </div>
 
         <div>
-          <TableContainer component={Paper} sx={{ width: '80%', margin: 'auto', marginTop: '30px', marginBottom: '80px' }}>
+          <TableContainer component={Paper} sx={{ width: '80%', margin: 'auto', marginTop: '10px', marginBottom: '80px' }}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
@@ -123,7 +217,7 @@ export default function Booking() {
                     <input
                       type="number"
                       value={count}
-                      onChange={handleChange}
+                      onChange={handleTicketChange}
                       style={{ width: 60, textAlign: 'center' }}
                       min="1"
                     />
@@ -142,9 +236,13 @@ export default function Booking() {
         <React.Fragment>
           <Button
             sx={{
-              width: '250px',
+              
               height: '40px',
-              mx: 'auto',
+              width: "190px",
+              margin: 'auto',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
               ...buttonColor,
               borderRadius: '40px',
               '&:hover': {
@@ -163,37 +261,7 @@ export default function Booking() {
           Please select a ticket before proceeding.
         </Alert>
       </Snackbar>
-
-
-
-          {/* <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              <Typography variant="h6" component="div" fontWeight="bold">
-                Your Booking Confirmations
-              </Typography>
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                Your Booking Total Amount
-                <Typography variant="subtitle1" color="textPrimary" textAlign="center">
-                  <br /> RS.__ {}
-                </Typography>
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} sx={{ ...buttonColor, borderRadius: '40px', '&:hover': { background: '#135D66' } }}>
-                NEXT
-              </Button>
-            </DialogActions>
-          </Dialog> */}
-
         </React.Fragment>
-      </div>
     </Typography>
   );
 }

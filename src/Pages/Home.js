@@ -10,6 +10,7 @@ import ImageBtn3 from '../Assets/Images/stageDrama.jpg'
 import ImageBtn4 from '../Assets/Images/foodFestival.jpg'
 import EventCard from '../Components/EventCards/EventCard';
 import Grid from '@mui/material/Grid';
+import Chatbot from '../ChatBot/Chatbot';
 import { Link } from 'react-router-dom';
 import { getDatabase, ref, get } from '../firebase-config';
 
@@ -140,6 +141,7 @@ const Home = () => {
   return (
     <>
       <ImageSlider />
+      {/* <Chatbot /> */}
 
       {/* Image buttons */}
         <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
@@ -187,12 +189,12 @@ const Home = () => {
       </div>
 
   {/* Cards */}
-
   <Box sx={{ flexGrow: 4, p: 4 }}>
       <Grid container spacing={0} justifyContent="center">
         {events.map((event) => (
           <Grid item key={event.id} xs={12} sm={6} md={4} lg={3}>
             <EventCard
+              event={event}
               title={event.name}
               image={event.eventImage}
               date={event.date}

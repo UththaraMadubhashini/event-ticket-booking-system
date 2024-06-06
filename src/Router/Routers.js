@@ -12,18 +12,19 @@ import Layout from "../Components/Layouts/Layout";
 import AdminLayout from '../Components/Layouts/AdminLayOut';
 import SignUp from "../Pages/SignUp";
 import Login from "../Pages/Login";
-import AllEvents from "../Pages/AllEvents";
+// import AllEvents from "../Pages/AllEvents";
 import BuyTickets from "../Pages/BuyTickets";
 import About from "../Pages/About";
 import Booking from "../Pages/Booking";
 import ManageUser from "../Pages/Admin/Dashboard/ManageUser/ManageUser"
-import BookingDetails from "../Pages/Admin/Dashboard/BookingDetails/BookingDetails";
 import Payment from "../Pages/Payment/Payment";
 import AddEvent from "../Pages/Admin/Dashboard/EventsCrud/AddEvent";
 import ManageEvents from "../Pages/Admin/Dashboard/EventsCrud/ManageEvents";
 import ViewBooking from "../Pages/Organizer/ViewBooking";
 import ViewEvent from "../Pages/Organizer/ViewEvent";
 import SentMail from "../Pages/Payment/SentMail/SentMail";
+import ManageBooking from "../Pages/Admin/Dashboard/BookingDetails/ManageBooking";
+import SendPdf from "../Pages/Payment/SendPdf/SendPdf";
 
 
 const Routers = () => {
@@ -38,13 +39,14 @@ const Routers = () => {
         <Route path="/bookings" element={<Booking/>} />
         <Route path="/signup" element={<SignUp/>} /> 
         <Route path="/login" element={<Login/>} />
-        <Route path="/all-events" element={<AllEvents/>} />
+        {/* <Route path="/all-events" element={<AllEvents/>} /> */}
         <Route path="/musical" element={<MusicalEvents/>} />
         <Route path="/dancing" element={<DancingEvents/>} />
         <Route path="/stage-drama" element={<StageDrama/>} />
         <Route path="/food-festival" element={<FoodFestival/>} />
         <Route path="/buy-tickets/:title" element={<BuyTickets />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/send-pdf" element={<SendPdf />} />
 
 
       </Route>
@@ -54,7 +56,7 @@ const Routers = () => {
       <Route path="manage-events" element={<ManageEvents />} />
       <Route path="add-event" element={<AddEvent />} />  
       <Route path="manage-user" element={<ManageUser />} /> 
-      <Route path="booking-details" element={<BookingDetails />} /> 
+      <Route path="manage-booking" element={<ManageBooking />} /> 
       <Route path="sent-mails" element={<SentMail />} />
       <Route path="view-event" element={<ViewEvent />} />
       <Route path="view-booking" element={<ViewBooking />} /> 

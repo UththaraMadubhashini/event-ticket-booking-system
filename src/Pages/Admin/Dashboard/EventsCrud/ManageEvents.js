@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { getDatabase,database, ref, get, remove, set } from '../../../../firebase-config';
 import { Table, TableBody, TableCell, TableContainer, 
-  TableHead, TableRow, Paper, Typography, Divider, IconButton, 
+  TableHead, TableRow, Paper, Typography, IconButton, 
   Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, 
   TextField, MenuItem, Alert, } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
@@ -35,6 +35,7 @@ const ManageEvents = () => {
   const [success, setSuccess] = useState('');
   const [editMode, setEditMode] = useState({}); 
 
+  // connect to the databse
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -51,7 +52,6 @@ const ManageEvents = () => {
           setRows(eventData);
           setEvents(data);
 
-          // Fetch categories
           const categoriesArray = eventData.reduce((acc, curr) => {
             if (curr.category && !acc.includes(curr.category)) {
               acc.push(curr.category);
@@ -127,7 +127,7 @@ const ManageEvents = () => {
   const handleUpdate = async (eventId) => {
     try {
       if (eventId) {
-        await set(ref(database, `events/${eventId}`), eventData);
+        await set(ref(database, `events/${eventId}`), eventData); 
         setEvents((prevEvents) => ({ ...prevEvents, [eventId]: eventData })); 
         console.log(`Event with ID ${eventId} updated successfully`);
         setEditMode((prevEditMode) => ({ ...prevEditMode, [eventId]: false }));
@@ -137,7 +137,7 @@ const ManageEvents = () => {
     } catch (error) {
       console.error('Error updating event:', error);
     }
-  }; 
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -159,7 +159,7 @@ const ManageEvents = () => {
   return (
     <>
       <NavBar />
-      <Box height={50} />
+      <Box height={10} />
       <Box sx={{ display: 'flex' }}>
         <SideBar />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -168,30 +168,31 @@ const ManageEvents = () => {
               gutterBottom
               variant="h5"
               component="div"
-              sx={{ padding: "20px" }}
+              sx={{ padding: "20px", bgcolor: '#E3FEF7' }}
             >
-              Events & Tickets Management
+              <b>Events & Tickets Management</b>
             </Typography>
-            <Divider />
+            {/* <Divider /> */}
           
           <Link to="/admin/add-event">
-            <Button variant="contained" color="primary" style={{ marginBottom: "20px" }}>Add Event</Button>
+            <Button variant="contained" color="primary" 
+            style={{ marginBottom: "20px",backgroundColor: "#135D66" ,'&:hover': { background: "#1C1678" }}}>Add Event</Button>
           </Link>
 
           <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
-                  <TableCell align="center">EventID</TableCell>
-                  <TableCell align="center">Title</TableCell>
-                  <TableCell align="center">Event Image</TableCell>
-                  <TableCell align="center">Date</TableCell>
-                  <TableCell align="center">Time</TableCell>
-                  <TableCell align="center">Location</TableCell>
-                  <TableCell align="center">Price Range</TableCell>
-                  <TableCell align="center">Availability</TableCell>
-                  <TableCell align="center">Category</TableCell>
-                  <TableCell align="center">Action</TableCell>
+                  <TableCell align="center"><b>EventID</b></TableCell>
+                  <TableCell align="center"><b>Title</b></TableCell>
+                  <TableCell align="center"><b>Event Image</b></TableCell>
+                  <TableCell align="center"><b>Date</b></TableCell>
+                  <TableCell align="center"><b>Time</b></TableCell>
+                  <TableCell align="center"><b>Location</b></TableCell>
+                  <TableCell align="center"><b>Price Range</b></TableCell>
+                  <TableCell align="center"><b>Availability</b></TableCell>
+                  <TableCell align="center"><b>Category</b></TableCell>
+                  <TableCell align="center"><b>Action</b></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -235,10 +236,10 @@ const ManageEvents = () => {
             />
 
           <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Edit Event</DialogTitle>
+            <DialogTitle><b>Edit Event</b></DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Update event details:
+                <b>Update event details:</b>
               </DialogContentText>
               <TextField
                 margin="dense"
@@ -248,6 +249,7 @@ const ManageEvents = () => {
                 name="name"
                 value={eventData.name}
                 onChange={handleChange}
+                sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
               />
               <TextField
                 label="Event Image"
@@ -259,6 +261,7 @@ const ManageEvents = () => {
                 margin="normal"
                 InputLabelProps={{ shrink: true }}
                 required
+                sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
               />
               <TextField
                 margin="dense"
@@ -268,6 +271,7 @@ const ManageEvents = () => {
                 name="date"
                 value={eventData.date}
                 onChange={handleChange}
+                sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
               />
               <TextField
                 margin="dense"
@@ -277,6 +281,7 @@ const ManageEvents = () => {
                 name="time"
                 value={eventData.time}
                 onChange={handleChange}
+                sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
               />
               <TextField
                 margin="dense"
@@ -286,6 +291,7 @@ const ManageEvents = () => {
                 name="location"
                 value={eventData.location}
                 onChange={handleChange}
+                sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
               />
               <TextField
                 margin="dense"
@@ -295,6 +301,7 @@ const ManageEvents = () => {
                 name="priceRange"
                 value={eventData.priceRange}
                 onChange={handleChange}
+                sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
               />
               <TextField
                 margin="dense"
@@ -304,6 +311,7 @@ const ManageEvents = () => {
                 name="availability"
                 value={eventData.availability}
                 onChange={handleChange}
+                sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
               />
               <TextField
                 select
@@ -313,13 +321,14 @@ const ManageEvents = () => {
                 onChange={handleChange}
                 fullWidth
                 margin="dense"
+                sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#1C1678' } }}
               >
                 <MenuItem value="Musical">Musical</MenuItem>
                 <MenuItem value="Dancing">Dancing</MenuItem>
                 <MenuItem value="Stage Drama">Stage Drama</MenuItem>
                 <MenuItem value="Food festivals">Food festivals</MenuItem>
                 {categories
-                  .filter(category => category !== eventData.category) // Filter out the currently selected category
+                  .filter(category => category !== eventData.category) 
                   .map((category) => (
                     <MenuItem key={category} value={category}>
                       {category}

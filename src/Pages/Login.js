@@ -1,4 +1,3 @@
-// Login.js
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -18,10 +17,10 @@ import Alert from '@mui/material/Alert';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
+import { Grid } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase-config'; 
-
 
 const isEmail = (email) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email);
 
@@ -41,21 +40,21 @@ export default function Login() {
     setSelectedRole(event.target.value);
   };
 
-const fetchUserRoleByEmail = async (email) => {
-  try {
-    // Define email-role mappings
-    const rolesByEmail = {
-      'admin23@gmail.com': 'admin',
-      'org123@gmail.com': 'organizer',
-    };
+  const fetchUserRoleByEmail = async (email) => {
+    try {
+      // Define email-role mappings
+      const rolesByEmail = {
+        'admin23@gmail.com': 'admin',
+        // 'org123@gmail.com': 'organizer',
+      };
 
-    const role = rolesByEmail[email] || 'customer';
-    return role;
-  } catch (error) {
-    console.error('Error fetching user role by email:', error);
-    return 'customer';
-  }
-};
+      const role = rolesByEmail[email] || 'customer';
+      return role;
+    } catch (error) {
+      console.error('Error fetching user role by email:', error);
+      return 'customer';
+    }
+  };
 
   const handleEmail = () => {
     setEmailError(!isEmail(emailInput));
@@ -65,7 +64,7 @@ const fetchUserRoleByEmail = async (email) => {
   };
 
   const handlePassword = () => {
-    setPasswordError(!passwordInput || passwordInput.length < 5 || passwordInput.length > 20);
+    setPasswordError(!passwordInput || passwordInput.length < 5 || passwordInput.length > 8);
   };
 
   const handleSubmit = async (e) => {
@@ -79,14 +78,21 @@ const fetchUserRoleByEmail = async (email) => {
     }
 
     if (passwordError || !passwordInput) {
-      setFormValid("Password is set to 5 - 20 characters. Please Re-Enter");
+      setFormValid("Password is set to 5 - 8 characters. Please Re-Enter");
       return;
     }
 
     try {
       await signInWithEmailAndPassword(auth, emailInput, passwordInput);
       setSuccess("Login Successful");
-      navigate("/home");
+
+      const userRole = await fetchUserRoleByEmail(emailInput);
+      if (userRole === 'admin') {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/home");
+      }
+      setSuccess("Login Successful");
     } catch (error) {
       setFormValid(error.message);
     }
@@ -98,27 +104,30 @@ const fetchUserRoleByEmail = async (email) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '30px' }}>
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={6}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '30px' }}>
       <Paper elevation={4} sx={{ background: '#CBEDD5', border: '3px solid #003C43', width: '350px', textAlign: 'center', p: 2 }}>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Chip icon={<LockOutlinedIcon />} label="Login" color="primary" variant="outlined" sx={{ color: '#003C43', borderColor: '#135D66' }} />
         </Box>
 
         <FormControl variant="standard" sx={{ width: '100%', marginBottom: '10px', '& label': { color: '#1C1678' } }}>
-      <InputLabel id="role-label">Role *</InputLabel>
-      <Select
-        labelId="role-label"
-        id="role-select"
-        value={selectedRole}
-        onChange={handleRoleChange}
-        required
-        fullWidth
-      >
-        <MenuItem value="customer">Customer</MenuItem>
-        <MenuItem value="admin">Admin</MenuItem>
-        {/* <MenuItem value="organizer">Organizer</MenuItem> */}
-      </Select>
-      </FormControl>
+          <InputLabel id="role-label">Role *</InputLabel>
+          <Select
+            labelId="role-label"
+            id="role-select"
+            value={selectedRole}
+            onChange={handleRoleChange}
+            required
+            fullWidth
+            disabled
+          >
+            <MenuItem value="customer">Customer</MenuItem>
+            <MenuItem value="admin">Admin</MenuItem>
+            {/* <MenuItem value="organizer">Organizer</MenuItem> */}
+          </Select>
+        </FormControl>
 
         <TextField
           id="standard-basic"
@@ -177,5 +186,18 @@ const fetchUserRoleByEmail = async (email) => {
         </p>
       </Paper>
     </Box>
+    </Grid>
+    <Grid item xs={12} sm={6}>
+    {/* Text */}
+    <Box sx={{ textAlign: 'left', padding: '60px', lineHeight: '2'}}>
+      <h2 style={{ fontFamily: 'Arial, sans-serif', fontSize: '1.5rem', fontWeight: 'normal', color: '#135D66' }}>Log in to your account to access exclusive event ticket bookings, manage your reservations, and stay updated on upcoming events.</h2>
+    </Box>
+  </Grid>
+
+
+    </Grid>
+
+    
+    
   );
 }
