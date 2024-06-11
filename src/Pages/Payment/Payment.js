@@ -94,7 +94,7 @@ const Payment = () => {
   };
   
   const handleSuccessMessageClose = () => {
-    sendEmail();
+    // sendEmail(); // If want send the email remove comment it
     saveBookingData();
     setState({ ...state, successMessageOpen: false });
     navigate("/home");
