@@ -13,6 +13,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
 import Snackbar from '@mui/material/Snackbar';
 import { Alert, TextField, Box  } from '@mui/material';
@@ -184,7 +185,7 @@ const validateForm = () => {
               }}
               variant="contained"
               onClick={handleClick}
-              startIcon={<AutoModeIcon />}
+              startIcon={<DoneOutlineIcon />}
               disabled={!selectedEvent}
             >
               OK
