@@ -66,7 +66,7 @@ const fetchUserRoleByEmail = async (email) => {
   try {
     const rolesByEmail = {
       'admin23@gmail.com': 'admin',
-      'org123@gmail.com': 'organizer',
+      // 'org123@gmail.com': 'organizer',
     };
 
     const role = rolesByEmail[email] || 'customer';
@@ -218,7 +218,7 @@ const handleContactNumber = () => {
           required
           sx={{ marginBottom: '10px', '& label': { color: '#1C1678' }, '& .MuiInputBase-input': { color: '#003C43' } }}
         />
-
+        
         <FormControl sx={{ width: '100%', marginBottom: '10px', '& label': { color: '#1C1678' } }} variant="standard">
           <InputLabel error={passwordError} htmlFor="standard-adornment-password">Password *</InputLabel>
           <Input
