@@ -47,8 +47,6 @@ const Routers = () => {
         <Route path="/buy-tickets/:title" element={<BuyTickets />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/send-pdf" element={<SendPdf />} />
-
-
       </Route>
 
       <Route path="/admin" element={<AdminLayout/>}>
